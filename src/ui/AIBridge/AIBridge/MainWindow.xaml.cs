@@ -23,19 +23,9 @@ namespace AIBridge
         public MainWindow()
         {
             InitializeComponent();
+            MainPage.Content = new mainPage();
         }
+        
 
-        private void GotoAIScreen(object sender, RoutedEventArgs e)
-        {
-
-        }
-        private void GotoHumanScreen(object sender, RoutedEventArgs e)
-        {
-
-        }
-        private void GotoSettingScreen(object sender, RoutedEventArgs e)
-        {
-
-        }
     }
 }

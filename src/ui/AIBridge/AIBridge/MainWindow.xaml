@@ -6,31 +6,7 @@
         xmlns:local="clr-namespace:AIBridge"
         mc:Ignorable="d"
         Title="AIBridge" Height="450" Width="800">
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="2*"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
-        <WrapPanel Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Center">
-            <Label Content="AIBridge" FontSize="90"/>
-        </WrapPanel>
-        <WrapPanel Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Center">
-            <Button Content="AI" HorizontalAlignment="Center" FontSize="50"/>
-        </WrapPanel>
-        <WrapPanel Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Center">
-            <Button Content="Human" HorizontalAlignment="Center" FontSize="50"/>
-        </WrapPanel>
-        <WrapPanel Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Center">
-            <Button Content="Settings" HorizontalAlignment="Center" FontSize="50"/>
-        </WrapPanel>
-
+    <Grid Name="gridMain">
+        <Frame Name="MainPage" NavigationUIVisibility="Hidden"/>
     </Grid>
 </Window>
