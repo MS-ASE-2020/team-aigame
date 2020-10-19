@@ -7,10 +7,30 @@
         mc:Ignorable="d"
         Title="AIBridge" Height="450" Width="800">
     <Grid>
-        <Button Content="AI" HorizontalAlignment="Left" Height="50" Margin="328,136,0,0" VerticalAlignment="Top" Width="150" FontSize="30"/>
-        <Button Content="Human" HorizontalAlignment="Left" Height="50" Margin="328,222,0,0" VerticalAlignment="Top" Width="150" FontSize="30"/>
-        <Button Content="Settings" HorizontalAlignment="Left" Height="55" Margin="328,311,0,0" VerticalAlignment="Top" Width="150" FontSize="30"/>
-        <Label Content="AIBridge" HorizontalAlignment="Center" Height="74" Margin="293,33,280.6,0" VerticalAlignment="Top" Width="220" FontSize="50" />
+        <Grid.RowDefinitions>
+            <RowDefinition Height="2*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <WrapPanel Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Label Content="AIBridge" FontSize="90"/>
+        </WrapPanel>
+        <WrapPanel Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Button Content="AI" HorizontalAlignment="Center" FontSize="50"/>
+        </WrapPanel>
+        <WrapPanel Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Button Content="Human" HorizontalAlignment="Center" FontSize="50"/>
+        </WrapPanel>
+        <WrapPanel Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Button Content="Settings" HorizontalAlignment="Center" FontSize="50"/>
+        </WrapPanel>
 
     </Grid>
 </Window>

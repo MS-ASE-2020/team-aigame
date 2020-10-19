@@ -4,17 +4,17 @@
 winexe
 C#
 .cs
-C:\Users\YueZhang\Source\Repos\team-aigame\src\ui\AIBridge\AIBridge\obj\Debug\
+D:\git\src\ui\AIBridge\AIBridge\obj\Debug\
 AIBridge
 none
 false
 DEBUG;TRACE
-C:\Users\YueZhang\Source\Repos\team-aigame\src\ui\AIBridge\AIBridge\App.xaml
-11151548125
+D:\git\src\ui\AIBridge\AIBridge\App.xaml
+2-2006009462
 
-61434861427
+7-1296430356
 13-1505183044
-MainWindow.xaml;
+MainWindow.xaml;CardControl.xaml;
 
-True
+False
 
