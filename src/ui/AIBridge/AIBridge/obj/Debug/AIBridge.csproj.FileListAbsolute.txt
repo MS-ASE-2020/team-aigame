@@ -1,0 +1,16 @@
+C:\Users\YueZhang\Source\Repos\team-aigame\src\ui\AIBridge\AIBridge\bin\Debug\AIBridge.exe.config
+C:\Users\YueZhang\Source\Repos\team-aigame\src\ui\AIBridge\AIBridge\bin\Debug\AIBridge.exe
+C:\Users\YueZhang\Source\Repos\team-aigame\src\ui\AIBridge\AIBridge\bin\Debug\AIBridge.pdb
+C:\Users\YueZhang\Source\Repos\team-aigame\src\ui\AIBridge\AIBridge\obj\Debug\AIBridge.csprojAssemblyReference.cache
+C:\Users\YueZhang\Source\Repos\team-aigame\src\ui\AIBridge\AIBridge\obj\Debug\MainWindow.g.cs
+C:\Users\YueZhang\Source\Repos\team-aigame\src\ui\AIBridge\AIBridge\obj\Debug\App.g.cs
+C:\Users\YueZhang\Source\Repos\team-aigame\src\ui\AIBridge\AIBridge\obj\Debug\AIBridge_MarkupCompile.cache
+C:\Users\YueZhang\Source\Repos\team-aigame\src\ui\AIBridge\AIBridge\obj\Debug\AIBridge_MarkupCompile.lref
+C:\Users\YueZhang\Source\Repos\team-aigame\src\ui\AIBridge\AIBridge\obj\Debug\App.baml
+C:\Users\YueZhang\Source\Repos\team-aigame\src\ui\AIBridge\AIBridge\obj\Debug\MainWindow.baml
+C:\Users\YueZhang\Source\Repos\team-aigame\src\ui\AIBridge\AIBridge\obj\Debug\AIBridge.g.resources
+C:\Users\YueZhang\Source\Repos\team-aigame\src\ui\AIBridge\AIBridge\obj\Debug\AIBridge.Properties.Resources.resources
+C:\Users\YueZhang\Source\Repos\team-aigame\src\ui\AIBridge\AIBridge\obj\Debug\AIBridge.csproj.GenerateResource.cache
+C:\Users\YueZhang\Source\Repos\team-aigame\src\ui\AIBridge\AIBridge\obj\Debug\AIBridge.csproj.CoreCompileInputs.cache
+C:\Users\YueZhang\Source\Repos\team-aigame\src\ui\AIBridge\AIBridge\obj\Debug\AIBridge.exe
+C:\Users\YueZhang\Source\Repos\team-aigame\src\ui\AIBridge\AIBridge\obj\Debug\AIBridge.pdb
