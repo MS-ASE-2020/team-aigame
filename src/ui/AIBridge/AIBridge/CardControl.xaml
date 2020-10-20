@@ -19,6 +19,7 @@
             <RowDefinition Height="30"/>
             <RowDefinition Height="20"/>
         </Grid.RowDefinitions>
+        <Border BorderThickness="5" BorderBrush="Black" Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="0" Grid.RowSpan="5"/>
         <TextBlock x:Name="tbSuit1" FontFamily="Segoe UI Emoji" FontSize="12" Grid.Column="0" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Center"/>
         <TextBlock x:Name="tbNumber1" Grid.Column="0" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center"/>
 
