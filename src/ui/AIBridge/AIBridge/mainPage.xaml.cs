@@ -30,11 +30,11 @@ namespace AIBridge
         }
         private void Human_click(object sender, RoutedEventArgs e)
         {
-
+            currentPage.Content = new HumanPage();
         }
         private void Setting_click(object sender, RoutedEventArgs e)
         {
-
+            currentPage.Content = new settingPage();
         }
     }
 }

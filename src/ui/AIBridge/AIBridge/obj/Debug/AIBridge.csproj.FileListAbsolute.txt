@@ -36,3 +36,9 @@ D:\git\src\ui\AIBridge\AIBridge\obj\Debug\AIselect.g.cs
 D:\git\src\ui\AIBridge\AIBridge\obj\Debug\AIselect.baml
 D:\git\src\ui\AIBridge\AIBridge\obj\Debug\mainPage.g.cs
 D:\git\src\ui\AIBridge\AIBridge\obj\Debug\mainPage.baml
+D:\git\src\ui\AIBridge\AIBridge\obj\Debug\HumanPage.g.cs
+D:\git\src\ui\AIBridge\AIBridge\obj\Debug\settingPage.g.cs
+D:\git\src\ui\AIBridge\AIBridge\obj\Debug\HumanPage.baml
+D:\git\src\ui\AIBridge\AIBridge\obj\Debug\settingPage.baml
+D:\git\src\ui\AIBridge\AIBridge\obj\Debug\PlayPage.g.cs
+D:\git\src\ui\AIBridge\AIBridge\obj\Debug\PlayPage.baml

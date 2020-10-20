@@ -2,8 +2,9 @@
   "ExpandedNodes": [
     "",
     "\\src",
-    "\\src\\ui"
+    "\\src\\ui",
+    "\\src\\ui\\AIBridge"
   ],
-  "SelectedNode": "\\src\\ui",
+  "SelectedNode": "\\src\\ui\\AIBridge\\AIBridge.sln",
   "PreviewInSolutionExplorer": false
 }

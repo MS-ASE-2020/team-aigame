@@ -24,5 +24,15 @@ namespace AIBridge
         {
             InitializeComponent();
         }
+
+        private void BACK_click(object sender, RoutedEventArgs e)
+        {
+            currentPage.Content = new mainPage();
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

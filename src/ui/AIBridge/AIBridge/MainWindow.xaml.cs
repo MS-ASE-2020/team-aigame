@@ -23,7 +23,8 @@ namespace AIBridge
         public MainWindow()
         {
             InitializeComponent();
-            MainPage.Content = new mainPage();
+            // todo: deal with the memory problem
+            this.MainPage.Content = new mainPage();
         }
         
 

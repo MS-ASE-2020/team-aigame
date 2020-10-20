@@ -26,16 +26,16 @@ namespace AIBridge
         }
         private void EASY_click(object sender, RoutedEventArgs e)
         {
-
+            currentPage.Content = new PlayPage();
         }
 
         private void MID_click(object sender, RoutedEventArgs e)
         {
-
+            currentPage.Content = new PlayPage();
         }
         private void HARD_click(object sender, RoutedEventArgs e)
         {
-
+            currentPage.Content = new PlayPage();
         }
 
         private void BACK_click(object sender, RoutedEventArgs e)

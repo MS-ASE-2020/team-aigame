@@ -24,5 +24,20 @@ namespace AIBridge
         {
             InitializeComponent();
         }
+
+        private void join_click(object sender, RoutedEventArgs e)
+        {
+            
+        }
+
+        private void invite_click(object sender, RoutedEventArgs e)
+        {
+            
+        }
+
+        private void BACK_click(object sender, RoutedEventArgs e)
+        {
+            currentPage.Content = new mainPage();
+        }
     }
 }

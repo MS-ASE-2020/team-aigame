@@ -5,7 +5,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:AIBridge"
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
+      d:DesignHeight="800" d:DesignWidth="800"
       Title="HumanPage">
 
     <Grid>
@@ -28,16 +28,16 @@
                         <Label Content="Compete" FontSize="80"/>
                     </WrapPanel>
                     <WrapPanel Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Center">
-                        <TextBox Text="input invitation number here" FontSize="25"/>
+                        <TextBox Text="input invitation number here" FontSize="25" MinWidth="200" MaxLength="20"/>
                     </WrapPanel>
                     <WrapPanel Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Center">
-                        <Button Content="join" FontSize="50"/>
+                        <Button Content="join" FontSize="50" Click="join_click"/>
                     </WrapPanel>
                     <WrapPanel Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Center">
-                        <Button Content="invite" FontSize="50"/>
+                        <Button Content="invite" FontSize="50" Click="invite_click"/>
                     </WrapPanel>
                     <WrapPanel Grid.Row="3" Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Center">
-                        <Button Content="back" FontSize="50"/>
+                        <Button Content="back" FontSize="50" Click="BACK_click"/>
                     </WrapPanel>
                 </Grid>
             </Frame.Content>
