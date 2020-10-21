@@ -43,6 +43,12 @@ namespace AIBridge
                 cc.tbSuit1.Text = (string)e.NewValue;
                 cc.tbSuit2.Text = (string)e.NewValue;
                 cc.tbSuit3.Text = (string)e.NewValue;
+                if(string.Compare((string)e.NewValue,"\u2665")==0 || string.Compare((string)e.NewValue, "\u2666") == 0)
+                {
+                    cc.tbSuit1.Foreground = new SolidColorBrush(Colors.Red);
+                    cc.tbSuit2.Foreground = new SolidColorBrush(Colors.Red);
+                    cc.tbSuit3.Foreground = new SolidColorBrush(Colors.Red);
+                }
             }
         }
 

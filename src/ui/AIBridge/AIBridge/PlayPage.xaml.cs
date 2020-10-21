@@ -37,17 +37,6 @@ namespace AIBridge
         public CardControl[,] CardUI = new CardControl[4, 13];
         public PlayPage()
         {
-            int i, j, k;
-            for (i = 0; i < 4; i++)
-            {
-                for (j = 0; j < 13; j++)
-                {
-                    for (k = 0; k < 2; k++)
-                    {
-                        this.Card[i, j, k] = j+1;
-                    }
-                }
-            }
             // here get cards from server
             // todo
             InitializeComponent();
@@ -116,8 +105,18 @@ namespace AIBridge
 
         protected override void OnInitialized(EventArgs e)
         {
-            int i, j;
+            int i, j, k;
             base.OnInitialized(e);
+            for (i = 0; i < 4; i++)
+            {
+                for (j = 0; j < 13; j++)
+                {
+                    for (k = 0; k < 2; k++)
+                    {
+                        this.Card[i, j, k] = j + 1;
+                    }
+                }
+            }
             for (i = 0; i < 4; i++)
             {
                 for (j = 0; j < 13; j++)
