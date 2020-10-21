@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -35,11 +36,32 @@ namespace AIBridge
         public int[,,] Card = new int[4,13, 2];
         // same definition
         public CardControl[,] CardUI = new CardControl[4, 13];
+        public bool[,] inhand = new bool[4, 13];
+
+        private int count = 0;
+        public int Count
+        {
+            get { return this.count; }
+            set
+            {
+                this.count = (int)value;
+                if((int)value == 4)
+                {
+                    this.count = 0;
+                    //Thread.Sleep(2000);
+                    this.clearCardInThisTurn();
+                }
+                this.whooseTurn(this.count);
+            }
+        }
+
+
         public PlayPage()
         {
             // here get cards from server
             // todo
             InitializeComponent();
+            whooseTurn(0);
         }
 
         private string Encode2Suit(int encode)
@@ -101,6 +123,32 @@ namespace AIBridge
                 case 3: this.Right.Children.Remove(card); this.RightCard.Children.Clear(); this.RightCard.Children.Add(card); break;
                 default: break;
             }
+
+            this.Count += 1;
+        }
+
+        private void clearCardInThisTurn()
+        {
+            this.MeCard.Children.Clear();
+            this.LeftCard.Children.Clear();
+            this.OpponentCard.Children.Clear();
+            this.RightCard.Children.Clear();
+        }
+
+        private void whooseTurn(int d)
+        {
+            int i;
+            for (i = 0; i < 13; i++)
+            {
+                if(this.inhand[d, i])
+                {
+                    this.CardUI[d, i].MouseDoubleClick += selectCard;
+                }
+                if(this.inhand[(d+3)%4, i])
+                {
+                    this.CardUI[(d+3)%4, i].MouseDoubleClick -= selectCard;
+                }
+            }
         }
 
         protected override void OnInitialized(EventArgs e)
@@ -123,14 +171,11 @@ namespace AIBridge
                 {
                     if (Card[i, j, 0] == -1 || Card[i, j, 1] == -1)
                         continue;
-                    CardUI[i, j] = new CardControl();
-                    CardUI[i, j].Suit = Encode2Suit(Card[i, j, 0]);
-                    CardUI[i, j].Number = Encode2Number(Card[i, j, 1]);
-                    CardUI[i, j].Owner = Convert.ToString(i);
-                    if (i == 0)
-                    {
-                        CardUI[i, j].MouseDoubleClick += selectCard;
-                    }
+                    this.CardUI[i, j] = new CardControl();
+                    this.CardUI[i, j].Suit = Encode2Suit(Card[i, j, 0]);
+                    this.CardUI[i, j].Number = Encode2Number(Card[i, j, 1]);
+                    this.CardUI[i, j].Owner = Convert.ToString(i);
+                    this.inhand[i, j] = true;
                 }
             }
             for (i = 0; i < 4; i++)
