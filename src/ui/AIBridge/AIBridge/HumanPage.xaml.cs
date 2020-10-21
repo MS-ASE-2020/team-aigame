@@ -37,7 +37,7 @@ namespace AIBridge
 
         private void BACK_click(object sender, RoutedEventArgs e)
         {
-            currentPage.Content = new mainPage();
+            NavigationService.GetNavigationService(this).GoBack();
         }
     }
 }

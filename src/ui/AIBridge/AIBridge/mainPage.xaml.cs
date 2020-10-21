@@ -20,21 +20,48 @@ namespace AIBridge
     /// </summary>
     public partial class mainPage : Page
     {
+        private AIselect aIselect = null;
+        private HumanPage humanPage = null;
+        private settingPage SettingPage = null;
         public mainPage()
         {
             InitializeComponent();
         }
         private void AI_click(object sender, RoutedEventArgs e)
         {
-            currentPage.Content = new AIselect();
+            if (this.aIselect != null)
+            {
+                NavigationService.GetNavigationService(this).Navigate(this.aIselect);
+            }
+            else
+            {
+                this.aIselect = new AIselect();
+                NavigationService.GetNavigationService(this).Navigate(this.aIselect);
+            }
         }
         private void Human_click(object sender, RoutedEventArgs e)
         {
-            currentPage.Content = new HumanPage();
+            if (this.humanPage != null)
+            {
+                NavigationService.GetNavigationService(this).Navigate(this.humanPage);
+            }
+            else
+            {
+                this.humanPage = new HumanPage();
+                NavigationService.GetNavigationService(this).Navigate(this.humanPage);
+            }
         }
         private void Setting_click(object sender, RoutedEventArgs e)
         {
-            currentPage.Content = new settingPage();
+            if (this.SettingPage != null)
+            {
+                NavigationService.GetNavigationService(this).Navigate(this.SettingPage);
+            }
+            else
+            {
+                this.SettingPage = new settingPage();
+                NavigationService.GetNavigationService(this).Navigate(this.SettingPage);
+            }
         }
     }
 }
