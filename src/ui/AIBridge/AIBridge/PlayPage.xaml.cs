@@ -44,7 +44,7 @@ namespace AIBridge
                 {
                     for (k = 0; k < 2; k++)
                     {
-                        this.Card[i, j, k] = 1;
+                        this.Card[i, j, k] = j+1;
                     }
                 }
             }
@@ -101,6 +101,19 @@ namespace AIBridge
             }
         }
 
+        private void selectCard(object sender, RoutedEventArgs e)
+        {
+            CardControl card = sender as CardControl;
+            switch (Convert.ToInt32(card.Owner))
+            {
+                case 0: this.Me.Children.Remove(card); this.MeCard.Children.Clear(); this.MeCard.Children.Add(card); break;
+                case 1: this.Left.Children.Remove(card); this.LeftCard.Children.Clear(); this.LeftCard.Children.Add(card); break;
+                case 2: this.Opponent.Children.Remove(card); this.OpponentCard.Children.Clear(); this.OpponentCard.Children.Add(card); break;
+                case 3: this.Right.Children.Remove(card); this.RightCard.Children.Clear(); this.RightCard.Children.Add(card); break;
+                default: break;
+            }
+        }
+
         protected override void OnInitialized(EventArgs e)
         {
             int i, j;
@@ -114,6 +127,11 @@ namespace AIBridge
                     CardUI[i, j] = new CardControl();
                     CardUI[i, j].Suit = Encode2Suit(Card[i, j, 0]);
                     CardUI[i, j].Number = Encode2Number(Card[i, j, 1]);
+                    CardUI[i, j].Owner = Convert.ToString(i);
+                    if (i == 0)
+                    {
+                        CardUI[i, j].MouseDoubleClick += selectCard;
+                    }
                 }
             }
             for (i = 0; i < 4; i++)
@@ -124,6 +142,11 @@ namespace AIBridge
                         putCardToDesk(i, j);
                 }
             }
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            this.currentPage.Content = new AIselect();
         }
     }
 }

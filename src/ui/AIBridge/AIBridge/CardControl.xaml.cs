@@ -46,6 +46,25 @@ namespace AIBridge
             }
         }
 
+        public string Owner
+        {
+            get { return (string)GetValue(OwnerProperty); }
+            set { SetValue(OwnerProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for TextProperty.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty OwnerProperty =
+            DependencyProperty.Register("Owner", typeof(string), typeof(CardControl), new PropertyMetadata("", OnOwnerChangedCallback));
+
+        private static void OnOwnerChangedCallback(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d != null && d is CardControl)
+            {
+                CardControl cc = d as CardControl;
+                cc.Owner = (string)e.NewValue;
+            }
+        }
+
         public string Number
         {
             get { return (string)GetValue(NumberProperty); }
