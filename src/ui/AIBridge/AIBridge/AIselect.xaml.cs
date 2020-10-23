@@ -21,9 +21,11 @@ namespace AIBridge
     /// </summary>
     public partial class AIselect : Page
     {
-        public AIselect()
+        private mainPage upperPage;
+        public AIselect(mainPage page)
         {
             InitializeComponent();
+            this.upperPage = page;
         }
         private void EASY_click(object sender, RoutedEventArgs e)
         {
@@ -41,7 +43,7 @@ namespace AIBridge
 
         private void BACK_click(object sender, RoutedEventArgs e)
         {
-            NavigationService.GetNavigationService(this).GoBack();
+            NavigationService.GetNavigationService(this).Navigate(this.upperPage);
             
         }
     }

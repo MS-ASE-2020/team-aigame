@@ -190,7 +190,7 @@ namespace AIBridge
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            this.currentPage.Content = new AIselect();
+            NavigationService.GetNavigationService(this).GoBack();
         }
     }
 }
