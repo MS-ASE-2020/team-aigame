@@ -21,7 +21,7 @@ def MakerDef(Bids, StartBid):
     """
     bid_nums = len(Bids)
     bid_end = (StartBid + bid_nums - 1) % 4
-    return map_Players[bid_end + 1], Bids[-4]
+    return reverse_Players[map_Players[bid_end + 1]], Bids[-4]
 
 
 def FirstPlayers(contract, maker, play_processes):
@@ -36,7 +36,7 @@ def FirstPlayers(contract, maker, play_processes):
     for process in play_processes[:-1]:
         max_value = process[0]
         for index, card in enumerate(process[1:]):
-            if 'NT' in contract:
+            if 'N' in contract:
                 # 无将判断
                 if max_value[0] != card[0]:
                     # 不同花色
