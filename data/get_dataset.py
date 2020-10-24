@@ -58,7 +58,7 @@ def deal_lin(url: str):
 
 def main():
     print("-----Start get url of .lin file from website-----")
-    url_list = get_lin("http://www.sarantakos.com/bridge/vugraph.html", False)[:1]
+    url_list = get_lin("http://www.sarantakos.com/bridge/vugraph.html", False)
     num_core = 4
     if num_core == 1:
         linurl_list = []
