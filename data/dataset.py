@@ -22,7 +22,7 @@ class Game:
             self.result = re.findall(re.compile("mc\|(.*?)\|"), lin_text)[0]
         except:
             self.result = 13
-        self.valid = self.cards is not None
+        self.valid = self.cards is not None and self.processes==[]
 
 
 def get_cards(text: str):

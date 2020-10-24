@@ -8,87 +8,85 @@ from data.dataset import Game
 import json
 
 
-def get_lin(prefix, subfix, linurl=True):
+def get_lin(origin_url, linurl=True):
     '''
     To get each url of .lin file.
     :param linurl: Whether return url of .lin file, otherwise, return list of directly obtained urls.
     '''
-    origin_url = f"{prefix}/{subfix}" if prefix != '' else subfix
-    logger = logging.getLogger("Get lin")
     if origin_url[-4:] == '.lin':
-        logger.info(f"get {origin_url}")
+        print(f"get {origin_url}")
         return [origin_url]
     try:
         response = requests.get(origin_url)
         if response.status_code != 200:
-            logger.info(origin_url + ' requests error\n')
+            print(origin_url + ' requests error\n')
             return []
     except:
-        logger.info(origin_url + ' requests error\n')
+        print(origin_url + ' requests error\n')
         return []
     text = response.text
     pattern = re.compile("<A HREF = \"(.*?)\">")
     urls = re.findall(pattern, text)
-    if not linurl:
-        return urls
     linurlList = []
     for url in urls:
         if url[:3] not in ['htt', '../', '..\\']:
-            linurlList.extend(get_lin('/'.join(origin_url.split('/')[:-1]), url))
+            if linurl:
+                linurlList.extend(get_lin('/'.join(origin_url.split('/')[:-1]+[url])))
+            else:
+                linurlList.append('/'.join(origin_url.split('/')[:-1]+[url]))
     return linurlList
 
 
 def deal_lin(url: str):
-    logger = logging.getLogger("Deal with lin")
     try:
         response = requests.get(url)
         if response.status_code != 200:
-            logger.info(url + ' requests error\n')
+            print(url + ' requests error\n')
             return []
     except:
-        logger.info(url + ' requests error\n')
+        print(url + ' requests error\n')
         return []
     text = response.text
     lin_list = text.split('qx|')[1:]
     for num, lin in enumerate(lin_list):
         game = Game(url, lin)
         name='_'.join(url.split('/')[5:])+str(num)
-        with open(f"G:/AIGame/team-aigame/data_1024/{name}.json", 'w') as f:
-            json.dump(game, f, default=lambda obj: obj.__dict__)
+        if game.valid:
+            with open(f"G:/AIGame/team-aigame/data_1024/{name}.json", 'w') as f:
+                json.dump(game, f, default=lambda obj: obj.__dict__)
 
 
 def main():
-    logger = logging.getLogger("Main")
-    logger.info("-----Start get url of .lin file from website-----")
-    url_list = get_lin('', "http://www.sarantakos.com/bridge/vugraph.html", False)
+    print("-----Start get url of .lin file from website-----")
+    url_list = get_lin("http://www.sarantakos.com/bridge/vugraph.html", False)[:1]
     num_core = 4
     if num_core == 1:
         linurl_list = []
         for url in tqdm(url_list):
             # file_info_name = BlobLister.list_blobs(container)
-            file_info = get_lin('', url)
+            file_info = get_lin(url)
             linurl_list.extend(file_info)
     else:
         pool = multiprocessing.Pool(num_core)
-        results = pool.starmap(get_lin, tqdm(zip([''] * len(url_list), url_list)))
-        logger.info('Finish the pool calculate\n')
+        results = pool.starmap(get_lin, tqdm([[url] for url in url_list]))
+        print('Finish the pool calculate\n')
         pool.close()
         pool.join()
         linurl_list = reduce(lambda x, y: x + y, results)
-    logger.info(f"Get {len(linurl_list)} '.lin' files")
+    print(f"Get {len(linurl_list)} '.lin' files")
 
-    logger.info("-----Start deal with .lin file-----")
+    print("-----Start deal with .lin file-----")
     if num_core == 1:
         for linurl in tqdm(linurl_list):
-            file_info = deal_lin(linurl)
-            linurl_list.extend(file_info)
+            deal_lin(linurl)
     else:
         pool = multiprocessing.Pool(num_core)
-        results = pool.starmap(deal_lin, tqdm(linurl_list))
-        logger.info('Finish the pool calculate\n')
+        pool.starmap(deal_lin, tqdm([[url] for url in linurl_list]))
+        print('Finish the pool calculate\n')
         pool.close()
         pool.join()
 
 
 if __name__ == '__main__':
-    deal_lin("http://www.sarantakos.com/bridge/vugraph/1962/usita/pf2c.lin")
+    main()
+    # deal_lin("http://www.sarantakos.com/bridge/vugraph/1962/usita/pf2c.lin")
