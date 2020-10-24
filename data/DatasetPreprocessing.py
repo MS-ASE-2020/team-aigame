@@ -14,14 +14,29 @@ def map_players(input):
 
 def MakerDef(Bids, StartBid):
     """
-    定庄家, 直接数学方法推出即可
+    定庄家, 之前搞错了,应该还是需要遍历一下，可以先定哪一对定了多高的定约，然后再定是哪一家
     :param Bids: 希望格式是['p','1S',...,'p','p','p']
     :param StartBid: 1:S, 2:W, 3:N, 4:E
     :return: 1:S, 2:W, 3:N, 4:E and Contract
     """
     bid_nums = len(Bids)
-    bid_end = (StartBid + bid_nums - 1) % 4
-    return reverse_Players[map_Players[bid_end + 1]], Bids[-4]
+    bid_end = StartBid + bid_nums - 1
+    find_contract = False
+    bid_result = 'p'
+    maker = None
+    for i, bid in enumerate(reversed(Bids)):
+        if bid != 'p' and bid != 'x' and bid != '2x' and find_contract is False:
+            bid_result = bid
+            maker = bid_end % 4
+            find_contract = True
+        if find_contract and bid[-1] == bid_result[-1]:
+            maker = bid_end % 4
+        bid_end -= 1
+    if not find_contract:  # 4 pass
+        maker = None  # 无庄家
+    else:
+        maker = map_Players[maker]
+    return maker, bid_result
 
 
 def FirstPlayers(contract, maker, play_processes):
