@@ -29,7 +29,7 @@ def MakerDef(Bids, StartBid):
             bid_result = bid
             maker = bid_end % 4
             find_contract = True
-        if find_contract and bid[-1] == bid_result[-1]:
+        if find_contract and bid[-1] == bid_result[-1] and (bid_end % 4 == maker or bid_end % 4 == (maker + 2) % 4):
             maker = bid_end % 4
         bid_end -= 1
     if not find_contract:  # 4 pass
