@@ -1,7 +1,7 @@
 """
 input: which player, the cards in the table, the cards in hand
 """
-
+import numpy as np
 
 def NorthPlayer():
     """
@@ -38,5 +38,6 @@ def SouthPlayer(Current_Cards, Hand_Cards, History_Cards, Dummy_Cards):
     # random
     if len(Current_Cards) == 0:
         # 自己出牌, 根据明手信息出牌
+        np.random()
 
 
