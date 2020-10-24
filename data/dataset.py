@@ -1,28 +1,29 @@
 import re
-from data.DatasetPreprocessing import MakerDef, FirstPlayers,map_Players
+from data.DatasetPreprocessing import MakerDef, FirstPlayers, map_Players
 
 CARD_CLUB = ['S', 'H', 'D', 'C']
 CARD_NUM = ['A', '2', '3', '4', '5', '6', '7', '8', '9', 'T', 'J', 'Q', 'K']
 
 
 class Game:
-    # __slots__ = "url", "id", "cards", "bids", "StartBid", "maker", "contract", "processes", "rounds", "result", "FirstPlayers"
+    # __slots__ = "url", "id", "cards", "bids", "start_bid", "maker", "contract", "processes", "rounds", "result", "first_players"
 
     def __init__(self, linurl: str, lin_text: str):
         self.url = linurl
         self.id = lin_text.split('|')[0]
         card_text = re.findall(re.compile("md\|(.*?)\|"), lin_text)[0]
-        self.StartBid = int(card_text[0])
+        self.start_bid = map_Players[int(card_text[0])]
         self.cards = get_cards(card_text[1:])
         self.bids = re.findall(re.compile("mb\|(.*?)\|"), lin_text)
-        self.maker, self.contract = MakerDef(self.bids, self.StartBid)
+        self.maker, self.contract = MakerDef(self.bids, self.start_bid)
         self.processes, self.rounds = get_rounds(lin_text)
-        self.FirstPlayers = FirstPlayers(self.contract, self.maker, self.rounds)
+        self.first_players = FirstPlayers(self.contract, self.maker if self.maker is not None else self.start_bid,
+                                          self.rounds)
         try:
             self.result = re.findall(re.compile("mc\|(.*?)\|"), lin_text)[0]
         except:
             self.result = 13
-        self.valid = self.cards is not None and self.processes==[]
+        self.valid = self.cards is not None and self.processes != []
 
 
 def get_cards(text: str):

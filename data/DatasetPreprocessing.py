@@ -16,16 +16,16 @@ def MakerDef(Bids, StartBid):
     """
     定庄家, 之前搞错了,应该还是需要遍历一下，可以先定哪一对定了多高的定约，然后再定是哪一家
     :param Bids: 希望格式是['p','1S',...,'p','p','p']
-    :param StartBid: 1:S, 2:W, 3:N, 4:E
-    :return: 1:S, 2:W, 3:N, 4:E and Contract
+    :param StartBid: S, W, N, E
+    :return: S, W, N, E and Contract
     """
     bid_nums = len(Bids)
-    bid_end = StartBid + bid_nums - 1
+    bid_end = reverse_Players[StartBid] + bid_nums - 1
     find_contract = False
     bid_result = 'p'
     maker = None
     for i, bid in enumerate(reversed(Bids)):
-        if bid != 'p' and bid != 'x' and bid != '2x' and find_contract is False:
+        if bid != 'p' and bid != 'd' and find_contract is False:
             bid_result = bid
             maker = bid_end % 4
             find_contract = True
@@ -43,11 +43,11 @@ def FirstPlayers(contract, maker, play_processes):
     """
     给定定约，庄家以及打牌过程得到每一轮首出牌的人
     :param contract: 1C,1D,1H,1S,1NT...
-    :param maker: 1,2,3,4
+    :param maker: S, W, N, E
     :param play_processes: 希望是list[list] such as: [['cK','cA','c5','c4'],...]
     :return: [每轮首次出牌的方]
     """
-    first = [(maker + 1) % 4]  # 首攻
+    first = [(reverse_Players[maker] + 1) % 4]  # 首攻
     for process in play_processes[:-1]:
         max_value = process[0]
         for index, card in enumerate(process[1:]):

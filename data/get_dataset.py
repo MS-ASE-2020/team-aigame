@@ -38,6 +38,11 @@ def get_lin(origin_url, linurl=True):
 
 
 def deal_lin(url: str):
+    '''
+    To deal with each lin file and get the json of Game.
+    :param url: url of lin
+    :return: None
+    '''
     try:
         response = requests.get(url)
         if response.status_code != 200:
@@ -52,12 +57,12 @@ def deal_lin(url: str):
         game = Game(url, lin)
         name='_'.join(url.split('/')[5:])+str(num)
         if game.valid:
-            with open(f"G:/AIGame/team-aigame/data_1024/{name}.json", 'w') as f:
+            with open(f"G:/AIGame/data_1024/{name}.json", 'w') as f:
                 json.dump(game, f, default=lambda obj: obj.__dict__)
 
 
 def main():
-    print("-----Start get url of .lin file from website-----")
+    print("-----Start get url of '.lin' file from website-----")
     url_list = get_lin("http://www.sarantakos.com/bridge/vugraph.html", False)
     num_core = 4
     if num_core == 1:
