@@ -28,12 +28,12 @@ def get_lin(origin_url, linurl=True):
     pattern = re.compile("<A HREF = \"(.*?)\">")
     urls = re.findall(pattern, text)
     linurlList = []
-    for url in urls:
+    for url in urls[:-1]:  # The last one is back
         if url[:3] not in ['htt', '../', '..\\']:
             if linurl:
-                linurlList.extend(get_lin('/'.join(origin_url.split('/')[:-1]+[url])))
+                linurlList.extend(get_lin('/'.join(origin_url.split('/')[:-1] + [url])))
             else:
-                linurlList.append('/'.join(origin_url.split('/')[:-1]+[url]))
+                linurlList.append('/'.join(origin_url.split('/')[:-1] + [url]))
     return linurlList
 
 
@@ -55,7 +55,7 @@ def deal_lin(url: str):
     lin_list = text.split('qx|')[1:]
     for num, lin in enumerate(lin_list):
         game = Game(url, lin)
-        name='_'.join(url.split('/')[5:])+str(num)
+        name = '_'.join(url.split('/')[5:]) + str(num)
         if game.valid:
             with open(f"G:/AIGame/data_1024/{name}.json", 'w') as f:
                 json.dump(game, f, default=lambda obj: obj.__dict__)
