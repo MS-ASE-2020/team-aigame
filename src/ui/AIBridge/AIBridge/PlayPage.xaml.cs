@@ -39,6 +39,7 @@ namespace AIBridge
         public bool[,] inhand = new bool[4, 13];
 
         private int count = 0;
+        private System.Timers.Timer t = new System.Timers.Timer(3000);
         public int Count
         {
             get { return this.count; }
@@ -48,10 +49,13 @@ namespace AIBridge
                 if((int)value == 4)
                 {
                     this.count = 0;
-                    //Thread.Sleep(2000);
-                    this.clearCardInThisTurn();
+                    this.whooseTurn(-1);
+                    t.Start();
                 }
-                this.whooseTurn(this.count);
+                else
+                {
+                    this.whooseTurn(this.count);
+                }
             }
         }
 
@@ -95,6 +99,12 @@ namespace AIBridge
             }
         }
 
+        private void time2clearDesk(object sender, System.Timers.ElapsedEventArgs e)
+        {
+            this.clearCardInThisTurn();
+            this.whooseTurn(0);
+        }
+
         // put one card to the desk (user's card set)
         // input:
         // 1. direction: which user the card belongs to
@@ -127,28 +137,61 @@ namespace AIBridge
             this.Count += 1;
         }
 
+        // clear the card on the desk
+        // used in timer, to make sure the cards will keep on the desk for several seconds after one round is over
         private void clearCardInThisTurn()
         {
-            this.MeCard.Children.Clear();
-            this.LeftCard.Children.Clear();
-            this.OpponentCard.Children.Clear();
-            this.RightCard.Children.Clear();
+            this.MeCard.Dispatcher.Invoke(new Action(delegate
+            {
+                this.MeCard.Children.Clear();
+            }));
+            this.LeftCard.Dispatcher.Invoke(new Action(delegate
+            {
+                this.LeftCard.Children.Clear();
+            }));
+            this.OpponentCard.Dispatcher.Invoke(new Action(delegate
+            {
+                this.OpponentCard.Children.Clear();
+            }));
+            this.RightCard.Dispatcher.Invoke(new Action(delegate
+            {
+                this.RightCard.Children.Clear();
+            }));
         }
 
         private void whooseTurn(int d)
         {
-            int i;
-            for (i = 0; i < 13; i++)
+            int i, j;
+            if (d != -1)
             {
-                if(this.inhand[d, i])
+                for (i = 0; i < 13; i++)
                 {
-                    this.CardUI[d, i].MouseDoubleClick += selectCard;
-                }
-                if(this.inhand[(d+3)%4, i])
-                {
-                    this.CardUI[(d+3)%4, i].MouseDoubleClick -= selectCard;
+                    if(this.inhand[d, i])
+                    {
+                        this.CardUI[d, i].Dispatcher.Invoke(new Action(delegate
+                         {
+                             this.CardUI[d, i].MouseDoubleClick += selectCard;
+                         }));
+                    }
+                    if(this.inhand[(d+3)%4, i])
+                    {
+                        this.CardUI[(d + 3) % 4, i].Dispatcher.Invoke(new Action(delegate
+                        {
+                            this.CardUI[(d + 3) % 4, i].MouseDoubleClick -= selectCard;
+                        }));
+                    }
                 }
             }
+            else
+            {
+                for (i = 0; i < 4; i++)
+                    for (j = 0; j < 13; j++)
+                        this.CardUI[i, j].Dispatcher.Invoke(new Action(delegate
+                        {
+                            this.CardUI[i, j].MouseDoubleClick -= selectCard;
+                        }));
+            }
+            
         }
 
         protected override void OnInitialized(EventArgs e)
@@ -186,6 +229,9 @@ namespace AIBridge
                         putCardToDesk(i, j);
                 }
             }
+            this.t.Elapsed += new System.Timers.ElapsedEventHandler(time2clearDesk);
+            this.t.AutoReset = false;
+            this.t.Stop();
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
