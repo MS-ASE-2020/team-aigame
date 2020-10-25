@@ -21,25 +21,30 @@ namespace AIBridge
     /// </summary>
     public partial class PlayPage : Page
     {
-        // 4 x 13 x 1(1 used for suit and another used for number)
-        // for suit dimension
-        // 0: club(梅花)
-        // 1: diamond(方块)
-        // 2: hearts(红桃)
-        // 3: spades(黑桃)
-        // -1:no card
-        // for card dimension
-        // 0: me
-        // 1: left
-        // 2: opponent
-        // 3: right
-        public int[,,] Card = new int[4,13, 2];
+        /// <summary>
+        /// <para>4 x 13 x 2(1 used for suit and another used for number)</para>
+        /// <para>for suit dimension</para>
+        /// <para>0: club(梅花)</para>
+        /// <para>1: diamond(方块)</para>
+        /// <para>2: hearts(红桃)</para>
+        /// <para>3: spades(黑桃)</para>
+        /// <para>-1:no card</para>
+        /// <para>for card dimension</para>
+        /// <para>0: me</para>
+        /// <para>1: left</para>
+        /// <para>2: opponent</para>
+        /// <para>3: right</para>
+        /// </summary>
+        public int[,,] Card = new int[4, 13, 2];
         // same definition
         public CardControl[,] CardUI = new CardControl[4, 13];
         public bool[,] inhand = new bool[4, 13];
 
-        private int count = 0;
+        // timer for the delay after one round is completed
         private System.Timers.Timer t = new System.Timers.Timer(3000);
+        // record the cards played in one round
+        // when count reaches 4, timer is started to keep the cards on the desk and after that, clear
+        private int count = 0;
         public int Count
         {
             get { return this.count; }
@@ -65,9 +70,20 @@ namespace AIBridge
             // here get cards from server
             // todo
             InitializeComponent();
-            whooseTurn(0);
+            whooseTurn(0);  // decide the first player
         }
 
+        /// <summary>
+        /// from int to suit charactor
+        /// </summary>
+        /// <param name="encode">
+        /// <para>0->club,</para>
+        /// <para>1->diamond,</para>
+        /// <para>2->hearts,</para>
+        /// <para>3->spades,</para>
+        /// <para>else->null</para>
+        /// </param>
+        /// <returns></returns>
         private string Encode2Suit(int encode)
         {
             switch (encode)
@@ -80,6 +96,15 @@ namespace AIBridge
             }
         }
 
+        /// <summary>
+        /// from int to card number ( 2-A)
+        /// </summary>
+        /// <param name="encode">
+        /// the number of card, from 2 to A (1 - 13, 1->A)
+        /// </param>
+        /// <returns>
+        /// string type
+        /// </returns>
         private string Encode2Number(int encode)
         {
             if (encode < 1 || encode > 13)
@@ -99,17 +124,31 @@ namespace AIBridge
             }
         }
 
+        /// <summary>
+        /// <para>when timer is started, this will be call after a few seconds later,</para>
+        /// <para>clear the desk and decide which player will be the first in the next round</para>
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void time2clearDesk(object sender, System.Timers.ElapsedEventArgs e)
         {
             this.clearCardInThisTurn();
             this.whooseTurn(0);
         }
 
-        // put one card to the desk (user's card set)
-        // input:
-        // 1. direction: which user the card belongs to
-        //               defined same as above
-        // 2. index: which card in the list is put
+        /// <summary>
+        /// put one card to the desk (user's card set)
+        /// </summary>
+        /// <param name="direction">
+        /// which user the card belongs to:
+        /// <para>0->me</para>
+        /// <para>1->left</para>
+        /// <para>2->opponent</para>
+        /// <para>3->right</para>
+        /// </param>
+        /// <param name="index">
+        /// which card is put, corresponding to the number on the card
+        /// </param>
         private void putCardToDesk(int direction, int index)
         {
             switch (direction)
@@ -122,6 +161,11 @@ namespace AIBridge
             }
         }
 
+        /// <summary>
+        /// remove the card from player's hand and put it on the desk
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void selectCard(object sender, RoutedEventArgs e)
         {
             CardControl card = sender as CardControl;
@@ -137,8 +181,10 @@ namespace AIBridge
             this.Count += 1;
         }
 
-        // clear the card on the desk
-        // used in timer, to make sure the cards will keep on the desk for several seconds after one round is over
+        /// <summary>
+        /// <para>clear the card on the desk</para>
+        /// <para>used in timer, to make sure the cards will keep on the desk for several seconds after one round is over</para>
+        /// </summary>
         private void clearCardInThisTurn()
         {
             this.MeCard.Dispatcher.Invoke(new Action(delegate
@@ -159,6 +205,12 @@ namespace AIBridge
             }));
         }
 
+        /// <summary>
+        /// decide which player will play next
+        /// </summary>
+        /// <param name="d">
+        /// refers to 4 players, from me, left, opponent, to right (0,1,2,3), -1 refers to disable all players
+        /// </param>
         private void whooseTurn(int d)
         {
             int i, j;
