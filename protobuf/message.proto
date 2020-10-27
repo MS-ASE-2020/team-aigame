@@ -5,6 +5,7 @@ enum Player {
     LOPP = 1;
     DUMMY = 2;
     ROPP = 3;
+    NUM_PLAYERS = 4;
 }
 
 enum Suit {
@@ -17,8 +18,10 @@ enum Suit {
     H = 2;
     SPADE = 3;
     S = 3;
+    NUM_SUITS = 4;
     NOTRUMP = 4;
     NT = 4;
+    NUM_BIDDING_SUITS = 5;
 }
 
 enum Vul {
