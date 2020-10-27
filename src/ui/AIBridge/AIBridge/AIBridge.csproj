@@ -67,6 +67,7 @@
     <Compile Include="settingPage.xaml.cs">
       <DependentUpon>settingPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="TalkToServer.cs" />
     <Page Include="AIselect.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

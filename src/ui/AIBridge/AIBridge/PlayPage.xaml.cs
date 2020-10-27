@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -42,6 +43,7 @@ namespace AIBridge
 
         // timer for the delay after one round is completed
         private System.Timers.Timer t = new System.Timers.Timer(3000);
+        private Socket socket;
         // record the cards played in one round
         // when count reaches 4, timer is started to keep the cards on the desk and after that, clear
         private int count = 0;
@@ -284,11 +286,15 @@ namespace AIBridge
             this.t.Elapsed += new System.Timers.ElapsedEventHandler(time2clearDesk);
             this.t.AutoReset = false;
             this.t.Stop();
+            
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             NavigationService.GetNavigationService(this).GoBack();
         }
+
+        
+
     }
 }
