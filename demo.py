@@ -33,6 +33,7 @@ def cmp_two_cards(card1: Card, card2: Card, contract: Contract) -> int:
         else:
             return -1
 
+
 def get_sorted_card(contract: Contract, validPlays: list, max_: bool) -> Card:
     if contract.suit == 4:  # No trump
         sorted_valid_cards = sorted(validPlays, key=lambda v: v.rank, reverse=max_)
@@ -60,6 +61,7 @@ def get_sorted_card(contract: Contract, validPlays: list, max_: bool) -> Card:
 
         sorted_valid_cards = sorted(validPlays, key=cmp_to_key(cmpp), reverse=max_)
         return sorted_valid_cards[0]
+
 
 def declarer(game_state: GameState, rule: str) -> Card:
     """
