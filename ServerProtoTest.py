@@ -1,8 +1,8 @@
 import socket
 import google.protobuf
 import google.protobuf.any_pb2
-import protobuf.message_pb2
-
+import protobuf.message_pb2 as message
+from demo import *
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 HostPort = ('192.168.0.100', 11087)
 s.bind(HostPort)  # 绑定地址端口
@@ -18,18 +18,9 @@ while True:
 
         protobufdata = obj.recv(data_len)
 
-        tmessage = TransportMessage_pb2.TransportMessage()
-        tmessage.ParseFromString(protobufdata)
-        i_id = tmessage.Id
-        i_msgtype = tmessage.MsgType
-        print('id:', i_id, 'msgType:', i_msgtype)
-        if i_msgtype == 0:
-            print('异常')
-            break
-        if i_msgtype == 1010:
-            print('服务器接收到心跳包...')
-        if i_msgtype == 1020:
-            print('服务器接收到上线通知...')
-            online = WeChatOnlineNoticeMessage_pb2.WeChatOnlineNoticeMessage()
-            tmessage.Content.Unpack(online)
-            print('WeChatNo:' + online.WeChatNo, 'WeChatId:' + online.WeChatId, 'WeChatNick:' + online.WeChatNick)
+        game_state_message = message.GameState()  # 读取GameState
+        game_state_message.ParseFromString(protobufdata)
+        tableid = game_state_message.tableID
+        print('id:', tableid)
+        player = game_state_message.who
+
