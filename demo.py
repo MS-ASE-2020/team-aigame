@@ -3,7 +3,7 @@ input: which player, the cards in the table, the cards in hand
 """
 from functools import cmp_to_key
 import numpy as np
-from message_pb2 import Hello, HelloResponse, Card, TrickHistory, Contract, GameState, Play, GameResult
+from protobuf.message_pb2 import Hello, HelloResponse, Card, TrickHistory, Contract, GameState, Play, GameResult
 
 
 def cmp_two_cards(card1: Card, card2: Card, contract: Contract) -> int:
@@ -42,7 +42,8 @@ def get_sorted_card(contract: Contract, validPlays: list, max_: bool) -> Card:
         def cmpp(card1, card2):
             if card1.suit == contract.suit and card2.suit != contract.suit:
                 return 1
-            elif card1.suit == contract.suit and card2.suit == contract.suit:
+            elif card1.suit ==\
+                    contract.suit and card2.suit == contract.suit:
                 if card1.rank > card2.rank:
                     return 1
                 elif card1.rank == card2.rank:
