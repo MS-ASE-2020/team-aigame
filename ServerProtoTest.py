@@ -3,6 +3,7 @@ import google.protobuf
 import google.protobuf.any_pb2
 import protobuf.message_pb2 as message
 from demo import *
+
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 HostPort = ('192.168.0.100', 11087)
 s.bind(HostPort)  # 绑定地址端口
@@ -23,4 +24,15 @@ while True:
         tableid = game_state_message.tableID
         print('id:', tableid)
         player = game_state_message.who
+        if player == 0:
+            # Declare
+            card = declarer(game_state_message, "easy")
+            # 发送
+        elif player == 1:
+            card = lopp(game_state_message, "easy")
+        elif player == 2:
+            card = dummy(game_state_message, "easy")
+        else:
+            card = ropp(game_state_message, "easy")
+
 
