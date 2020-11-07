@@ -57,17 +57,20 @@ def deal_lin(url: str):
     text = response.text
     lin_list = text.split('qx|')[1:]
     for num, lin in enumerate(lin_list):
-        game = Game(url, lin)
-        name = '_'.join(url.split('/')[5:]) + str(num)
-        if game.valid:
-            with open(f"G:/AIGame/data_1024/{name}.json", 'w') as f:
-                json.dump(game, f, default=lambda obj: obj.__dict__)
+        try:
+            game = Game(url, lin)
+            name = '_'.join(url.split('/')[5:]) + str(num)
+            if game.valid:
+                with open(f"D:/v-hexin/AIGame/data_1024/{name}.json", 'w') as f:
+                    json.dump(game, f, default=lambda obj: obj.__dict__)
+        except:
+            print(f"Error {lin}")
 
 
 def main():
     print("-----Start get url of '.lin' file from website-----")
     url_list = get_lin("http://www.sarantakos.com/bridge/vugraph.html", False)
-    num_core = 1
+    num_core = 72
     if num_core == 1:
         linurl_list = []
         for url in tqdm(url_list):

@@ -16,7 +16,7 @@ def player2num(player: str):
 
 def card2num(card: str):
     club = CARD_CLUB.index(card[0].upper())
-    num = CARD_NUM.index(card[1])
+    num = CARD_NUM.index(card[1].upper())
     return club * 13 + num
 
 
@@ -36,7 +36,11 @@ def get_train_data(file_path):
     process_cart = np.zeros([52, 13])
     process_player = np.zeros([52, 4])
     player_card = np.zeros([4, 52])
-    maker = player2num(file_info["maker"])
+    try:
+        maker = player2num(file_info["maker"])
+    except:
+        print(f"Error maker {file_info['maker']}")
+        return [[], [], []]
     dummy = (maker + 2) % 4
     contract = contract2num(file_info["contract"])
     if contract == None:
@@ -53,7 +57,11 @@ def get_train_data(file_path):
     ground_truths = []
     for round_num, rounds in enumerate(file_info["rounds"]):
         for process_num in range(len(rounds)):
-            card_present = card2num(rounds[process_num])
+            try:
+                card_present = card2num(rounds[process_num])
+            except:
+                print(f"Error card {rounds[process_num]}")
+                return [[], [], []]
             try:
                 present_player = np.argwhere(player_card[:, card_present] == 1)[0][0]
             except:
@@ -89,10 +97,10 @@ def get_train_data(file_path):
 
 
 def main():
-    data_path = "G:\AIGame"
+    data_path = "D:/v-hexin/AIGame"
     file_list = os.listdir(os.path.join(data_path, "data_1024"))
     file_list = [os.path.join(data_path, "data_1024", file) for file in file_list]
-    num_core = 1
+    num_core = 72
     if num_core == 1:
         train_data = [[], [], []]
         for file in tqdm(file_list):
