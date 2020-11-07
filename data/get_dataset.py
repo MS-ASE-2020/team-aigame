@@ -1,11 +1,12 @@
-import requests
-import re
-from tqdm import tqdm
-import multiprocessing
-from functools import reduce
-import logging
-from data.dataset import Game
 import json
+import multiprocessing
+import re
+from functools import reduce
+
+import requests
+from tqdm import tqdm
+
+from data.dataset import Game
 
 
 def get_lin(origin_url, linurl=True):
@@ -16,6 +17,8 @@ def get_lin(origin_url, linurl=True):
     if origin_url[-4:] == '.lin':
         print(f"get {origin_url}")
         return [origin_url]
+    elif origin_url[-5:] != '.html':
+        return []
     try:
         response = requests.get(origin_url)
         if response.status_code != 200:
@@ -64,7 +67,7 @@ def deal_lin(url: str):
 def main():
     print("-----Start get url of '.lin' file from website-----")
     url_list = get_lin("http://www.sarantakos.com/bridge/vugraph.html", False)
-    num_core = 4
+    num_core = 1
     if num_core == 1:
         linurl_list = []
         for url in tqdm(url_list):

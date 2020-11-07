@@ -57,7 +57,7 @@ def get_cards(text: str):
     elif len(cards) == 3:  # Omits the cards of the last player
         card = []
         for club in used_card.keys():
-            card.extend(club + CARD_NUM[i] for i in used_card[club] if i == 0)
+            card.extend(club + CARD_NUM[i] for i in range(len(used_card[club])) if used_card[club][i] == 0)
         if len(card) == 13:
             cards.append(card)
             return cards
