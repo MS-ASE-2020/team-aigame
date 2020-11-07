@@ -52,11 +52,14 @@ def get_train_data(file_path):
     players = []
     ground_truths = []
     for round_num, rounds in enumerate(file_info["rounds"]):
-        first_player = player2num(file_info["first_players"][round_num])
-        present_player = first_player
-        role = (first_player + 4 - maker) % 4
         for process_num in range(len(rounds)):
             card_present = card2num(rounds[process_num])
+            try:
+                present_player = np.argwhere(player_card[:, card_present] == 1)[0][0]
+            except:
+                print("Error Player doesn't have the card")
+                return [[], [], []]
+            role = (present_player + 4 - maker) % 4
             # add cards
             card = np.zeros([52, 19])
             card[:, 0] = np.array(player_card[present_player])
@@ -80,12 +83,8 @@ def get_train_data(file_path):
             # update process
             process_cart[card_present][round_num] = 1
             process_player[card_present][role] = 1
-            if player_card[present_player][card_present] != 1:
-                print("Error Player doesn't have the card")
-                return [[], [], []]
             player_card[present_player][card_present] = 0
-            present_player = (present_player + 1) % 4
-            role = (role + 1) % 4
+
     return [cards, players, ground_truths]
 
 
