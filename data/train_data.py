@@ -31,8 +31,12 @@ def contract2num(contract: str):
 
 
 def get_train_data(file_path):
-    with open(file_path, 'r') as f:
-        file_info = json.load(f)
+    try:
+        with open(file_path, 'r') as f:
+            file_info = json.load(f)
+    except:
+        print(f"Error load {file_path}")
+        return [[], [], []]
     process_cart = np.zeros([52, 13])
     process_player = np.zeros([52, 4])
     player_card = np.zeros([4, 52])
@@ -112,9 +116,9 @@ def main():
     else:
         pool = multiprocessing.Pool(num_core)
         results = pool.starmap(get_train_data, tqdm([[file] for file in file_list]))
-        print('Finish the pool calculate\n')
         pool.close()
         pool.join()
+        print('Finish the pool calculate\n')
         train_data = reduce(lambda x, y: [x[0] + y[0], x[1] + y[1], x[2] + y[2]], results)
     print(f"Get {len(train_data[0])} train data")
     np.save(os.path.join(data_path, "cards.npy"), np.array(train_data[0]))
