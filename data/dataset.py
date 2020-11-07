@@ -11,10 +11,10 @@ class Game:
     def __init__(self, linurl: str, lin_text: str):
         self.url = linurl
         self.id = lin_text.split('|')[0]
-        card_text = re.findall(re.compile("md\|(.*?)\|"), lin_text)[0]
+        card_text = re.findall(re.compile("md\|(.*?)\|"), lin_text)[0].upper()
         self.start_bid = map_Players[int(card_text[0])]
         self.cards = get_cards(card_text[1:])
-        self.bids = re.findall(re.compile("mb\|(.*?)\|"), lin_text)
+        self.bids = [i.upper().strip('!') for i in re.findall(re.compile("mb\|(.*?)\|"), lin_text)]
         self.maker, self.contract = MakerDef(self.bids, self.start_bid)
         self.processes, self.rounds = get_rounds(lin_text)
         self.first_players = FirstPlayers(self.contract, self.maker if self.maker is not None else self.start_bid,

@@ -22,10 +22,10 @@ def MakerDef(Bids, StartBid):
     bid_nums = len(Bids)
     bid_end = reverse_Players[StartBid] + bid_nums - 1
     find_contract = False
-    bid_result = 'p'
+    bid_result = 'P'
     maker = None
     for i, bid in enumerate(reversed(Bids)):
-        if bid != 'p' and bid != 'd' and find_contract is False:
+        if bid != 'P' and bid != 'D' and find_contract is False:
             bid_result = bid
             maker = bid_end % 4
             find_contract = True
