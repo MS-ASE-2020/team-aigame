@@ -20,3 +20,14 @@ void Deck::shuffle(){
 
     std::shuffle(cards.begin(), cards.end(), gen);
 }
+
+std::vector<Card> Deck::filter(std::function<bool(Card)> func){
+    std::vector<Card> ret;
+    for(auto const& card: cards){
+        if(func(card)){
+            ret.push_back(Card(card));
+        }
+    }
+
+    return ret;
+}
