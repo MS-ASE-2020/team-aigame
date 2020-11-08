@@ -34,5 +34,6 @@ while True:
             card = dummy(game_state_message, "easy")
         else:
             card = ropp(game_state_message, "easy")
+        obj.send(card)
 
 
