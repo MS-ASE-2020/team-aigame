@@ -42,8 +42,10 @@ namespace AIBridge
         public bool[,] inhand = new bool[4, 13];
 
         // timer for the delay after one round is completed
-        private System.Timers.Timer t = new System.Timers.Timer(3000);
-        private Socket socket;
+        private System.Timers.Timer clearTimer = new System.Timers.Timer(3000);
+        private System.Timers.Timer watcherTimer = new System.Timers.Timer(2000);
+        private Communicator communicator;
+        private bool watching;
         // record the cards played in one round
         // when count reaches 4, timer is started to keep the cards on the desk and after that, clear
         private int count = 0;
@@ -56,24 +58,20 @@ namespace AIBridge
                 if((int)value == 4)
                 {
                     this.count = 0;
-                    this.whooseTurn(-1);
-                    t.Start();
-                }
-                else
-                {
-                    this.whooseTurn(this.count);
                 }
             }
         }
 
 
-        public PlayPage()
+        public PlayPage(bool watcher)
         {
-            // here get cards from server
-            // todo
+            if (watcher)
+                this.watching = true;
+            else
+                this.watching = false;
             InitializeComponent();
-            whooseTurn(0);  // decide the first player
         }
+
 
         /// <summary>
         /// from int to suit charactor
@@ -151,7 +149,7 @@ namespace AIBridge
         /// <param name="index">
         /// which card is put, corresponding to the number on the card
         /// </param>
-        private void putCardToDesk(int direction, int index)
+        private void showCardInHand(int direction, int index)
         {
             switch (direction)
             {
@@ -208,85 +206,61 @@ namespace AIBridge
         }
 
         /// <summary>
-        /// decide which player will play next
+        /// enable or disable card doubleclick event
         /// </summary>
         /// <param name="d">
         /// refers to 4 players, from me, left, opponent, to right (0,1,2,3), -1 refers to disable all players
         /// </param>
-        private void whooseTurn(int d)
+        /// <param name="enable">
+        /// enable or not
+        /// </param>
+        private void CardEnable(int d, bool enable)
         {
-            int i, j;
-            if (d != -1)
+            int i;
+            for (i = 0; i < 13; i++)
             {
-                for (i = 0; i < 13; i++)
+                if(this.inhand[d, i])
                 {
-                    if(this.inhand[d, i])
+                    if (enable)
                     {
                         this.CardUI[d, i].Dispatcher.Invoke(new Action(delegate
-                         {
-                             this.CardUI[d, i].MouseDoubleClick += selectCard;
-                         }));
+                            {
+                                this.CardUI[d, i].MouseDoubleClick += selectCard;
+                            }));
                     }
-                    if(this.inhand[(d+3)%4, i])
+                    else
                     {
-                        this.CardUI[(d + 3) % 4, i].Dispatcher.Invoke(new Action(delegate
-                        {
-                            this.CardUI[(d + 3) % 4, i].MouseDoubleClick -= selectCard;
-                        }));
+                        this.CardUI[d, i].Dispatcher.Invoke(new Action(delegate
+                            {
+                                this.CardUI[d, i].MouseDoubleClick -= selectCard;
+                            }));
                     }
                 }
-            }
-            else
-            {
-                for (i = 0; i < 4; i++)
-                    for (j = 0; j < 13; j++)
-                        this.CardUI[i, j].Dispatcher.Invoke(new Action(delegate
-                        {
-                            this.CardUI[i, j].MouseDoubleClick -= selectCard;
-                        }));
-            }
-            
+            }           
+        }
+
+        private void time2nextPlay(object sender, System.Timers.ElapsedEventArgs e)
+        {
+
         }
 
         protected override void OnInitialized(EventArgs e)
         {
-            int i, j, k;
             base.OnInitialized(e);
-            for (i = 0; i < 4; i++)
+            if (this.watching)
             {
-                for (j = 0; j < 13; j++)
-                {
-                    for (k = 0; k < 2; k++)
-                    {
-                        this.Card[i, j, k] = j + 1;
-                    }
-                }
+                this.clearTimer.Elapsed += new System.Timers.ElapsedEventHandler(time2clearDesk);
+                this.clearTimer.AutoReset = false;
+                this.clearTimer.Stop();
             }
-            for (i = 0; i < 4; i++)
+            else
             {
-                for (j = 0; j < 13; j++)
-                {
-                    if (Card[i, j, 0] == -1 || Card[i, j, 1] == -1)
-                        continue;
-                    this.CardUI[i, j] = new CardControl();
-                    this.CardUI[i, j].Suit = Encode2Suit(Card[i, j, 0]);
-                    this.CardUI[i, j].Number = Encode2Number(Card[i, j, 1]);
-                    this.CardUI[i, j].Owner = Convert.ToString(i);
-                    this.inhand[i, j] = true;
-                }
+                this.watcherTimer.Elapsed += new System.Timers.ElapsedEventHandler(time2nextPlay);
+                this.watcherTimer.AutoReset = false;
+                this.watcherTimer.Stop();
             }
-            for (i = 0; i < 4; i++)
-            {
-                for (j = 0; j < 13; j++)
-                {
-                    if(this.CardUI[i,j]!=null)
-                        putCardToDesk(i, j);
-                }
-            }
-            this.t.Elapsed += new System.Timers.ElapsedEventHandler(time2clearDesk);
-            this.t.AutoReset = false;
-            this.t.Stop();
-            
+            this.communicator = new Communicator(6006);
+            this.communicator.connect();
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
