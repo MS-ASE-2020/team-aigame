@@ -9,12 +9,19 @@ class BridgeGame final {
     private:
     Deck hands[Player::NUM_PLAYERS];
     Vul vulnerability;
-    std::vector<std::vector<Card>> history;
+    Card history[13][4];
+    Player trickWinner[13];
+    int currentTrick;
+    int currentCardInTrick;
 
     IPlayer *players[Player::NUM_PLAYERS];
     Contract contract;
 
     void init();
+
+    Player findLead(int trick);
+    Player findTrickWinner(int trick);
+    Player findNextK(Player base, int offset);
     public:
     BridgeGame();
     BridgeGame(Vul vul);
@@ -25,12 +32,20 @@ class BridgeGame final {
     void sit(IPlayer *p, Player seat);
     GameResult run();
 
-    std::vector<std::vector<Card>>* getPtrHistory(){
-        return &history;
+    Card getHistory(int trick, int cardInTrick){
+        return history[trick][cardInTrick];
     }
 
     Vul getVulnerability(){
         return vulnerability;
+    }
+
+    int getCurrentTrick(){
+        return currentTrick;
+    }
+
+    int getCurrentCardInTrick(){
+        return currentCardInTrick;
     }
 
     void playCard(Player who, Card what);
@@ -46,9 +61,6 @@ class BridgeGame final {
     Suit getTrumpSuit(){
         return contract.suit();
     }
-
-    bool isLeadingNewTrick();
-    Player getNextPlayer(Player prev);
 
     void dumpState(FILE *fout);
 };

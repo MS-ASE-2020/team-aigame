@@ -2,14 +2,16 @@
 #include "engine.h"
 #include "message.pb.h"
 #include "localPlayer.h"
+#include "dummyPlayer.h"
 
 int main(){
     BridgeGame game;
-    LocalPlayer *player[4];
-    player[0] = new LocalPlayer(Player::DECLARER);
-    player[1] = new LocalPlayer(Player::LOPP);
-    player[2] = new LocalPlayer(Player::DUMMY);
-    player[3] = new LocalPlayer(Player::ROPP);
+    IPlayer *player[4];
+    player[Player::DUMMY] = new DummyPlayer;
+    player[Player::DECLARER] = new LocalPlayer(Player::DECLARER);
+    player[Player::LOPP] = new LocalPlayer(Player::LOPP);
+    player[Player::ROPP] = new LocalPlayer(Player::ROPP);
+
     for(int i = 0; i < 4; ++i){
         game.sit(player[i], (Player)i);
     }

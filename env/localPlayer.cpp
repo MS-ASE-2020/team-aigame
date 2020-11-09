@@ -8,11 +8,10 @@ bool LocalPlayer::isReady(){
 }
 
 void LocalPlayer::play(BridgeGame *pEngine){
-    auto pHistory = pEngine->getPtrHistory();
     std::vector<Card> &choices = std::vector<Card>();
-    if(pHistory->empty() || pHistory->at(pHistory->size() - 1).size() == 4){
+    if(pEngine->getCurrentCardInTrick() == 0){
         // Lead new trick
-        if(pHistory->size() >= 13){
+        if(pEngine->getCurrentTrick() >= 13){
             throw 1;
         }
 
@@ -22,7 +21,7 @@ void LocalPlayer::play(BridgeGame *pEngine){
     }
     else{
         // Follow
-        Card lead = pHistory->at(pHistory->size() - 1)[0];
+        Card lead = pEngine->getHistory(pEngine->getCurrentTrick(), 0);
         choices = pHand->filter([&lead](Card c){
             return c.suit() == lead.suit();
         });

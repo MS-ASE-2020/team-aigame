@@ -1,7 +1,9 @@
 #include "engine.h"
 #include "stringify.h"
+#include "dummyPlayer.h"
 #include <algorithm>
 #include <random>
+#include <cassert>
 
 BridgeGame::BridgeGame(){
     std::random_device rd;
@@ -44,6 +46,9 @@ void BridgeGame::init(){
     contract.set_doubled(Contract_Doubled::Contract_Doubled_NO);
     contract.set_level(3);
     contract.set_suit(Suit::NT);
+
+    currentTrick = 0;
+    currentCardInTrick = 0;
 }
 
 void BridgeGame::restart(){
@@ -73,39 +78,92 @@ GameResult BridgeGame::run(){
         }
     }
 
-    Player order[] = {Player::DECLARER, Player::LOPP, Player::DUMMY, Player::ROPP, Player::DECLARER};
-
+    Player currentPlayer;
     for(int trick = 0; trick < 13; ++trick){
+        currentPlayer = findLead(trick);
         for(int player = 0; player < 4; ++player){
             fprintf(stdout, "Playing card %d of trick %d\n", player, trick);
-            players[player]->play(this);
+            int trick_save = currentTrick;
+            int card_save = currentCardInTrick;
+
+            if(currentPlayer == Player::DUMMY){
+                IPlayer *declarer = players[Player::DECLARER];
+                declarer->setHand(&hands[Player::DUMMY]);
+                declarer->playAs(this, Player::DUMMY);
+                declarer->setHand(&hands[Player::DECLARER]);
+            }
+            else{
+                players[currentPlayer]->play(this);
+            }
+            
+            // Ensure 1 card is played
+            assert((currentCardInTrick == card_save + 1 && currentTrick == trick_save)
+                || (currentCardInTrick == 0 && currentTrick == trick_save + 1));
+
+            currentPlayer = findNextK(currentPlayer, 1);
         }
     }
 
     return ret;
 }
 
-bool BridgeGame::isLeadingNewTrick(){
-    return history.empty() || history[history.size() - 1].size() == 4;
-}
-
-Player BridgeGame::getNextPlayer(Player prev){
-    if(!isLeadingNewTrick()){
-        switch(prev){
-            case Player::LOPP:
-            return Player::DUMMY;
-            case Player::DUMMY:
-            return Player::ROPP;
-            case Player::ROPP:
-            return Player::DECLARER;
-            case Player::DECLARER:
-            return Player::LOPP;
-        }
+Player BridgeGame::findLead(int trick){
+    if(trick == 0){
+        return Player::LOPP;
     }
     else{
-        // TODO
-        return Player::DECLARER;
+        return trickWinner[trick - 1];
     }
+}
+
+Player BridgeGame::findNextK(Player base, int offset){
+    static const Player answer[][4] = {
+        {Player::DECLARER, Player::LOPP, Player::DUMMY, Player::ROPP},  // Base: DECLARER
+        {Player::LOPP, Player::DUMMY, Player::ROPP, Player::DECLARER},  // Base: LOPP
+        {Player::DUMMY, Player::ROPP, Player::DECLARER, Player::LOPP},  // Base: DUMMY
+        {Player::ROPP, Player::DECLARER, Player::LOPP, Player::DUMMY},  // Base: ROPP
+        };
+    return answer[base][offset];
+}
+
+Player BridgeGame::findTrickWinner(int trick){
+    Suit trump = contract.suit();
+    auto beatsPrevWinner = [&trump](Card prevWinner, Card card){
+        if(card.suit() != prevWinner.suit()){
+            if(card.suit() == trump){
+                return true;
+            }
+            else{
+                return false;
+            }
+        }
+        else{
+            if(card.rank() == 1){
+                return true;
+            }
+            else if(prevWinner.rank() == 1){
+                return false;
+            }
+            else{
+                return card.rank() > prevWinner.rank();
+            }
+        }
+    };
+
+    Card winner = getHistory(trick, 0);
+    int winnerIndex = 0;
+    for(int i = 1; i < 4; ++i){
+        Card card = getHistory(trick, i);
+        if(beatsPrevWinner(winner, card)){
+            winner = card;
+            winnerIndex = i;
+        }
+    }
+
+    StringConverter* global = StringConverter::getInstance();
+    printf("Winner of trick %d: %s%s\n", trick+1, global->convert(winner.suit()), global->convert(winner.rank()));
+
+    return findNextK(findLead(trick), winnerIndex);
 }
 
 void BridgeGame::switchSide(){
@@ -119,13 +177,13 @@ void BridgeGame::switchSide(){
 
 void BridgeGame::playCard(Player who, Card what){
     hands[who].remove(what);
-    if(isLeadingNewTrick()){
-        std::vector<Card> newTrick;
-        newTrick.emplace_back(what);
-        history.emplace_back(newTrick);
-    }
-    else{
-        history[history.size() - 1].emplace_back(what);
+    history[currentTrick][currentCardInTrick] = what;
+
+    ++currentCardInTrick;
+    if(currentCardInTrick == 4){
+        trickWinner[currentTrick] = findTrickWinner(currentTrick);
+        currentCardInTrick = 0;
+        ++currentTrick;
     }
 }
 
