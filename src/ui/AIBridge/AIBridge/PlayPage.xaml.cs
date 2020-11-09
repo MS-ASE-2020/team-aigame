@@ -45,7 +45,8 @@ namespace AIBridge
         private System.Timers.Timer clearTimer = new System.Timers.Timer(3000);
         private System.Timers.Timer watcherTimer = new System.Timers.Timer(2000);
         private Communicator communicator;
-        private bool watching;
+        private bool watching = false;
+        private bool WaitAnimation = false;
         // record the cards played in one round
         // when count reaches 4, timer is started to keep the cards on the desk and after that, clear
         private int count = 0;
@@ -133,7 +134,6 @@ namespace AIBridge
         private void time2clearDesk(object sender, System.Timers.ElapsedEventArgs e)
         {
             this.clearCardInThisTurn();
-            this.whooseTurn(0);
         }
 
         /// <summary>
@@ -214,7 +214,7 @@ namespace AIBridge
         /// <param name="enable">
         /// enable or not
         /// </param>
-        private void CardEnable(int d, bool enable)
+        private void UserEnable(int d, bool enable)
         {
             int i;
             for (i = 0; i < 13; i++)
@@ -268,7 +268,12 @@ namespace AIBridge
             NavigationService.GetNavigationService(this).GoBack();
         }
 
-        
+        private void Page_KeyDown(object sender, KeyEventArgs e)
+        {
+            if(this.watching && e.KeyStates == Keyboard.GetKeyStates(Key.Space) && this.WaitAnimation)
+            {
 
+            }
+        }
     }
 }
