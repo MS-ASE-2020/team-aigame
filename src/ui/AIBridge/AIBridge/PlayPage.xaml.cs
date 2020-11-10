@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
@@ -44,7 +45,7 @@ namespace AIBridge
         // timer for the delay after one round is completed
         private System.Timers.Timer clearTimer = new System.Timers.Timer(3000);
         private System.Timers.Timer watcherTimer = new System.Timers.Timer(2000);
-        private Communicator communicator;
+        private Socket socket;
         private bool watching = false;
         private bool WaitAnimation = false;
         // record the cards played in one round
@@ -239,6 +240,77 @@ namespace AIBridge
             }           
         }
 
+        /// <summary>
+        /// connect to server and say hello. start to listen to the information from server
+        /// </summary>
+        private void startConnection()
+        {
+            this.socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+            IPAddress ip = IPAddress.Parse("127.0.0.1");
+            IPEndPoint ipe = new IPEndPoint(ip, 6006);
+            this.socket.BeginConnect(ipe, asyncResult =>
+            {
+                this.socket.EndConnect(asyncResult);
+                sayHello(socket);
+            }, null);
+        }
+
+        /// <summary>
+        /// say hello to the server
+        /// </summary>
+        private void sayHello(Socket socket)
+        {
+
+        }
+
+
+        /// <summary>
+        /// async receive data from server
+        /// </summary>
+        /// <param name="socket"></param>
+        private void startReceive(Socket socket)
+        {
+            byte[] data = new byte[1024];
+            try
+            {
+                socket.BeginReceive(data, 0, data.Length, SocketFlags.None, asyncResult =>
+                {
+                    int length = socket.EndReceive(asyncResult);
+                    // received information process
+                    startReceive(socket);
+                }, null);
+            }
+            catch (Exception ex)
+            {
+
+            }
+        }
+
+        /// <summary>
+        /// send message to server
+        /// </summary>
+        /// <param name="socket"></param>
+        /// <param name="message"></param>
+        private void send(Socket socket, string message)
+        {
+            if (socket == null || message == string.Empty)
+                return;
+            // process data and send
+            byte[] data = Encoding.UTF8.GetBytes(message); // tobe modified to adjust protobuf
+            try
+            {
+                socket.BeginSend(data, 0, data.Length, SocketFlags.None, asycResult=>
+                {
+                    int length = socket.EndSend(asycResult);
+                }, null);
+            }
+            catch (Exception ex)
+            {
+
+            }
+        }
+
+
         private void time2nextPlay(object sender, System.Timers.ElapsedEventArgs e)
         {
 
@@ -259,8 +331,7 @@ namespace AIBridge
                 this.watcherTimer.AutoReset = false;
                 this.watcherTimer.Stop();
             }
-            this.communicator = new Communicator(6006);
-            this.communicator.connect();
+            
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
