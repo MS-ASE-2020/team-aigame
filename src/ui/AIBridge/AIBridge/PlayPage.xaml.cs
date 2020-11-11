@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
@@ -15,6 +16,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Google.Protobuf;
 
 namespace AIBridge
 {
@@ -252,6 +254,8 @@ namespace AIBridge
             {
                 this.socket.EndConnect(asyncResult);
                 sayHello(socket);
+                Console.WriteLine("connect to {0}", this.socket.RemoteEndPoint.ToString());
+                startReceive(this.socket);
             }, null);
         }
 
@@ -276,6 +280,14 @@ namespace AIBridge
                 socket.BeginReceive(data, 0, data.Length, SocketFlags.None, asyncResult =>
                 {
                     int length = socket.EndReceive(asyncResult);
+                    Console.WriteLine("{0} bytes received", length);
+                    byte[] receivedData = data.Take(length).ToArray();
+                    //MemoryStream ms = new MemoryStream(receivedData);
+                    Hello m = new Hello();
+                    m.MergeFrom(receivedData);
+                    Console.WriteLine(string.Format("receive message:{0}", m.ToString()));
+                    Console.WriteLine("seat:{0}", m.Seat);
+                    Console.WriteLine("code:{0}", m.Code);
                     // received information process
                     startReceive(socket);
                 }, null);
@@ -331,7 +343,7 @@ namespace AIBridge
                 this.watcherTimer.AutoReset = false;
                 this.watcherTimer.Stop();
             }
-            
+            startConnection();
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
