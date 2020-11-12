@@ -158,7 +158,7 @@ namespace testSocket
         {
             for(int i = 0; i < card.Length; i++)
             {
-                if (card[i] != 0)
+                if (card[i] != -1)
                 {
                     Console.Write("{0},{1}\t", card[i] / 13, card[i] % 13);
                 }
@@ -192,7 +192,10 @@ namespace testSocket
                 for(int i = 0; i < history.Count; i++)
                 {
                     if (i % 5 == 0)
+                    {
+                        playHistory[i / 5] = new TrickHistory();
                         playHistory[i / 5].Lead = (Player)history[i];
+                    }
                     else
                     {
                         Card tmp = new Card();
@@ -203,6 +206,7 @@ namespace testSocket
                 }
                 gamestate.PlayHistory.AddRange(playHistory);
             }
+            gamestate.Contract = new Contract();
             gamestate.Contract.Suit = (Suit)4;
             gamestate.Contract.Level = 3; //默认三无将
             int presentSuit = -1;
