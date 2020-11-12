@@ -11,33 +11,75 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.Drawing.Printing;
 using Google.Protobuf;
 using System.Linq;
+using System.Collections;
 
 namespace testSocket
 {
     class Program
     {
-        Socket declarerClient = null;
-        Socket declarerServer = null;
-        Socket loppClient = null;
-        Socket loppServer = null;
-        Socket roppClient = null;
-        Socket roppServer = null;
-        Socket watcher = null;
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            Socket declarer = null;
+            Socket lopp = null;
+            Socket ropp = null;
+            Socket watcher = null;
+            byte[] buffer = new byte[1024];
+            Console.WriteLine("game started!");
             Socket listener = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             IPAddress ip = IPAddress.Parse("127.0.0.1");
             IPEndPoint ipe = new IPEndPoint(ip, 6006);
             listener.Bind(ipe);
-            listener.Listen(5);
+            listener.Listen(4);
             Console.WriteLine("listen to {0}", listener.LocalEndPoint.ToString());
-            listener.BeginAccept(new AsyncCallback(assignPort), listener);
-            Console.WriteLine("ready to accept links");
-            while (true)
+            for(int i = 0; i < 3; i++)
+            {
+                Socket tmp = listener.Accept();
+                Hello m = new Hello();
+                if (i != 2)
+                    m.Seat = (Player)i;
+                else
+                    m.Seat = (Player)(i + 1);
+                tmp.Send(m.ToByteArray());
+                switch (i)
+                {
+                    case 0: declarer = tmp; Console.WriteLine("declarer connected"); break;
+                    case 1: lopp = tmp; Console.WriteLine("lopp connected"); break;
+                    case 2: ropp = tmp; Console.WriteLine("ropp connected"); break;
+                }
+            }
+            watcher = listener.Accept();
+            Console.WriteLine("watcher connected!");
+            int[] card = getRandomCard(52);
+            int[] declarerCard = card.Take(13).ToArray();
+            Array.Sort(declarerCard);
+            int[] loppCard = card.Skip(13).Take(13).ToArray();
+            Array.Sort(loppCard);
+            int[] dummyCard = card.Skip(26).Take(13).ToArray();
+            Array.Sort(dummyCard);
+            int[] roppCard = card.Skip(39).Take(13).ToArray();
+            Array.Sort(roppCard);
+            Console.WriteLine("card distributed!");
+            for(int i = 0; i < 3; i++)
+            {
+                Socket tmp = null;
+                int[] tmpCard = null;
+                switch (i)
+                {
+                    case 0: tmp = declarer; tmpCard = declarerCard;  break;
+                    case 1: tmp = lopp; tmpCard = loppCard; break;
+                    case 2: tmp = ropp; tmpCard = roppCard; break;
+                }
+
+            }
+            int starter = 0;
+            int presentSuit = -1;
+
+            for(int round = 0; round < 13; round++)
             {
 
             }
+            //listener.BeginAccept(new AsyncCallback(assignPort), listener);
+            //Console.WriteLine("ready to accept links");
             //Console.WriteLine("accept {0}", client.RemoteEndPoint.ToString());
             ////try
             ////{
@@ -61,21 +103,39 @@ namespace testSocket
             //}
         }
 
-        public static void assignPort(IAsyncResult ar)
+        private static int[] getRandomCard(int length)
         {
-            Socket listener = (Socket)ar.AsyncState;
-            Socket client = listener.EndAccept(ar);
-            byte[] buffer = new byte[1024];
-            int length = client.Receive(buffer);
-            byte[] data = buffer.Take(length).ToArray();
-            int seat = Convert.ToInt32(data.ToString());
-            int newPort = 8000 - seat;
-            Socket newSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-            IPAddress ip = IPAddress.Parse("127.0.0.1");
-            IPEndPoint ipe = new IPEndPoint(ip, newPort);
-            newSocket.Bind(ipe);
-            newSocket.Listen(1);
-            newSocket.Accept();
+            int[] nums = new int[length];
+            for(int i = 0; i < length; i++)
+            {
+                nums[i] = i;
+            }
+            for(int i = 0; i < length; i++)
+            {
+                Random random = new Random();
+                int tmp = nums[i];
+                int r = random.Next(i, nums.Length);
+                nums[i] = nums[r];
+                nums[r] = tmp;
+            }
+            return nums;
+        }
+
+        private static void printCard(int[] card)
+        {
+            for(int i = 0; i < card.Length; i++)
+            {
+                if (card[i] != 0)
+                {
+                    Console.Write("{0},{1}\t", card[i] / 13, card[i] % 13);
+                }
+            }
+            Console.Write("\n");
+        }
+
+        private static GameState GetGameState(int who, int[] hand, int[] dummy, ArrayList history)
+        {
+            GameState state = new GameState();
 
         }
     }
