@@ -23,11 +23,10 @@ namespace testSocket
             Socket lopp = null;
             Socket ropp = null;
             Socket watcher = null;
-            byte[] buffer = new byte[1024];
-            Console.WriteLine("game started!");
             Socket listener = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             IPAddress ip = IPAddress.Parse("127.0.0.1");
             IPEndPoint ipe = new IPEndPoint(ip, 6006);
+            byte[] buffer = new byte[1024];
             listener.Bind(ipe);
             listener.Listen(4);
             Console.WriteLine("listen to {0}", listener.LocalEndPoint.ToString());
@@ -48,77 +47,27 @@ namespace testSocket
                     case 2: ropp = tmp; Console.WriteLine("ropp connected"); break;
                 }
             }
-            //watcher = listener.Accept();
-            //Console.WriteLine("watcher connected!");
-            int[] card = getRandomCard(52);
-            int[] declarerCard = card.Take(13).ToArray();
-            Array.Sort(declarerCard);
-            printCard(declarerCard);
-            int[] loppCard = card.Skip(13).Take(13).ToArray();
-            Array.Sort(loppCard);
-            printCard(loppCard);
-            int[] dummyCard = card.Skip(26).Take(13).ToArray();
-            Array.Sort(dummyCard);
-            printCard(dummyCard);
-            int[] roppCard = card.Skip(39).Take(13).ToArray();
-            Array.Sort(roppCard);
-            printCard(roppCard);
-            Console.WriteLine("card distributed!");
-            int starter = 1;
-            int presentSuit = -1;
-            ArrayList history = new ArrayList();
-
-            for(int round = 0; round < 13; round++)
+            watcher = listener.Accept();
+            Console.WriteLine("watcher connected!");
+            try
             {
-                int[] cardInThisTurn = new int[4];
-                for(int p = 0; p < 4; p++)
+                while (true)
                 {
-                    Socket tmpSocket = null;
-                    int[] tmpCard = null;
-                    switch ((starter + p) % 4)
-                    {
-                        case 0: tmpSocket = declarer; tmpCard = declarerCard; break;
-                        case 1: tmpSocket = lopp; tmpCard = loppCard; break;
-                        case 2: tmpSocket = declarer; tmpCard = declarerCard; break;
-                        case 3: tmpSocket = ropp; tmpCard = roppCard; break;
-                    }
-                    GameState m = GetGameState((starter + p) % 4, tmpCard, dummyCard, history);
-                    tmpSocket.Send(m.ToByteArray());
-                    Console.WriteLine("send message to {0}", (starter + p) % 4);
-                    int length = tmpSocket.Receive(buffer);
-                    Console.WriteLine("receive message from {0}", (starter + p) % 4);
-                    Play rm = new Play();
-                    rm.MergeFrom(buffer.Take(length).ToArray());
-                    Card selected = rm.Card;
-                    if ((starter + p) % 4 == 2)
-                        tmpCard = dummyCard;
-                    for(int i = 0; i < 13; i++)
-                    {
-                        if (tmpCard[i] == ((int)selected.Suit * 13 + (int)selected.Rank))
-                        {
-                            tmpCard[i] = -1;
-                            break;
-                        }
-                    }
-                    if (presentSuit == -1)
-                    {
-                        presentSuit = (int)selected.Suit;
-                        history.Add((starter + p) % 4);
-                    }
-                    history.Add((int)selected.Suit * 13 + (int)selected.Rank);
-                    cardInThisTurn[p] = (int)selected.Suit * 13 + (int)selected.Rank;
+                    run(declarer, lopp, ropp, watcher);
+                    Hello h = new Hello();
+                    h.Code = 5;
+                    watcher.Send(h.ToByteArray());
+                    watcher.Receive(buffer);
+                    watcher.Send(h.ToByteArray());
+                    watcher.Receive(buffer);
                 }
-                int maxPlayer = 0;
-                for(int i = 0; i < 3; i++)
-                {
-                    if (cardInThisTurn[i + 1] / 13 == presentSuit && cardInThisTurn[i + 1] % 13 > cardInThisTurn[maxPlayer] % 13)
-                        maxPlayer = i + 1;
-                }
-                presentSuit = -1;
-                starter = (maxPlayer+starter)%4;
-                printCard(cardInThisTurn);
-                Console.WriteLine("round {0} finished!", round);
             }
+            catch(Exception ex)
+            {
+
+            }
+            
+            
             //listener.BeginAccept(new AsyncCallback(assignPort), listener);
             //Console.WriteLine("ready to accept links");
             //Console.WriteLine("accept {0}", client.RemoteEndPoint.ToString());
@@ -142,6 +91,111 @@ namespace testSocket
             //{
             //    Console.WriteLine(ex.ToString());
             //}
+        }
+
+        private static void run(Socket declarer, Socket lopp, Socket ropp, Socket watcher)
+        {
+            byte[] buffer = new byte[1024];
+            Console.WriteLine("game started!");
+            int[] card = getRandomCard(52);
+            int[] declarerCard = card.Take(13).ToArray();
+            Array.Sort(declarerCard);
+            printCard(declarerCard);
+            int[] loppCard = card.Skip(13).Take(13).ToArray();
+            Array.Sort(loppCard);
+            printCard(loppCard);
+            int[] dummyCard = card.Skip(26).Take(13).ToArray();
+            Array.Sort(dummyCard);
+            printCard(dummyCard);
+            int[] roppCard = card.Skip(39).Take(13).ToArray();
+            Array.Sort(roppCard);
+            printCard(roppCard);
+            Console.WriteLine("card distributed!");
+            int starter = 1;
+            int presentSuit = -1;
+            ArrayList history = new ArrayList();
+            Hello h = new Hello();
+            for (int i = 0; i < 4; i++)
+            {
+                int[] tmpCard = null;
+                switch (i)
+                {
+                    case 0: tmpCard = declarerCard; break;
+                    case 1: tmpCard = loppCard; break;
+                    case 2: tmpCard = declarerCard; break;
+                    case 3: tmpCard = roppCard; break;
+                }
+                h.Code = 2;
+                watcher.Send(h.ToByteArray());
+                watcher.Receive(buffer);
+                GameState m = GetGameState(i, tmpCard, dummyCard, history);
+                watcher.Send(m.ToByteArray());
+                Console.WriteLine("send {0}", i);
+                watcher.Receive(buffer);
+            }
+            h.Code = 4;
+            watcher.Send(h.ToByteArray());
+            Console.WriteLine("send update message");
+            watcher.Receive(buffer);
+            Console.WriteLine("start game");
+
+            for (int round = 0; round < 13; round++)
+            {
+                int[] cardInThisTurn = new int[4];
+                for (int p = 0; p < 4; p++)
+                {
+                    watcher.Receive(buffer);
+                    Socket tmpSocket = null;
+                    int[] tmpCard = null;
+                    switch ((starter + p) % 4)
+                    {
+                        case 0: tmpSocket = declarer; tmpCard = declarerCard; break;
+                        case 1: tmpSocket = lopp; tmpCard = loppCard; break;
+                        case 2: tmpSocket = declarer; tmpCard = declarerCard; break;
+                        case 3: tmpSocket = ropp; tmpCard = roppCard; break;
+                    }
+                    GameState m = GetGameState((starter + p) % 4, tmpCard, dummyCard, history);
+                    tmpSocket.Send(m.ToByteArray());
+                    Console.WriteLine("send message to {0}", (starter + p) % 4);
+                    int length = tmpSocket.Receive(buffer);
+                    Console.WriteLine("receive message from {0}", (starter + p) % 4);
+                    Play rm = new Play();
+                    rm.MergeFrom(buffer.Take(length).ToArray());
+                    h.Code = 3;
+                    watcher.Send(h.ToByteArray());
+                    watcher.Receive(buffer);
+                    watcher.Send(rm.ToByteArray());
+
+                    Card selected = rm.Card;
+                    if ((starter + p) % 4 == 2)
+                        tmpCard = dummyCard;
+                    for (int i = 0; i < 13; i++)
+                    {
+                        if (tmpCard[i] == ((int)selected.Suit * 13 + (int)selected.Rank))
+                        {
+                            tmpCard[i] = -1;
+                            break;
+                        }
+                    }
+                    if (presentSuit == -1)
+                    {
+                        presentSuit = (int)selected.Suit;
+                        history.Add((starter + p) % 4);
+                    }
+                    history.Add((int)selected.Suit * 13 + (int)selected.Rank);
+                    cardInThisTurn[p] = (int)selected.Suit * 13 + (int)selected.Rank;
+                }
+                int maxPlayer = 0;
+                for (int i = 0; i < 3; i++)
+                {
+                    if (cardInThisTurn[i + 1] / 13 == presentSuit && cardInThisTurn[i + 1] % 13 > cardInThisTurn[maxPlayer] % 13)
+                        maxPlayer = i + 1;
+                }
+                presentSuit = -1;
+                starter = (maxPlayer + starter) % 4;
+                printCard(cardInThisTurn);
+                Console.WriteLine("round {0} finished!", round);
+            }
         }
 
         private static int[] getRandomCard(int length)

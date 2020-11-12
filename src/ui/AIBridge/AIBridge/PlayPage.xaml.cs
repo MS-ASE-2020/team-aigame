@@ -130,12 +130,19 @@ namespace AIBridge
             this.clearCardInThisTurn();
         }
 
-        private void updateCardUI(int seat)
+        private void updateCardUI(int direction)
         {
             for(int i = 0; i < 13; i++)
             {
-                this.CardUI[seat, i].Suit = Encode2Suit(this.Card[seat, i, 0]);
-                this.CardUI[seat, i].Number = Encode2Number(this.Card[seat, i, 1]);
+                this.Dispatcher.Invoke(new Action(delegate
+                {
+                    if (this.CardUI[direction, i] == null)
+                        this.CardUI[direction, i] = new CardControl();
+                    this.CardUI[direction, i].Suit = Encode2Suit(this.Card[(direction+this.seat)%4, i, 0]);
+                    this.CardUI[direction, i].Number = Encode2Number(this.Card[(direction + this.seat) % 4, i, 1]);
+                    this.CardUI[direction, i].Owner = direction.ToString();
+                }));
+                
             }
         }
 
@@ -156,19 +163,23 @@ namespace AIBridge
         {
             if (direction > 3 || direction < 0)
                 return;
-            UIElementCollection tmp = null;
-            switch (direction)
+            this.Dispatcher.Invoke(new Action(delegate
             {
-                case 0: tmp = this.Me.Children; break;
-                case 1: tmp = this.Left.Children; break;
-                case 2: tmp = this.Opponent.Children; break;
-                case 3: tmp = this.Right.Children; break;
-            }
-            for(int i = 0; i < 13; i++)
-            {
-                if(this.inhand[direction, i])
-                    tmp.Add(this.CardUI[direction, i]);
-            }
+                UIElementCollection tmp = null;
+                switch (direction)
+                {
+                    case 0: tmp = this.Me.Children; break;
+                    case 1: tmp = this.Left.Children; break;
+                    case 2: tmp = this.Opponent.Children; break;
+                    case 3: tmp = this.Right.Children; break;
+                }
+                for(int i = 0; i < 13; i++)
+                {
+                    if(this.inhand[direction, i])
+                        tmp.Add(this.CardUI[direction, i]);
+                }
+            }));
+            
         }
 
         /// <summary>
@@ -178,15 +189,19 @@ namespace AIBridge
         /// <param name="e"></param>
         private void selectCard(object sender, RoutedEventArgs e)
         {
-            CardControl card = sender as CardControl;
-            switch (Convert.ToInt32(card.Owner))
+            this.Dispatcher.Invoke(new Action(delegate
             {
-                case 0: this.Me.Children.Remove(card); this.MeCard.Children.Clear(); this.MeCard.Children.Add(card); break;
-                case 1: this.Left.Children.Remove(card); this.LeftCard.Children.Clear(); this.LeftCard.Children.Add(card); break;
-                case 2: this.Opponent.Children.Remove(card); this.OpponentCard.Children.Clear(); this.OpponentCard.Children.Add(card); break;
-                case 3: this.Right.Children.Remove(card); this.RightCard.Children.Clear(); this.RightCard.Children.Add(card); break;
-                default: break;
-            }
+                CardControl card = sender as CardControl;
+                switch (Convert.ToInt32(card.Owner))
+                {
+                    case 0: this.Me.Children.Remove(card); this.MeCard.Children.Clear(); this.MeCard.Children.Add(card); break;
+                    case 1: this.Left.Children.Remove(card); this.LeftCard.Children.Clear(); this.LeftCard.Children.Add(card); break;
+                    case 2: this.Opponent.Children.Remove(card); this.OpponentCard.Children.Clear(); this.OpponentCard.Children.Add(card); break;
+                    case 3: this.Right.Children.Remove(card); this.RightCard.Children.Clear(); this.RightCard.Children.Add(card); break;
+                    default: break;
+                }
+            }));
+            
 
         }
 
@@ -292,6 +307,34 @@ namespace AIBridge
                         Hello m = new Hello();
                         m.MergeFrom(receivedData);
                         code = (int)m.Code;
+                        if (code == 4)
+                        {
+                            if (this.watching)
+                            {
+                                Console.WriteLine("card updated");
+                                for(int i = 0; i < 4; i++)
+                                {
+                                    updateCardUI(i);    // update all
+                                }
+                            }
+                            else
+                            {
+                                updateCardUI(0);    // update me
+                                updateCardUI((6 - this.seat) % 4);  // update dummy
+
+                            }
+                            for(int i = 0; i < 4; i++)
+                            {
+                                showCardInHand(i);
+                            }
+                            code = 1;
+                            this.Dispatcher.Invoke(new Action(delegate
+                            { 
+                                this.WaitAnimation = true;
+                                this.watcherTimer.Start();
+                            }));
+                        }
+                        sendContinue();
                     }
                     else if (code == 2)
                     {
@@ -314,18 +357,42 @@ namespace AIBridge
                                 this.inhand[who, i] = false;
                             }
                         }
-                        if(this.seat==who)
-                            showCardInHand(who);
+                        Console.WriteLine("{0} card received", who);
+                        sendContinue();
                     }
-                    else
+                    else if (code == 3)
                     {
                         Play m = new Play();
                         m.MergeFrom(receivedData);
-                        //code = 1;
+                        this.count += 1;
+
+                        code = 1;
                         int who = (int)m.Who;
                         Card card = m.Card;
+                        CardControl sc = null;
+                        for(int i = 0; i < 13; i++)
+                        {
+                            if(this.Card[who, i, 0]==(int)card.Suit && this.Card[who, i, 1] == (int)card.Rank)
+                            {
+                                sc = this.CardUI[(4 + who - this.seat) % 4, i];
+                                this.inhand[who, i] = false;
+                                selectCard(sc, null);
+                                break;
+                            }
+                        }
+                        this.WaitAnimation = true;
+                        this.watcherTimer.Start();
                     }
-
+                    else if (code == 5)
+                    {
+                        Console.WriteLine("received restart ok signal");
+                        this.Dispatcher.Invoke(new Action(delegate
+                        {
+                            this.restart.Visibility = Visibility.Visible;
+                        }));
+                        code = 1;
+                    }
+                    startReceive(socket, code);
                 }, null);
             }
             catch (Exception ex)
@@ -339,35 +406,31 @@ namespace AIBridge
         /// </summary>
         /// <param name="socket"></param>
         /// <param name="message"></param>
-        private void send(Socket socket, string message)
+        private void sendContinue()
         {
-            if (socket == null || message == string.Empty)
-                return;
-            // process data and send
-            byte[] data = Encoding.UTF8.GetBytes(message); // tobe modified to adjust protobuf
-            try
-            {
-                socket.BeginSend(data, 0, data.Length, SocketFlags.None, asycResult=>
-                {
-                    int length = socket.EndSend(asycResult);
-                }, null);
-            }
-            catch (Exception ex)
-            {
-
-            }
+            Hello m = new Hello();
+            m.Code = 1;
+            this.socket.Send(m.ToByteArray());
         }
 
 
         private void time2nextPlay(object sender, System.Timers.ElapsedEventArgs e)
         {
-
+            Console.Write("timer elapsed");
+            this.WaitAnimation = false;
+            if (this.count == 4)
+            {
+                clearCardInThisTurn();
+                this.count = 0;
+            }
+            //this.watcherTimer.Stop();
+            sendContinue();
         }
 
         protected override void OnInitialized(EventArgs e)
         {
             base.OnInitialized(e);
-            if (this.watching)
+            if (!this.watching)
             {
                 this.clearTimer.Elapsed += new System.Timers.ElapsedEventHandler(time2clearDesk);
                 this.clearTimer.AutoReset = false;
@@ -389,10 +452,32 @@ namespace AIBridge
 
         private void Page_KeyDown(object sender, KeyEventArgs e)
         {
-            if(this.watching && e.KeyStates == Keyboard.GetKeyStates(Key.Space) && this.WaitAnimation)
-            {
+            Console.WriteLine("keydown captured");
+            
+        }
 
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            if(this.watching && this.WaitAnimation)
+            {
+                this.watcherTimer.Stop();
+                this.WaitAnimation = false;
+                if (this.count == 4)
+                {
+                    clearCardInThisTurn();
+                    this.count = 0;
+                }
+                sendContinue();
             }
+        }
+
+        private void Button_Click_restart(object sender, RoutedEventArgs e)
+        {
+            sendContinue();
+            this.Dispatcher.Invoke(new Action(delegate
+            {
+                this.restart.Visibility = Visibility.Hidden;
+            }));
         }
     }
 }
