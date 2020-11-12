@@ -21,27 +21,29 @@ namespace AIBridge
     /// </summary>
     public partial class AIselect : Page
     {
-        public AIselect()
+        private mainPage upperPage;
+        public AIselect(mainPage page)
         {
             InitializeComponent();
+            this.upperPage = page;
         }
         private void EASY_click(object sender, RoutedEventArgs e)
         {
-            currentPage.Content = new PlayPage();
+            currentPage.Content = new PlayPage(false);
         }
 
         private void MID_click(object sender, RoutedEventArgs e)
         {
-            currentPage.Content = new PlayPage();
+            currentPage.Content = new PlayPage(true);
         }
         private void HARD_click(object sender, RoutedEventArgs e)
         {
-            currentPage.Content = new PlayPage();
+            currentPage.Content = new PlayPage(true);
         }
 
         private void BACK_click(object sender, RoutedEventArgs e)
         {
-            NavigationService.GetNavigationService(this).GoBack();
+            NavigationService.GetNavigationService(this).Navigate(this.upperPage);
             
         }
     }

@@ -35,7 +35,7 @@ namespace AIBridge
             }
             else
             {
-                this.aIselect = new AIselect();
+                this.aIselect = new AIselect(this);
                 NavigationService.GetNavigationService(this).Navigate(this.aIselect);
             }
         }
@@ -47,7 +47,7 @@ namespace AIBridge
             }
             else
             {
-                this.humanPage = new HumanPage();
+                this.humanPage = new HumanPage(this);
                 NavigationService.GetNavigationService(this).Navigate(this.humanPage);
             }
         }

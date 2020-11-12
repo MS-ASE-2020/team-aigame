@@ -20,9 +20,11 @@ namespace AIBridge
     /// </summary>
     public partial class HumanPage : Page
     {
-        public HumanPage()
+        private mainPage upperPage;
+        public HumanPage(mainPage page)
         {
             InitializeComponent();
+            this.upperPage = page;
         }
 
         private void join_click(object sender, RoutedEventArgs e)
@@ -37,7 +39,7 @@ namespace AIBridge
 
         private void BACK_click(object sender, RoutedEventArgs e)
         {
-            NavigationService.GetNavigationService(this).GoBack();
+            NavigationService.GetNavigationService(this).Navigate(this.upperPage);
         }
     }
 }
