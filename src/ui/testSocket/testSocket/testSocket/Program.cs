@@ -39,7 +39,7 @@ namespace testSocket
                     m.Seat = (Player)i;
                 else
                     m.Seat = (Player)(i + 1);
-                tmp.Send(m.ToByteArray());
+                //tmp.Send(m.ToByteArray());
                 switch (i)
                 {
                     case 0: declarer = tmp; Console.WriteLine("declarer connected"); break;
@@ -83,10 +83,14 @@ namespace testSocket
                     }
                     GameState m = GetGameState((starter + p) % 4, tmpCard, dummyCard, history);
                     tmpSocket.Send(m.ToByteArray());
+                    Console.WriteLine("send message to {0}", (starter + p) % 4);
                     int length = tmpSocket.Receive(buffer);
+                    Console.WriteLine("receive message from {0}", (starter + p) % 4);
                     Play rm = new Play();
                     rm.MergeFrom(buffer.Take(length).ToArray());
                     Card selected = rm.Card;
+                    if ((starter + p) % 4 == 2)
+                        tmpCard = dummyCard;
                     for(int i = 0; i < 13; i++)
                     {
                         if (tmpCard[i] == ((int)selected.Suit * 13 + (int)selected.Rank))
@@ -109,7 +113,10 @@ namespace testSocket
                     if (cardInThisTurn[i + 1] / 13 == presentSuit && cardInThisTurn[i + 1] % 13 > cardInThisTurn[maxPlayer] % 13)
                         maxPlayer = i + 1;
                 }
-                starter = maxPlayer;
+                presentSuit = -1;
+                starter = (maxPlayer+starter)%4;
+                printCard(cardInThisTurn);
+                Console.WriteLine("round {0} finished!", round);
             }
             //listener.BeginAccept(new AsyncCallback(assignPort), listener);
             //Console.WriteLine("ready to accept links");
@@ -174,21 +181,19 @@ namespace testSocket
             gamestate.Who = (Player)who;
             if (who == 2)
             {
-                gamestate.Hand.AddRange(int2card(dummy));
-                gamestate.Dummy.AddRange(int2card(hand));
+                int[] t = hand;
+                hand = dummy;
+                dummy = t;
             }
-            else
-            {
-                gamestate.Hand.AddRange(int2card(hand));
-                gamestate.Dummy.AddRange(int2card(dummy));
-            }
+            gamestate.Hand.AddRange(int2card(hand));
+            gamestate.Dummy.AddRange(int2card(dummy));
             if (history.Count == 0)
             {
                 gamestate.Dummy.Clear();
             }
             else
             {
-                TrickHistory[] playHistory = new TrickHistory[history.Count/5+1];
+                TrickHistory[] playHistory = new TrickHistory[(int)Math.Ceiling((double)history.Count/5)];
                 for(int i = 0; i < history.Count; i++)
                 {
                     if (i % 5 == 0)
@@ -212,7 +217,7 @@ namespace testSocket
             int presentSuit = -1;
             if (history.Count % 5 > 0)
             {
-                presentSuit = (int)history[history.Count - 1] / 13;
+                presentSuit = (int)history[history.Count - history.Count%5 + 1] / 13;
             }
             for(int i = 0; i < hand.Length; i++)
             {
@@ -224,6 +229,19 @@ namespace testSocket
                     gamestate.ValidPlays.Add(tmp);
                 }
             }
+            if (gamestate.ValidPlays.Count == 0)
+            {
+                for (int i = 0; i < hand.Length; i++)
+                {
+                    if (hand[i] != -1)
+                    {
+                        Card tmp = new Card();
+                        tmp.Suit = (Suit)(hand[i] / 13);
+                        tmp.Rank = (uint)(hand[i] % 13);
+                        gamestate.ValidPlays.Add(tmp);
+                    }
+                }
+            }
             return gamestate;
         }
 
@@ -233,12 +251,15 @@ namespace testSocket
             int count = 0;
             foreach (int i in hand)
             {
-                hand_card[count] = new Card();
-                hand_card[count].Suit = (Suit)(i / 13);
-                hand_card[count].Rank = (uint)(i % 13);
-                count += 1;
+                if (i != -1)
+                {
+                    hand_card[count] = new Card();
+                    hand_card[count].Suit = (Suit)(i / 13);
+                    hand_card[count].Rank = (uint)(i % 13);
+                    count += 1;
+                }
             }
-            return hand_card;
+            return hand_card.Take(count).ToArray();
         }
     }
 }
