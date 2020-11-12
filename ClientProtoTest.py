@@ -26,12 +26,12 @@ class clientThread(threading.Thread):  # 继承父类threading.Thread
         # tcpCliSock = socket(AF_INET, SOCK_STREAM)
         # tcpCliSock.connect(ADDR)
         # 等待Hello
-        # protobufhello = self.tcpCliSock.recv(BUFSIZ)
-        # hello_message = message.GameState()
-        # hello_message.ParseFromString(protobufhello)
-        # print(hello_message)
-        # seat = hello_message.seat
-        # print('seat',seat)
+        protobufhello = self.tcpCliSock.recv(BUFSIZ)
+        hello_message = message.Hello()
+        hello_message.ParseFromString(protobufhello)
+        print(hello_message)
+        seat = hello_message.seat
+        print('seat',seat)
         print("Hello")
         while True:
             # Head_data = tcpCliSock.recv(4)  # 接收数据头 4个字节,
@@ -44,7 +44,7 @@ class clientThread(threading.Thread):  # 继承父类threading.Thread
             game_state_message.ParseFromString(protobufdata)
             tableid = game_state_message.tableID
             print('id:', tableid)
-            print('message:',game_state_message)
+            # print('message:',game_state_message)
             player = game_state_message.who
             # assert player == seat
             if player == 0:
