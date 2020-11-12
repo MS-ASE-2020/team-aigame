@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
+using System.ServiceModel.Security;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -14,6 +15,7 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Media.TextFormatting;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Google.Protobuf;
@@ -50,21 +52,10 @@ namespace AIBridge
         private Socket socket;
         private bool watching = false;
         private bool WaitAnimation = false;
+        private int count = 0;
+        private int seat = 0;
         // record the cards played in one round
         // when count reaches 4, timer is started to keep the cards on the desk and after that, clear
-        private int count = 0;
-        public int Count
-        {
-            get { return this.count; }
-            set
-            {
-                this.count = (int)value;
-                if((int)value == 4)
-                {
-                    this.count = 0;
-                }
-            }
-        }
 
 
         public PlayPage(bool watcher)
@@ -111,18 +102,18 @@ namespace AIBridge
         /// </returns>
         private string Encode2Number(int encode)
         {
-            if (encode < 1 || encode > 13)
+            if (encode < 0 || encode > 12)
                 return "";
-            else if (encode >= 2 && encode <= 10)
-                return Convert.ToString(encode);
+            else if (encode >= 0 && encode <= 8)
+                return Convert.ToString(encode+2);
             else
             {
                 switch (encode)
                 {
-                    case 1: return "A";
-                    case 11: return "J";
-                    case 12: return "Q";
-                    case 13: return "K";
+                    case 12: return "A";
+                    case 9: return "J";
+                    case 10: return "Q";
+                    case 11: return "K";
                     default: return "";
                 }
             }
@@ -139,6 +130,15 @@ namespace AIBridge
             this.clearCardInThisTurn();
         }
 
+        private void updateCardUI(int seat)
+        {
+            for(int i = 0; i < 13; i++)
+            {
+                this.CardUI[seat, i].Suit = Encode2Suit(this.Card[seat, i, 0]);
+                this.CardUI[seat, i].Number = Encode2Number(this.Card[seat, i, 1]);
+            }
+        }
+
         /// <summary>
         /// put one card to the desk (user's card set)
         /// </summary>
@@ -152,15 +152,22 @@ namespace AIBridge
         /// <param name="index">
         /// which card is put, corresponding to the number on the card
         /// </param>
-        private void showCardInHand(int direction, int index)
+        private void showCardInHand(int direction)
         {
+            if (direction > 3 || direction < 0)
+                return;
+            UIElementCollection tmp = null;
             switch (direction)
             {
-                case 0: this.Me.Children.Add(this.CardUI[direction, index]); break;
-                case 1: this.Left.Children.Add(this.CardUI[direction, index]); break;
-                case 2: this.Opponent.Children.Add(this.CardUI[direction, index]); break;
-                case 3: this.Right.Children.Add(this.CardUI[direction, index]); break;
-                default:break;
+                case 0: tmp = this.Me.Children; break;
+                case 1: tmp = this.Left.Children; break;
+                case 2: tmp = this.Opponent.Children; break;
+                case 3: tmp = this.Right.Children; break;
+            }
+            for(int i = 0; i < 13; i++)
+            {
+                if(this.inhand[direction, i])
+                    tmp.Add(this.CardUI[direction, i]);
             }
         }
 
@@ -181,7 +188,6 @@ namespace AIBridge
                 default: break;
             }
 
-            this.Count += 1;
         }
 
         /// <summary>
@@ -253,9 +259,8 @@ namespace AIBridge
             this.socket.BeginConnect(ipe, asyncResult =>
             {
                 this.socket.EndConnect(asyncResult);
-                sayHello(socket);
                 Console.WriteLine("connect to {0}", this.socket.RemoteEndPoint.ToString());
-                startReceive(this.socket);
+                startReceive(this.socket, 1);
             }, null);
         }
 
@@ -272,7 +277,7 @@ namespace AIBridge
         /// async receive data from server
         /// </summary>
         /// <param name="socket"></param>
-        private void startReceive(Socket socket)
+        private void startReceive(Socket socket, int code)
         {
             byte[] data = new byte[1024];
             try
@@ -282,14 +287,45 @@ namespace AIBridge
                     int length = socket.EndReceive(asyncResult);
                     Console.WriteLine("{0} bytes received", length);
                     byte[] receivedData = data.Take(length).ToArray();
-                    //MemoryStream ms = new MemoryStream(receivedData);
-                    Hello m = new Hello();
-                    m.MergeFrom(receivedData);
-                    Console.WriteLine(string.Format("receive message:{0}", m.ToString()));
-                    Console.WriteLine("seat:{0}", m.Seat);
-                    Console.WriteLine("code:{0}", m.Code);
-                    // received information process
-                    startReceive(socket);
+                    if (code == 1)
+                    {
+                        Hello m = new Hello();
+                        m.MergeFrom(receivedData);
+                        code = (int)m.Code;
+                    }
+                    else if (code == 2)
+                    {
+                        GameState m = new GameState();
+                        m.MergeFrom(receivedData);
+                        code = 1;
+                        int who = (int)m.Who;
+                        for(int i = 0; i < 13; i++)
+                        {
+                            if (i < m.Hand.Count)
+                            {
+                                this.Card[who, i, 0] = (int)m.Hand[i].Suit;
+                                this.Card[who, i, 1] = (int)m.Hand[i].Rank;
+                                this.inhand[who, i] = true;
+                            }
+                            else
+                            {
+                                this.Card[who, i, 0] = -1;
+                                this.Card[who, i, 1] = -1;
+                                this.inhand[who, i] = false;
+                            }
+                        }
+                        if(this.seat==who)
+                            showCardInHand(who);
+                    }
+                    else
+                    {
+                        Play m = new Play();
+                        m.MergeFrom(receivedData);
+                        //code = 1;
+                        int who = (int)m.Who;
+                        Card card = m.Card;
+                    }
+
                 }, null);
             }
             catch (Exception ex)

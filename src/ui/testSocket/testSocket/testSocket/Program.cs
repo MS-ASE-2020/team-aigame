@@ -39,7 +39,8 @@ namespace testSocket
                     m.Seat = (Player)i;
                 else
                     m.Seat = (Player)(i + 1);
-                //tmp.Send(m.ToByteArray());
+                m.Code = 1;
+                tmp.Send(m.ToByteArray());
                 switch (i)
                 {
                     case 0: declarer = tmp; Console.WriteLine("declarer connected"); break;
