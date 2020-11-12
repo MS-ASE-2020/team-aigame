@@ -39,7 +39,7 @@ namespace testSocket
                 Console.WriteLine("send message:{0}", m.ToString());
                 byte[] data = m.ToByteArray();//ms.ToArray();
                 Console.WriteLine(data);
-                client.Send(data.ToString());
+                client.Send(data);
                 Thread.Sleep(1000);
             }
             //}
