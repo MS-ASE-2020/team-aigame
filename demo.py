@@ -79,8 +79,8 @@ def declarer(game_state: GameState, rule: str) -> Card:
         '''
         contract = game_state.contract
         playHistorys = game_state.playHistory
-        trickHistory_new = playHistorys[-1]
-        if len(trickHistory_new.cards) == 4:
+        trickHistory_new = playHistorys[-1] if len(playHistorys) > 0 else None
+        if trickHistory_new is None or len(trickHistory_new.cards) == 4:
             # 自己先出
             return get_sorted_card(contract, validPlays, True)
         else:
@@ -111,8 +111,8 @@ def lopp(game_state: GameState, rule: str) -> Card:
         '''
         contract = game_state.contract
         playHistorys = game_state.playHistory
-        trickHistory_new = playHistorys[-1]
-        if len(trickHistory_new.cards) == 4:
+        trickHistory_new = playHistorys[-1] if len(playHistorys) > 0 else None
+        if trickHistory_new is None or len(trickHistory_new.cards) == 4:
             # 自己先出
             return get_sorted_card(contract, validPlays, True)
         else:
@@ -143,8 +143,8 @@ def dummy(game_state: GameState, rule: str) -> Card:
         '''
         contract = game_state.contract
         playHistorys = game_state.playHistory
-        trickHistory_new = playHistorys[-1]
-        if len(trickHistory_new.cards) == 4:
+        trickHistory_new = playHistorys[-1] if len(playHistorys) > 0 else None
+        if trickHistory_new is None or len(trickHistory_new.cards) == 4:
             # 自己先出
             return get_sorted_card(contract, validPlays, True)
         else:
@@ -178,8 +178,8 @@ def ropp(game_state: GameState, rule: str) -> Card:
         '''
         contract = game_state.contract
         playHistorys = game_state.playHistory
-        trickHistory_new = playHistorys[-1]
-        if len(trickHistory_new.cards) == 4:
+        trickHistory_new = playHistorys[-1] if len(playHistorys) > 0 else None
+        if trickHistory_new is None or len(trickHistory_new.cards) == 4:
             # 自己先出
             return get_sorted_card(contract, validPlays, True)
         else:
