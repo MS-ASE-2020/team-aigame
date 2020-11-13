@@ -97,13 +97,13 @@ class clientThread(threading.Thread):  # 继承父类threading.Thread
         device = torch.device('cpu')
         net = MLP().to(device)
         net.load_state_dict(torch.load('bridge_agent_v1.pth', map_location=torch.device('cpu')))
-        # protobufhello = self.tcpCliSock.recv(BUFSIZ)
-        # hello_message = message.Hello()
-        # hello_message.ParseFromString(protobufhello)
-        # print(hello_message)
-        # seat = hello_message.seat
-        # print('seat', seat)
-        # print("Hello")
+        protobufhello = self.tcpCliSock.recv(BUFSIZ)
+        hello_message = message.Hello()
+        hello_message.ParseFromString(protobufhello)
+        print(hello_message)
+        seat = hello_message.seat
+        print('seat', seat)
+        print("Hello")
         while True:
             # Head_data = tcpCliSock.recv(4)  # 接收数据头 4个字节,
             # data_len = int.from_bytes(Head_data, byteorder='big')
