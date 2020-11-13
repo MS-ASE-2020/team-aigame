@@ -48,6 +48,9 @@
                     <WrapPanel Name="restart" Grid.Row="0" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center">
                         <Button Content="Restart" FontSize="30" Click="Button_Click_restart" Visibility="Hidden"/>
                     </WrapPanel>
+                    <WrapPanel Name="score" Grid.Row="2" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <Label Name="scoreLabel" FontSize="40"/>
+                    </WrapPanel>
                 </Grid>
             </Frame.Content>
         </Frame>

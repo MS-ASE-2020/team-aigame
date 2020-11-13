@@ -349,6 +349,7 @@ namespace AIBridge
                             { 
                                 this.WaitAnimation = true;
                                 this.watcherTimer.Start();
+                                this.scoreLabel.Content = "0";
                             }));
                         }
                         sendContinue();
@@ -359,7 +360,12 @@ namespace AIBridge
                         m.MergeFrom(receivedData);
                         code = 1;
                         int who = (int)m.Who;
-                        for(int i = 0; i < 13; i++)
+                        int score = (int)m.TableID;
+                        this.Dispatcher.Invoke(new Action(delegate
+                        {
+                            this.scoreLabel.Content = score.ToString();
+                        }));
+                        for (int i = 0; i < 13; i++)
                         {
                             if(who==2 || who==0 || this.watching)
                             {
@@ -390,6 +396,12 @@ namespace AIBridge
                     {
                         Play m = new Play();
                         m.MergeFrom(receivedData);
+                        int score = (int)m.TableID;
+                        this.Dispatcher.Invoke(new Action(delegate
+                        {
+                            Console.WriteLine("score:{0}", score);
+                            this.scoreLabel.Content = score.ToString();
+                        }));
                         this.count += 1;
 
                         code = 1;

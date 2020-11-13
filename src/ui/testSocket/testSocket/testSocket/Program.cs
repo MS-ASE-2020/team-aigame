@@ -122,6 +122,7 @@ namespace testSocket
             Console.WriteLine("card distributed!");
             int starter = 1;
             int presentSuit = -1;
+            int score = 0;
             ArrayList history = new ArrayList();
             Hello h = new Hello();
             for (int i = 0; i < 4; i++)
@@ -164,6 +165,7 @@ namespace testSocket
                         case 3: tmpSocket = ropp; tmpCard = roppCard; break;
                     }
                     GameState m = GetGameState((starter + p) % 4, tmpCard, dummyCard, history);
+                    m.TableID = (uint)score;
                     if(tmpSocket==declarer && declarer == watcher)
                     {
                         h.Code = 2;
@@ -181,6 +183,7 @@ namespace testSocket
                     Console.WriteLine("receive message from {0}", (starter + p) % 4);
                     Play rm = new Play();
                     rm.MergeFrom(buffer.Take(length).ToArray());
+                    rm.TableID = (uint)score;
                     h.Code = 3;
                     watcher.Send(h.ToByteArray());
                     watcher.Receive(buffer);
@@ -213,6 +216,8 @@ namespace testSocket
                 }
                 presentSuit = -1;
                 starter = (maxPlayer + starter) % 4;
+                if (starter == 0 || starter == 2)
+                    score += 1;
                 printCard(cardInThisTurn);
                 Console.WriteLine("round {0} finished!", round);
             }
