@@ -49,10 +49,11 @@ def GameState2feature(game_state: GameState):
     hand_card_feature = [0] * 52
     identity = [0] * 3
     who = game_state.who
-    identity[who] = 1
+    dict_map = {0:0,1:2,2:1,3:2}
+    identity[dict_map[who]] = 1
     playHistorys = game_state.playHistory
-    round_index_feature[len(playHistorys)] = 1
-    if len(playHistorys == 0):
+    round_index_feature[len(playHistorys)-1] = 1
+    if len(playHistorys) == 0:
         pass
     else:
         for index, history in enumerate(playHistorys):
@@ -95,14 +96,14 @@ class clientThread(threading.Thread):  # 继承父类threading.Thread
     def run(self):  # 把要执行的代码写到run函数里面 线程在创建后会直接运行run函数
         device = torch.device('cpu')
         net = MLP().to(device)
-        net.load_state_dict(torch.load('pre_train_models/bridge_agent_v1.pth', map_location=torch.device('cpu')))
-        protobufhello = self.tcpCliSock.recv(BUFSIZ)
-        hello_message = message.Hello()
-        hello_message.ParseFromString(protobufhello)
-        print(hello_message)
-        seat = hello_message.seat
-        print('seat', seat)
-        print("Hello")
+        net.load_state_dict(torch.load('bridge_agent_v1.pth', map_location=torch.device('cpu')))
+        # protobufhello = self.tcpCliSock.recv(BUFSIZ)
+        # hello_message = message.Hello()
+        # hello_message.ParseFromString(protobufhello)
+        # print(hello_message)
+        # seat = hello_message.seat
+        # print('seat', seat)
+        # print("Hello")
         while True:
             # Head_data = tcpCliSock.recv(4)  # 接收数据头 4个字节,
             # data_len = int.from_bytes(Head_data, byteorder='big')
@@ -114,9 +115,11 @@ class clientThread(threading.Thread):  # 继承父类threading.Thread
             game_state_message.ParseFromString(protobufdata)
             tableid = game_state_message.tableID
             print('id:', tableid)
+            print(game_state_message)
             player = game_state_message.who
             feature = GameState2feature(game_state_message)
-            card_logits = net(torch.tensor(feature))
+            print(len(feature))
+            card_logits = net(torch.tensor(feature).float())
             # 加一层mask
             validPlays = game_state_message.validPlays
             output_mask = [0] * 52
