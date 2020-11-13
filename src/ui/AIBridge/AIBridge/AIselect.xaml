@@ -28,13 +28,13 @@
                         <Label Content="Level" FontSize="90"/>
                     </WrapPanel>
                     <WrapPanel Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Center">
-                        <Button Content="EASY" HorizontalAlignment="Center" FontSize="50" Click="EASY_click"/>
+                        <Button Content="WATCH" HorizontalAlignment="Center" FontSize="50" Click="EASY_click"/>
                     </WrapPanel>
                     <WrapPanel Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Center">
-                        <Button Content="MID" HorizontalAlignment="Center" FontSize="50" Click="MID_click"/>
+                        <Button Content="MID" HorizontalAlignment="Center" FontSize="50" Click="MID_click" Visibility="Hidden"/>
                     </WrapPanel>
                     <WrapPanel Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Center">
-                        <Button Content="HARD" HorizontalAlignment="Center" FontSize="50" Click="HARD_click"/>
+                        <Button Content="HARD" HorizontalAlignment="Center" FontSize="50" Click="HARD_click" Visibility="Hidden"/>
                     </WrapPanel>
                     <WrapPanel Grid.Row="3" Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Center">
                         <Button Content="BACK" FontSize="50" Click="BACK_click"/>

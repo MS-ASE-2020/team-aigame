@@ -49,12 +49,19 @@ namespace testSocket
             }
             watcher = listener.Accept();
             Console.WriteLine("watcher connected!");
+            Hello h = new Hello();
+            int length = watcher.Receive(buffer);
+            h.MergeFrom(buffer.Take(length).ToArray());
+            if (h.Code == 2)
+            {
+                Console.WriteLine("watcher in the game");
+                declarer = watcher;
+            }
             try
             {
                 while (true)
                 {
                     run(declarer, lopp, ropp, watcher);
-                    Hello h = new Hello();
                     h.Code = 5;
                     watcher.Send(h.ToByteArray());
                     watcher.Receive(buffer);
@@ -64,6 +71,8 @@ namespace testSocket
             }
             catch(Exception ex)
             {
+                Console.WriteLine(ex);
+                Console.ReadKey();
 
             }
             
@@ -155,7 +164,18 @@ namespace testSocket
                         case 3: tmpSocket = ropp; tmpCard = roppCard; break;
                     }
                     GameState m = GetGameState((starter + p) % 4, tmpCard, dummyCard, history);
-                    tmpSocket.Send(m.ToByteArray());
+                    if(tmpSocket==declarer && declarer == watcher)
+                    {
+                        h.Code = 2;
+                        tmpSocket.Send(h.ToByteArray());
+                        tmpSocket.Receive(buffer);
+                        tmpSocket.Send(m.ToByteArray());
+                        tmpSocket.Receive(buffer);
+                    }
+                    else
+                    {
+                        tmpSocket.Send(m.ToByteArray());
+                    }
                     Console.WriteLine("send message to {0}", (starter + p) % 4);
                     int length = tmpSocket.Receive(buffer);
                     Console.WriteLine("receive message from {0}", (starter + p) % 4);

@@ -31,10 +31,10 @@
                     <Button Content="AI" HorizontalAlignment="Center" FontSize="50" Click="AI_click"/>
                 </WrapPanel>
                 <WrapPanel Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Center">
-                    <Button Content="Human" HorizontalAlignment="Center" FontSize="50" Click="Human_click"/>
+                    <Button Content="Setting" HorizontalAlignment="Center" FontSize="50" Click="Setting_click"/>
                 </WrapPanel>
                 <WrapPanel Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Center">
-                    <Button Content="Settings" HorizontalAlignment="Center" FontSize="50" Click="Setting_click"/>
+                    <Button Content="Settings" HorizontalAlignment="Center" FontSize="50" Click="Setting_click" Visibility="Hidden"/>
                 </WrapPanel>
             </Grid>
             </Frame.Content>

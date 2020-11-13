@@ -53,7 +53,8 @@ namespace AIBridge
         private bool watching = false;
         private bool WaitAnimation = false;
         private int count = 0;
-        private int seat = 0;
+        private int seat = -1;
+        private int cardsReceived = 0;
         // record the cards played in one round
         // when count reaches 4, timer is started to keep the cards on the desk and after that, clear
 
@@ -87,7 +88,7 @@ namespace AIBridge
                 case 1: return "\u2666";
                 case 2: return "\u2665";
                 case 3: return "\u2660";
-                default: return "";
+                default: return "x";
             }
         }
 
@@ -103,7 +104,7 @@ namespace AIBridge
         private string Encode2Number(int encode)
         {
             if (encode < 0 || encode > 12)
-                return "";
+                return "x";
             else if (encode >= 0 && encode <= 8)
                 return Convert.ToString(encode+2);
             else
@@ -114,7 +115,7 @@ namespace AIBridge
                     case 9: return "J";
                     case 10: return "Q";
                     case 11: return "K";
-                    default: return "";
+                    default: return "x";
                 }
             }
         }
@@ -229,6 +230,24 @@ namespace AIBridge
             }));
         }
 
+        private void sendPlay(object sender, RoutedEventArgs e)
+        {
+            this.Dispatcher.Invoke(new Action(delegate
+            {
+                CardControl card = sender as CardControl;
+                UserEnable(Convert.ToInt32(card.Owner), false);
+                Play m = new Play();
+                m.Who = (Player)this.seat;
+                Card c = new Card();
+                c.Suit = (Suit)Convert.ToInt32(card.Suit);
+                c.Rank = (uint)Convert.ToInt32(card.Number);
+                m.Card = c;
+                this.socket.Send(m.ToByteArray());
+            }));
+
+
+        }
+
         /// <summary>
         /// enable or disable card doubleclick event
         /// </summary>
@@ -249,14 +268,14 @@ namespace AIBridge
                     {
                         this.CardUI[d, i].Dispatcher.Invoke(new Action(delegate
                             {
-                                this.CardUI[d, i].MouseDoubleClick += selectCard;
+                                this.CardUI[d, i].MouseDoubleClick += sendPlay;
                             }));
                     }
                     else
                     {
                         this.CardUI[d, i].Dispatcher.Invoke(new Action(delegate
                             {
-                                this.CardUI[d, i].MouseDoubleClick -= selectCard;
+                                this.CardUI[d, i].MouseDoubleClick -= sendPlay;
                             }));
                     }
                 }
@@ -275,6 +294,7 @@ namespace AIBridge
             {
                 this.socket.EndConnect(asyncResult);
                 Console.WriteLine("connect to {0}", this.socket.RemoteEndPoint.ToString());
+                sayHello(this.socket);
                 startReceive(this.socket, 1);
             }, null);
         }
@@ -284,7 +304,12 @@ namespace AIBridge
         /// </summary>
         private void sayHello(Socket socket)
         {
-
+            Hello h = new Hello();
+            if (this.watching)
+                h.Code = 1;
+            else
+                h.Code = 2;
+            socket.Send(h.ToByteArray());
         }
 
 
@@ -309,19 +334,11 @@ namespace AIBridge
                         code = (int)m.Code;
                         if (code == 4)
                         {
-                            if (this.watching)
+                            this.seat = 0;
+                            Console.WriteLine("card updated");
+                            for(int i = 0; i < 4; i++)
                             {
-                                Console.WriteLine("card updated");
-                                for(int i = 0; i < 4; i++)
-                                {
-                                    updateCardUI(i);    // update all
-                                }
-                            }
-                            else
-                            {
-                                updateCardUI(0);    // update me
-                                updateCardUI((6 - this.seat) % 4);  // update dummy
-
+                                updateCardUI(i);    // update all
                             }
                             for(int i = 0; i < 4; i++)
                             {
@@ -344,20 +361,29 @@ namespace AIBridge
                         int who = (int)m.Who;
                         for(int i = 0; i < 13; i++)
                         {
-                            if (i < m.Hand.Count)
+                            if(who==2 || who==0 || this.watching)
                             {
-                                this.Card[who, i, 0] = (int)m.Hand[i].Suit;
-                                this.Card[who, i, 1] = (int)m.Hand[i].Rank;
-                                this.inhand[who, i] = true;
+                                if (i < m.Hand.Count)
+                                {
+                                    this.Card[who, i, 0] = (int)m.Hand[i].Suit;
+                                    this.Card[who, i, 1] = (int)m.Hand[i].Rank;
+                                    this.inhand[who, i] = true;
+                                }
+                                else
+                                {
+                                    this.Card[who, i, 0] = -1;
+                                    this.Card[who, i, 1] = -1;
+                                    this.inhand[who, i] = false;
+                                }
                             }
-                            else
-                            {
-                                this.Card[who, i, 0] = -1;
-                                this.Card[who, i, 1] = -1;
-                                this.inhand[who, i] = false;
-                            }
+                            
                         }
                         Console.WriteLine("{0} card received", who);
+                        if (!this.watching && (this.seat == who || (this.seat==0 && who==2)))
+                        {
+                            UserEnable(who, true);
+                            this.ContinueButton.Visibility = Visibility.Hidden;
+                        }
                         sendContinue();
                     }
                     else if (code == 3)
@@ -430,6 +456,16 @@ namespace AIBridge
         protected override void OnInitialized(EventArgs e)
         {
             base.OnInitialized(e);
+            for(int i = 0; i < 4; i++)
+            {
+                for(int j = 0; j < 13; j++)
+                {
+                    for(int k = 0; k < 2; k++)
+                    {
+                        this.Card[i, j, k] = -1;
+                    }
+                }
+            }
             if (!this.watching)
             {
                 this.clearTimer.Elapsed += new System.Timers.ElapsedEventHandler(time2clearDesk);
