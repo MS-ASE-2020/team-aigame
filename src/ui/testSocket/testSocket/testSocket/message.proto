@@ -1,5 +1,5 @@
 syntax = "proto3";
-package AIBridge;
+package testSocket;
 
 enum Role {
     DECLARER = 0;

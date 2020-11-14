@@ -24,40 +24,56 @@ namespace AIBridge {
     static MessageReflection() {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
-            "Cg1tZXNzYWdlLnByb3RvEghBSUJyaWRnZSIyCgRDYXJkEhwKBHN1aXQYASAB",
-            "KA4yDi5BSUJyaWRnZS5TdWl0EgwKBHJhbmsYAiABKA0iTQoMVHJpY2tIaXN0",
-            "b3J5Eh4KBGxlYWQYASABKA4yEC5BSUJyaWRnZS5QbGF5ZXISHQoFY2FyZHMY",
-            "AiADKAsyDi5BSUJyaWRnZS5DYXJkIoYBCghDb250cmFjdBIcCgRzdWl0GAEg",
-            "ASgOMg4uQUlCcmlkZ2UuU3VpdBINCgVsZXZlbBgCIAEoDRIrCgdkb3VibGVk",
-            "GAMgASgOMhouQUlCcmlkZ2UuQ29udHJhY3QuRG91YmxlZCIgCgdEb3VibGVk",
-            "EgYKAk5PEAASBQoBWBABEgYKAlhYEAIiNQoFSGVsbG8SHgoEc2VhdBgBIAEo",
-            "DjIQLkFJQnJpZGdlLlBsYXllchIMCgRjb2RlGAIgASgNIjAKDUhlbGxvUmVz",
-            "cG9uc2USDgoGc2VhdGVkGAEgASgIEg8KB3RhYmxlSUQYAiABKA0ilQIKCUdh",
-            "bWVTdGF0ZRIPCgd0YWJsZUlEGAEgASgNEiQKDXZ1bG5lcmFiaWxpdHkYAiAB",
-            "KA4yDS5BSUJyaWRnZS5WdWwSHQoDd2hvGAMgASgOMhAuQUlCcmlkZ2UuUGxh",
-            "eWVyEhwKBGhhbmQYBCADKAsyDi5BSUJyaWRnZS5DYXJkEh0KBWR1bW15GAUg",
-            "AygLMg4uQUlCcmlkZ2UuQ2FyZBIrCgtwbGF5SGlzdG9yeRgGIAMoCzIWLkFJ",
-            "QnJpZGdlLlRyaWNrSGlzdG9yeRIkCghjb250cmFjdBgHIAEoCzISLkFJQnJp",
-            "ZGdlLkNvbnRyYWN0EiIKCnZhbGlkUGxheXMYCCADKAsyDi5BSUJyaWRnZS5D",
-            "YXJkIlQKBFBsYXkSDwoHdGFibGVJRBgBIAEoDRIdCgN3aG8YAiABKA4yEC5B",
-            "SUJyaWRnZS5QbGF5ZXISHAoEY2FyZBgDIAEoCzIOLkFJQnJpZGdlLkNhcmQi",
-            "lAEKCkdhbWVSZXN1bHQSDwoHdGFibGVJRBgBIAEoDRIkCghjb250cmFjdBgC",
-            "IAEoCzISLkFJQnJpZGdlLkNvbnRyYWN0Eg4KBnJlc3VsdBgDIAEoBRIVCg1k",
-            "ZWNsYXJlclNjb3JlGAQgASgFEhMKC2RlY2xhcmVyUGFyGAUgASgFEhMKC2Rl",
-            "Y2xhcmVySU1QGAYgASgFKjUKBlBsYXllchIMCghERUNMQVJFUhAAEggKBExP",
-            "UFAQARIJCgVEVU1NWRACEggKBFJPUFAQAypoCgRTdWl0EggKBENMVUIQABIF",
-            "CgFDEAASCwoHRElBTU9ORBABEgUKAUQQARIJCgVIRUFSVBACEgUKAUgQAhIJ",
-            "CgVTUEFERRADEgUKAVMQAxILCgdOT1RSVU1QEAQSBgoCTlQQBBoCEAEqNQoD",
-            "VnVsEggKBE5PTkUQABIMCghDT05UUkFDVBABEgwKCERFRkVOREVSEAISCAoE",
-            "Qk9USBADYgZwcm90bzM="));
+            "Cg1tZXNzYWdlLnByb3RvEghBSUJyaWRnZSJJCgZQbGF5ZXISHAoEcm9sZRgB",
+            "IAEoDjIOLkFJQnJpZGdlLlJvbGUSIQoEc2VhdBgCIAEoDjITLkFJQnJpZGdl",
+            "LkRpcmVjdGlvbiIyCgRDYXJkEhwKBHN1aXQYASABKA4yDi5BSUJyaWRnZS5T",
+            "dWl0EgwKBHJhbmsYAiABKA0iRgoFUm91bmQSHgoEbGVhZBgBIAEoCzIQLkFJ",
+            "QnJpZGdlLlBsYXllchIdCgVjYXJkcxgCIAMoCzIOLkFJQnJpZGdlLkNhcmQi",
+            "kAMKEEN1cnJlbnRTaXR1YXRpb24SDwoHdGFibGVJRBgBIAEoDRIkCg12dWxu",
+            "ZXJhYmlsaXR5GAIgASgOMg0uQUlCcmlkZ2UuVnVsEiQKCGNvbnRyYWN0GAMg",
+            "ASgLMhIuQUlCcmlkZ2UuQ29udHJhY3QSIgoId2hvc1R1cm4YBCABKAsyEC5B",
+            "SUJyaWRnZS5QbGF5ZXISFAoMZmluaXNoZWREdW1zGAUgASgNEhcKD2NvbnRy",
+            "YWN0ZXJTY29yZRgGIAEoDRIVCg1kZWZlbmRlclNjb3JlGAcgASgNEiUKDWRl",
+            "Y2xhcmVyQ2FyZHMYCCADKAsyDi5BSUJyaWRnZS5DYXJkEiEKCWxvcHBDYXJk",
+            "cxgJIAMoCzIOLkFJQnJpZGdlLkNhcmQSIgoKZHVtbXlDYXJkcxgKIAMoCzIO",
+            "LkFJQnJpZGdlLkNhcmQSIQoJcm9wcENhcmRzGAsgAygLMg4uQUlCcmlkZ2Uu",
+            "Q2FyZBIkCgtwbGF5SGlzdG9yeRgMIAMoCzIPLkFJQnJpZGdlLlJvdW5kIsAB",
+            "CghDb250cmFjdBIPCgdkZWNpZGVkGAEgASgIEhwKBHN1aXQYAiABKA4yDi5B",
+            "SUJyaWRnZS5TdWl0Eg0KBWxldmVsGAMgASgNEisKB2RvdWJsZWQYBCABKA4y",
+            "Gi5BSUJyaWRnZS5Db250cmFjdC5Eb3VibGVkEicKD2NvbnRyYWN0SGlzdG9y",
+            "eRgFIAMoCzIOLkFJQnJpZGdlLkNhcmQiIAoHRG91YmxlZBIGCgJOTxAAEgUK",
+            "AVgQARIGCgJYWBACIjUKBUhlbGxvEh4KBHNlYXQYASABKAsyEC5BSUJyaWRn",
+            "ZS5QbGF5ZXISDAoEY29kZRgCIAEoDSI+Cg1IZWxsb1Jlc3BvbnNlEg4KBnNl",
+            "YXRlZBgBIAEoCBIPCgd0YWJsZUlEGAIgASgNEgwKBGNvZGUYAyABKA0ijgIK",
+            "CUdhbWVTdGF0ZRIPCgd0YWJsZUlEGAEgASgNEiQKDXZ1bG5lcmFiaWxpdHkY",
+            "AiABKA4yDS5BSUJyaWRnZS5WdWwSHQoDd2hvGAMgASgLMhAuQUlCcmlkZ2Uu",
+            "UGxheWVyEhwKBGhhbmQYBCADKAsyDi5BSUJyaWRnZS5DYXJkEh0KBWR1bW15",
+            "GAUgAygLMg4uQUlCcmlkZ2UuQ2FyZBIkCgtwbGF5SGlzdG9yeRgGIAMoCzIP",
+            "LkFJQnJpZGdlLlJvdW5kEiQKCGNvbnRyYWN0GAcgASgLMhIuQUlCcmlkZ2Uu",
+            "Q29udHJhY3QSIgoKdmFsaWRQbGF5cxgIIAMoCzIOLkFJQnJpZGdlLkNhcmQi",
+            "VAoEUGxheRIPCgd0YWJsZUlEGAEgASgNEh0KA3dobxgCIAEoCzIQLkFJQnJp",
+            "ZGdlLlBsYXllchIcCgRjYXJkGAMgASgLMg4uQUlCcmlkZ2UuQ2FyZCKUAQoK",
+            "R2FtZVJlc3VsdBIPCgd0YWJsZUlEGAEgASgNEiQKCGNvbnRyYWN0GAIgASgL",
+            "MhIuQUlCcmlkZ2UuQ29udHJhY3QSDgoGcmVzdWx0GAMgASgFEhUKDWRlY2xh",
+            "cmVyU2NvcmUYBCABKAUSEwoLZGVjbGFyZXJQYXIYBSABKAUSEwoLZGVjbGFy",
+            "ZXJJTVAYBiABKAUqOwoEUm9sZRIMCghERUNMQVJFUhAAEggKBExPUFAQARIJ",
+            "CgVEVU1NWRACEggKBFJPUFAQAxIGCgJOTxAEKjUKCURpcmVjdGlvbhIJCgVO",
+            "T1JUSBAAEggKBEVBU1QQARIJCgVTT1VUSBACEggKBFdFU1QQAyqMAQoEU3Vp",
+            "dBIICgRDTFVCEAASBQoBQxAAEgsKB0RJQU1PTkQQARIFCgFEEAESCQoFSEVB",
+            "UlQQAhIFCgFIEAISCQoFU1BBREUQAxIFCgFTEAMSCwoHTk9UUlVNUBAEEgYK",
+            "Ak5UEAQSCgoGRE9VQkxFEAUSBQoBWBAFEggKBFBBU1MQBhIFCgFQEAYaAhAB",
+            "KjUKA1Z1bBIICgROT05FEAASDAoIQ09OVFJBQ1QQARIMCghERUZFTkRFUhAC",
+            "EggKBEJPVEgQA2IGcHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
-          new pbr::GeneratedClrTypeInfo(new[] {typeof(global::AIBridge.Player), typeof(global::AIBridge.Suit), typeof(global::AIBridge.Vul), }, null, new pbr::GeneratedClrTypeInfo[] {
+          new pbr::GeneratedClrTypeInfo(new[] {typeof(global::AIBridge.Role), typeof(global::AIBridge.Direction), typeof(global::AIBridge.Suit), typeof(global::AIBridge.Vul), }, null, new pbr::GeneratedClrTypeInfo[] {
+            new pbr::GeneratedClrTypeInfo(typeof(global::AIBridge.Player), global::AIBridge.Player.Parser, new[]{ "Role", "Seat" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::AIBridge.Card), global::AIBridge.Card.Parser, new[]{ "Suit", "Rank" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::AIBridge.TrickHistory), global::AIBridge.TrickHistory.Parser, new[]{ "Lead", "Cards" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::AIBridge.Contract), global::AIBridge.Contract.Parser, new[]{ "Suit", "Level", "Doubled" }, null, new[]{ typeof(global::AIBridge.Contract.Types.Doubled) }, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::AIBridge.Round), global::AIBridge.Round.Parser, new[]{ "Lead", "Cards" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::AIBridge.CurrentSituation), global::AIBridge.CurrentSituation.Parser, new[]{ "TableID", "Vulnerability", "Contract", "WhosTurn", "FinishedDums", "ContracterScore", "DefenderScore", "DeclarerCards", "LoppCards", "DummyCards", "RoppCards", "PlayHistory" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::AIBridge.Contract), global::AIBridge.Contract.Parser, new[]{ "Decided", "Suit", "Level", "Doubled", "ContractHistory" }, null, new[]{ typeof(global::AIBridge.Contract.Types.Doubled) }, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::AIBridge.Hello), global::AIBridge.Hello.Parser, new[]{ "Seat", "Code" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::AIBridge.HelloResponse), global::AIBridge.HelloResponse.Parser, new[]{ "Seated", "TableID" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::AIBridge.HelloResponse), global::AIBridge.HelloResponse.Parser, new[]{ "Seated", "TableID", "Code" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::AIBridge.GameState), global::AIBridge.GameState.Parser, new[]{ "TableID", "Vulnerability", "Who", "Hand", "Dummy", "PlayHistory", "Contract", "ValidPlays" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::AIBridge.Play), global::AIBridge.Play.Parser, new[]{ "TableID", "Who", "Card" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::AIBridge.GameResult), global::AIBridge.GameResult.Parser, new[]{ "TableID", "Contract", "Result", "DeclarerScore", "DeclarerPar", "DeclarerIMP" }, null, null, null, null)
@@ -67,11 +83,19 @@ namespace AIBridge {
 
   }
   #region Enums
-  public enum Player {
+  public enum Role {
     [pbr::OriginalName("DECLARER")] Declarer = 0,
     [pbr::OriginalName("LOPP")] Lopp = 1,
     [pbr::OriginalName("DUMMY")] Dummy = 2,
     [pbr::OriginalName("ROPP")] Ropp = 3,
+    [pbr::OriginalName("NO")] No = 4,
+  }
+
+  public enum Direction {
+    [pbr::OriginalName("NORTH")] North = 0,
+    [pbr::OriginalName("EAST")] East = 1,
+    [pbr::OriginalName("SOUTH")] South = 2,
+    [pbr::OriginalName("WEST")] West = 3,
   }
 
   public enum Suit {
@@ -85,6 +109,10 @@ namespace AIBridge {
     [pbr::OriginalName("S", PreferredAlias = false)] S = 3,
     [pbr::OriginalName("NOTRUMP")] Notrump = 4,
     [pbr::OriginalName("NT", PreferredAlias = false)] Nt = 4,
+    [pbr::OriginalName("DOUBLE")] Double = 5,
+    [pbr::OriginalName("X", PreferredAlias = false)] X = 5,
+    [pbr::OriginalName("PASS")] Pass = 6,
+    [pbr::OriginalName("P", PreferredAlias = false)] P = 6,
   }
 
   public enum Vul {
@@ -97,6 +125,214 @@ namespace AIBridge {
   #endregion
 
   #region Messages
+  public sealed partial class Player : pb::IMessage<Player>
+  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      , pb::IBufferMessage
+  #endif
+  {
+    private static readonly pb::MessageParser<Player> _parser = new pb::MessageParser<Player>(() => new Player());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pb::MessageParser<Player> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::AIBridge.MessageReflection.Descriptor.MessageTypes[0]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public Player() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public Player(Player other) : this() {
+      role_ = other.role_;
+      seat_ = other.seat_;
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public Player Clone() {
+      return new Player(this);
+    }
+
+    /// <summary>Field number for the "role" field.</summary>
+    public const int RoleFieldNumber = 1;
+    private global::AIBridge.Role role_ = global::AIBridge.Role.Declarer;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public global::AIBridge.Role Role {
+      get { return role_; }
+      set {
+        role_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "seat" field.</summary>
+    public const int SeatFieldNumber = 2;
+    private global::AIBridge.Direction seat_ = global::AIBridge.Direction.North;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public global::AIBridge.Direction Seat {
+      get { return seat_; }
+      set {
+        seat_ = value;
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override bool Equals(object other) {
+      return Equals(other as Player);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool Equals(Player other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (Role != other.Role) return false;
+      if (Seat != other.Seat) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (Role != global::AIBridge.Role.Declarer) hash ^= Role.GetHashCode();
+      if (Seat != global::AIBridge.Direction.North) hash ^= Seat.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void WriteTo(pb::CodedOutputStream output) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      output.WriteRawMessage(this);
+    #else
+      if (Role != global::AIBridge.Role.Declarer) {
+        output.WriteRawTag(8);
+        output.WriteEnum((int) Role);
+      }
+      if (Seat != global::AIBridge.Direction.North) {
+        output.WriteRawTag(16);
+        output.WriteEnum((int) Seat);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      if (Role != global::AIBridge.Role.Declarer) {
+        output.WriteRawTag(8);
+        output.WriteEnum((int) Role);
+      }
+      if (Seat != global::AIBridge.Direction.North) {
+        output.WriteRawTag(16);
+        output.WriteEnum((int) Seat);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(ref output);
+      }
+    }
+    #endif
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public int CalculateSize() {
+      int size = 0;
+      if (Role != global::AIBridge.Role.Declarer) {
+        size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) Role);
+      }
+      if (Seat != global::AIBridge.Direction.North) {
+        size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) Seat);
+      }
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(Player other) {
+      if (other == null) {
+        return;
+      }
+      if (other.Role != global::AIBridge.Role.Declarer) {
+        Role = other.Role;
+      }
+      if (other.Seat != global::AIBridge.Direction.North) {
+        Seat = other.Seat;
+      }
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(pb::CodedInputStream input) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      input.ReadRawMessage(this);
+    #else
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 8: {
+            Role = (global::AIBridge.Role) input.ReadEnum();
+            break;
+          }
+          case 16: {
+            Seat = (global::AIBridge.Direction) input.ReadEnum();
+            break;
+          }
+        }
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+            break;
+          case 8: {
+            Role = (global::AIBridge.Role) input.ReadEnum();
+            break;
+          }
+          case 16: {
+            Seat = (global::AIBridge.Direction) input.ReadEnum();
+            break;
+          }
+        }
+      }
+    }
+    #endif
+
+  }
+
   public sealed partial class Card : pb::IMessage<Card>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
@@ -109,7 +345,7 @@ namespace AIBridge {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::AIBridge.MessageReflection.Descriptor.MessageTypes[0]; }
+      get { return global::AIBridge.MessageReflection.Descriptor.MessageTypes[1]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -305,19 +541,19 @@ namespace AIBridge {
 
   }
 
-  public sealed partial class TrickHistory : pb::IMessage<TrickHistory>
+  public sealed partial class Round : pb::IMessage<Round>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
   #endif
   {
-    private static readonly pb::MessageParser<TrickHistory> _parser = new pb::MessageParser<TrickHistory>(() => new TrickHistory());
+    private static readonly pb::MessageParser<Round> _parser = new pb::MessageParser<Round>(() => new Round());
     private pb::UnknownFieldSet _unknownFields;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public static pb::MessageParser<TrickHistory> Parser { get { return _parser; } }
+    public static pb::MessageParser<Round> Parser { get { return _parser; } }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::AIBridge.MessageReflection.Descriptor.MessageTypes[1]; }
+      get { return global::AIBridge.MessageReflection.Descriptor.MessageTypes[2]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -326,27 +562,27 @@ namespace AIBridge {
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public TrickHistory() {
+    public Round() {
       OnConstruction();
     }
 
     partial void OnConstruction();
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public TrickHistory(TrickHistory other) : this() {
-      lead_ = other.lead_;
+    public Round(Round other) : this() {
+      lead_ = other.lead_ != null ? other.lead_.Clone() : null;
       cards_ = other.cards_.Clone();
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public TrickHistory Clone() {
-      return new TrickHistory(this);
+    public Round Clone() {
+      return new Round(this);
     }
 
     /// <summary>Field number for the "lead" field.</summary>
     public const int LeadFieldNumber = 1;
-    private global::AIBridge.Player lead_ = global::AIBridge.Player.Declarer;
+    private global::AIBridge.Player lead_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public global::AIBridge.Player Lead {
       get { return lead_; }
@@ -367,18 +603,18 @@ namespace AIBridge {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override bool Equals(object other) {
-      return Equals(other as TrickHistory);
+      return Equals(other as Round);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public bool Equals(TrickHistory other) {
+    public bool Equals(Round other) {
       if (ReferenceEquals(other, null)) {
         return false;
       }
       if (ReferenceEquals(other, this)) {
         return true;
       }
-      if (Lead != other.Lead) return false;
+      if (!object.Equals(Lead, other.Lead)) return false;
       if(!cards_.Equals(other.cards_)) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
@@ -386,7 +622,7 @@ namespace AIBridge {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override int GetHashCode() {
       int hash = 1;
-      if (Lead != global::AIBridge.Player.Declarer) hash ^= Lead.GetHashCode();
+      if (lead_ != null) hash ^= Lead.GetHashCode();
       hash ^= cards_.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
@@ -404,9 +640,9 @@ namespace AIBridge {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
     #else
-      if (Lead != global::AIBridge.Player.Declarer) {
-        output.WriteRawTag(8);
-        output.WriteEnum((int) Lead);
+      if (lead_ != null) {
+        output.WriteRawTag(10);
+        output.WriteMessage(Lead);
       }
       cards_.WriteTo(output, _repeated_cards_codec);
       if (_unknownFields != null) {
@@ -418,9 +654,9 @@ namespace AIBridge {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (Lead != global::AIBridge.Player.Declarer) {
-        output.WriteRawTag(8);
-        output.WriteEnum((int) Lead);
+      if (lead_ != null) {
+        output.WriteRawTag(10);
+        output.WriteMessage(Lead);
       }
       cards_.WriteTo(ref output, _repeated_cards_codec);
       if (_unknownFields != null) {
@@ -432,8 +668,8 @@ namespace AIBridge {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
       int size = 0;
-      if (Lead != global::AIBridge.Player.Declarer) {
-        size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) Lead);
+      if (lead_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(Lead);
       }
       size += cards_.CalculateSize(_repeated_cards_codec);
       if (_unknownFields != null) {
@@ -443,12 +679,15 @@ namespace AIBridge {
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public void MergeFrom(TrickHistory other) {
+    public void MergeFrom(Round other) {
       if (other == null) {
         return;
       }
-      if (other.Lead != global::AIBridge.Player.Declarer) {
-        Lead = other.Lead;
+      if (other.lead_ != null) {
+        if (lead_ == null) {
+          Lead = new global::AIBridge.Player();
+        }
+        Lead.MergeFrom(other.Lead);
       }
       cards_.Add(other.cards_);
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
@@ -465,8 +704,11 @@ namespace AIBridge {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
-          case 8: {
-            Lead = (global::AIBridge.Player) input.ReadEnum();
+          case 10: {
+            if (lead_ == null) {
+              Lead = new global::AIBridge.Player();
+            }
+            input.ReadMessage(Lead);
             break;
           }
           case 18: {
@@ -487,12 +729,546 @@ namespace AIBridge {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
-          case 8: {
-            Lead = (global::AIBridge.Player) input.ReadEnum();
+          case 10: {
+            if (lead_ == null) {
+              Lead = new global::AIBridge.Player();
+            }
+            input.ReadMessage(Lead);
             break;
           }
           case 18: {
             cards_.AddEntriesFrom(ref input, _repeated_cards_codec);
+            break;
+          }
+        }
+      }
+    }
+    #endif
+
+  }
+
+  public sealed partial class CurrentSituation : pb::IMessage<CurrentSituation>
+  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      , pb::IBufferMessage
+  #endif
+  {
+    private static readonly pb::MessageParser<CurrentSituation> _parser = new pb::MessageParser<CurrentSituation>(() => new CurrentSituation());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pb::MessageParser<CurrentSituation> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::AIBridge.MessageReflection.Descriptor.MessageTypes[3]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public CurrentSituation() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public CurrentSituation(CurrentSituation other) : this() {
+      tableID_ = other.tableID_;
+      vulnerability_ = other.vulnerability_;
+      contract_ = other.contract_ != null ? other.contract_.Clone() : null;
+      whosTurn_ = other.whosTurn_ != null ? other.whosTurn_.Clone() : null;
+      finishedDums_ = other.finishedDums_;
+      contracterScore_ = other.contracterScore_;
+      defenderScore_ = other.defenderScore_;
+      declarerCards_ = other.declarerCards_.Clone();
+      loppCards_ = other.loppCards_.Clone();
+      dummyCards_ = other.dummyCards_.Clone();
+      roppCards_ = other.roppCards_.Clone();
+      playHistory_ = other.playHistory_.Clone();
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public CurrentSituation Clone() {
+      return new CurrentSituation(this);
+    }
+
+    /// <summary>Field number for the "tableID" field.</summary>
+    public const int TableIDFieldNumber = 1;
+    private uint tableID_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public uint TableID {
+      get { return tableID_; }
+      set {
+        tableID_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "vulnerability" field.</summary>
+    public const int VulnerabilityFieldNumber = 2;
+    private global::AIBridge.Vul vulnerability_ = global::AIBridge.Vul.None;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public global::AIBridge.Vul Vulnerability {
+      get { return vulnerability_; }
+      set {
+        vulnerability_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "contract" field.</summary>
+    public const int ContractFieldNumber = 3;
+    private global::AIBridge.Contract contract_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public global::AIBridge.Contract Contract {
+      get { return contract_; }
+      set {
+        contract_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "whosTurn" field.</summary>
+    public const int WhosTurnFieldNumber = 4;
+    private global::AIBridge.Player whosTurn_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public global::AIBridge.Player WhosTurn {
+      get { return whosTurn_; }
+      set {
+        whosTurn_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "finishedDums" field.</summary>
+    public const int FinishedDumsFieldNumber = 5;
+    private uint finishedDums_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public uint FinishedDums {
+      get { return finishedDums_; }
+      set {
+        finishedDums_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "contracterScore" field.</summary>
+    public const int ContracterScoreFieldNumber = 6;
+    private uint contracterScore_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public uint ContracterScore {
+      get { return contracterScore_; }
+      set {
+        contracterScore_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "defenderScore" field.</summary>
+    public const int DefenderScoreFieldNumber = 7;
+    private uint defenderScore_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public uint DefenderScore {
+      get { return defenderScore_; }
+      set {
+        defenderScore_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "declarerCards" field.</summary>
+    public const int DeclarerCardsFieldNumber = 8;
+    private static readonly pb::FieldCodec<global::AIBridge.Card> _repeated_declarerCards_codec
+        = pb::FieldCodec.ForMessage(66, global::AIBridge.Card.Parser);
+    private readonly pbc::RepeatedField<global::AIBridge.Card> declarerCards_ = new pbc::RepeatedField<global::AIBridge.Card>();
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public pbc::RepeatedField<global::AIBridge.Card> DeclarerCards {
+      get { return declarerCards_; }
+    }
+
+    /// <summary>Field number for the "loppCards" field.</summary>
+    public const int LoppCardsFieldNumber = 9;
+    private static readonly pb::FieldCodec<global::AIBridge.Card> _repeated_loppCards_codec
+        = pb::FieldCodec.ForMessage(74, global::AIBridge.Card.Parser);
+    private readonly pbc::RepeatedField<global::AIBridge.Card> loppCards_ = new pbc::RepeatedField<global::AIBridge.Card>();
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public pbc::RepeatedField<global::AIBridge.Card> LoppCards {
+      get { return loppCards_; }
+    }
+
+    /// <summary>Field number for the "dummyCards" field.</summary>
+    public const int DummyCardsFieldNumber = 10;
+    private static readonly pb::FieldCodec<global::AIBridge.Card> _repeated_dummyCards_codec
+        = pb::FieldCodec.ForMessage(82, global::AIBridge.Card.Parser);
+    private readonly pbc::RepeatedField<global::AIBridge.Card> dummyCards_ = new pbc::RepeatedField<global::AIBridge.Card>();
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public pbc::RepeatedField<global::AIBridge.Card> DummyCards {
+      get { return dummyCards_; }
+    }
+
+    /// <summary>Field number for the "roppCards" field.</summary>
+    public const int RoppCardsFieldNumber = 11;
+    private static readonly pb::FieldCodec<global::AIBridge.Card> _repeated_roppCards_codec
+        = pb::FieldCodec.ForMessage(90, global::AIBridge.Card.Parser);
+    private readonly pbc::RepeatedField<global::AIBridge.Card> roppCards_ = new pbc::RepeatedField<global::AIBridge.Card>();
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public pbc::RepeatedField<global::AIBridge.Card> RoppCards {
+      get { return roppCards_; }
+    }
+
+    /// <summary>Field number for the "playHistory" field.</summary>
+    public const int PlayHistoryFieldNumber = 12;
+    private static readonly pb::FieldCodec<global::AIBridge.Round> _repeated_playHistory_codec
+        = pb::FieldCodec.ForMessage(98, global::AIBridge.Round.Parser);
+    private readonly pbc::RepeatedField<global::AIBridge.Round> playHistory_ = new pbc::RepeatedField<global::AIBridge.Round>();
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public pbc::RepeatedField<global::AIBridge.Round> PlayHistory {
+      get { return playHistory_; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override bool Equals(object other) {
+      return Equals(other as CurrentSituation);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool Equals(CurrentSituation other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (TableID != other.TableID) return false;
+      if (Vulnerability != other.Vulnerability) return false;
+      if (!object.Equals(Contract, other.Contract)) return false;
+      if (!object.Equals(WhosTurn, other.WhosTurn)) return false;
+      if (FinishedDums != other.FinishedDums) return false;
+      if (ContracterScore != other.ContracterScore) return false;
+      if (DefenderScore != other.DefenderScore) return false;
+      if(!declarerCards_.Equals(other.declarerCards_)) return false;
+      if(!loppCards_.Equals(other.loppCards_)) return false;
+      if(!dummyCards_.Equals(other.dummyCards_)) return false;
+      if(!roppCards_.Equals(other.roppCards_)) return false;
+      if(!playHistory_.Equals(other.playHistory_)) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (TableID != 0) hash ^= TableID.GetHashCode();
+      if (Vulnerability != global::AIBridge.Vul.None) hash ^= Vulnerability.GetHashCode();
+      if (contract_ != null) hash ^= Contract.GetHashCode();
+      if (whosTurn_ != null) hash ^= WhosTurn.GetHashCode();
+      if (FinishedDums != 0) hash ^= FinishedDums.GetHashCode();
+      if (ContracterScore != 0) hash ^= ContracterScore.GetHashCode();
+      if (DefenderScore != 0) hash ^= DefenderScore.GetHashCode();
+      hash ^= declarerCards_.GetHashCode();
+      hash ^= loppCards_.GetHashCode();
+      hash ^= dummyCards_.GetHashCode();
+      hash ^= roppCards_.GetHashCode();
+      hash ^= playHistory_.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void WriteTo(pb::CodedOutputStream output) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      output.WriteRawMessage(this);
+    #else
+      if (TableID != 0) {
+        output.WriteRawTag(8);
+        output.WriteUInt32(TableID);
+      }
+      if (Vulnerability != global::AIBridge.Vul.None) {
+        output.WriteRawTag(16);
+        output.WriteEnum((int) Vulnerability);
+      }
+      if (contract_ != null) {
+        output.WriteRawTag(26);
+        output.WriteMessage(Contract);
+      }
+      if (whosTurn_ != null) {
+        output.WriteRawTag(34);
+        output.WriteMessage(WhosTurn);
+      }
+      if (FinishedDums != 0) {
+        output.WriteRawTag(40);
+        output.WriteUInt32(FinishedDums);
+      }
+      if (ContracterScore != 0) {
+        output.WriteRawTag(48);
+        output.WriteUInt32(ContracterScore);
+      }
+      if (DefenderScore != 0) {
+        output.WriteRawTag(56);
+        output.WriteUInt32(DefenderScore);
+      }
+      declarerCards_.WriteTo(output, _repeated_declarerCards_codec);
+      loppCards_.WriteTo(output, _repeated_loppCards_codec);
+      dummyCards_.WriteTo(output, _repeated_dummyCards_codec);
+      roppCards_.WriteTo(output, _repeated_roppCards_codec);
+      playHistory_.WriteTo(output, _repeated_playHistory_codec);
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      if (TableID != 0) {
+        output.WriteRawTag(8);
+        output.WriteUInt32(TableID);
+      }
+      if (Vulnerability != global::AIBridge.Vul.None) {
+        output.WriteRawTag(16);
+        output.WriteEnum((int) Vulnerability);
+      }
+      if (contract_ != null) {
+        output.WriteRawTag(26);
+        output.WriteMessage(Contract);
+      }
+      if (whosTurn_ != null) {
+        output.WriteRawTag(34);
+        output.WriteMessage(WhosTurn);
+      }
+      if (FinishedDums != 0) {
+        output.WriteRawTag(40);
+        output.WriteUInt32(FinishedDums);
+      }
+      if (ContracterScore != 0) {
+        output.WriteRawTag(48);
+        output.WriteUInt32(ContracterScore);
+      }
+      if (DefenderScore != 0) {
+        output.WriteRawTag(56);
+        output.WriteUInt32(DefenderScore);
+      }
+      declarerCards_.WriteTo(ref output, _repeated_declarerCards_codec);
+      loppCards_.WriteTo(ref output, _repeated_loppCards_codec);
+      dummyCards_.WriteTo(ref output, _repeated_dummyCards_codec);
+      roppCards_.WriteTo(ref output, _repeated_roppCards_codec);
+      playHistory_.WriteTo(ref output, _repeated_playHistory_codec);
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(ref output);
+      }
+    }
+    #endif
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public int CalculateSize() {
+      int size = 0;
+      if (TableID != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeUInt32Size(TableID);
+      }
+      if (Vulnerability != global::AIBridge.Vul.None) {
+        size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) Vulnerability);
+      }
+      if (contract_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(Contract);
+      }
+      if (whosTurn_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(WhosTurn);
+      }
+      if (FinishedDums != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeUInt32Size(FinishedDums);
+      }
+      if (ContracterScore != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeUInt32Size(ContracterScore);
+      }
+      if (DefenderScore != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeUInt32Size(DefenderScore);
+      }
+      size += declarerCards_.CalculateSize(_repeated_declarerCards_codec);
+      size += loppCards_.CalculateSize(_repeated_loppCards_codec);
+      size += dummyCards_.CalculateSize(_repeated_dummyCards_codec);
+      size += roppCards_.CalculateSize(_repeated_roppCards_codec);
+      size += playHistory_.CalculateSize(_repeated_playHistory_codec);
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(CurrentSituation other) {
+      if (other == null) {
+        return;
+      }
+      if (other.TableID != 0) {
+        TableID = other.TableID;
+      }
+      if (other.Vulnerability != global::AIBridge.Vul.None) {
+        Vulnerability = other.Vulnerability;
+      }
+      if (other.contract_ != null) {
+        if (contract_ == null) {
+          Contract = new global::AIBridge.Contract();
+        }
+        Contract.MergeFrom(other.Contract);
+      }
+      if (other.whosTurn_ != null) {
+        if (whosTurn_ == null) {
+          WhosTurn = new global::AIBridge.Player();
+        }
+        WhosTurn.MergeFrom(other.WhosTurn);
+      }
+      if (other.FinishedDums != 0) {
+        FinishedDums = other.FinishedDums;
+      }
+      if (other.ContracterScore != 0) {
+        ContracterScore = other.ContracterScore;
+      }
+      if (other.DefenderScore != 0) {
+        DefenderScore = other.DefenderScore;
+      }
+      declarerCards_.Add(other.declarerCards_);
+      loppCards_.Add(other.loppCards_);
+      dummyCards_.Add(other.dummyCards_);
+      roppCards_.Add(other.roppCards_);
+      playHistory_.Add(other.playHistory_);
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(pb::CodedInputStream input) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      input.ReadRawMessage(this);
+    #else
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 8: {
+            TableID = input.ReadUInt32();
+            break;
+          }
+          case 16: {
+            Vulnerability = (global::AIBridge.Vul) input.ReadEnum();
+            break;
+          }
+          case 26: {
+            if (contract_ == null) {
+              Contract = new global::AIBridge.Contract();
+            }
+            input.ReadMessage(Contract);
+            break;
+          }
+          case 34: {
+            if (whosTurn_ == null) {
+              WhosTurn = new global::AIBridge.Player();
+            }
+            input.ReadMessage(WhosTurn);
+            break;
+          }
+          case 40: {
+            FinishedDums = input.ReadUInt32();
+            break;
+          }
+          case 48: {
+            ContracterScore = input.ReadUInt32();
+            break;
+          }
+          case 56: {
+            DefenderScore = input.ReadUInt32();
+            break;
+          }
+          case 66: {
+            declarerCards_.AddEntriesFrom(input, _repeated_declarerCards_codec);
+            break;
+          }
+          case 74: {
+            loppCards_.AddEntriesFrom(input, _repeated_loppCards_codec);
+            break;
+          }
+          case 82: {
+            dummyCards_.AddEntriesFrom(input, _repeated_dummyCards_codec);
+            break;
+          }
+          case 90: {
+            roppCards_.AddEntriesFrom(input, _repeated_roppCards_codec);
+            break;
+          }
+          case 98: {
+            playHistory_.AddEntriesFrom(input, _repeated_playHistory_codec);
+            break;
+          }
+        }
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+            break;
+          case 8: {
+            TableID = input.ReadUInt32();
+            break;
+          }
+          case 16: {
+            Vulnerability = (global::AIBridge.Vul) input.ReadEnum();
+            break;
+          }
+          case 26: {
+            if (contract_ == null) {
+              Contract = new global::AIBridge.Contract();
+            }
+            input.ReadMessage(Contract);
+            break;
+          }
+          case 34: {
+            if (whosTurn_ == null) {
+              WhosTurn = new global::AIBridge.Player();
+            }
+            input.ReadMessage(WhosTurn);
+            break;
+          }
+          case 40: {
+            FinishedDums = input.ReadUInt32();
+            break;
+          }
+          case 48: {
+            ContracterScore = input.ReadUInt32();
+            break;
+          }
+          case 56: {
+            DefenderScore = input.ReadUInt32();
+            break;
+          }
+          case 66: {
+            declarerCards_.AddEntriesFrom(ref input, _repeated_declarerCards_codec);
+            break;
+          }
+          case 74: {
+            loppCards_.AddEntriesFrom(ref input, _repeated_loppCards_codec);
+            break;
+          }
+          case 82: {
+            dummyCards_.AddEntriesFrom(ref input, _repeated_dummyCards_codec);
+            break;
+          }
+          case 90: {
+            roppCards_.AddEntriesFrom(ref input, _repeated_roppCards_codec);
+            break;
+          }
+          case 98: {
+            playHistory_.AddEntriesFrom(ref input, _repeated_playHistory_codec);
             break;
           }
         }
@@ -514,7 +1290,7 @@ namespace AIBridge {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::AIBridge.MessageReflection.Descriptor.MessageTypes[2]; }
+      get { return global::AIBridge.MessageReflection.Descriptor.MessageTypes[4]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -531,9 +1307,11 @@ namespace AIBridge {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public Contract(Contract other) : this() {
+      decided_ = other.decided_;
       suit_ = other.suit_;
       level_ = other.level_;
       doubled_ = other.doubled_;
+      contractHistory_ = other.contractHistory_.Clone();
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -542,8 +1320,19 @@ namespace AIBridge {
       return new Contract(this);
     }
 
+    /// <summary>Field number for the "decided" field.</summary>
+    public const int DecidedFieldNumber = 1;
+    private bool decided_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool Decided {
+      get { return decided_; }
+      set {
+        decided_ = value;
+      }
+    }
+
     /// <summary>Field number for the "suit" field.</summary>
-    public const int SuitFieldNumber = 1;
+    public const int SuitFieldNumber = 2;
     private global::AIBridge.Suit suit_ = global::AIBridge.Suit.Club;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public global::AIBridge.Suit Suit {
@@ -554,7 +1343,7 @@ namespace AIBridge {
     }
 
     /// <summary>Field number for the "level" field.</summary>
-    public const int LevelFieldNumber = 2;
+    public const int LevelFieldNumber = 3;
     private uint level_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public uint Level {
@@ -565,7 +1354,7 @@ namespace AIBridge {
     }
 
     /// <summary>Field number for the "doubled" field.</summary>
-    public const int DoubledFieldNumber = 3;
+    public const int DoubledFieldNumber = 4;
     private global::AIBridge.Contract.Types.Doubled doubled_ = global::AIBridge.Contract.Types.Doubled.No;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public global::AIBridge.Contract.Types.Doubled Doubled {
@@ -573,6 +1362,16 @@ namespace AIBridge {
       set {
         doubled_ = value;
       }
+    }
+
+    /// <summary>Field number for the "contractHistory" field.</summary>
+    public const int ContractHistoryFieldNumber = 5;
+    private static readonly pb::FieldCodec<global::AIBridge.Card> _repeated_contractHistory_codec
+        = pb::FieldCodec.ForMessage(42, global::AIBridge.Card.Parser);
+    private readonly pbc::RepeatedField<global::AIBridge.Card> contractHistory_ = new pbc::RepeatedField<global::AIBridge.Card>();
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public pbc::RepeatedField<global::AIBridge.Card> ContractHistory {
+      get { return contractHistory_; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -588,18 +1387,22 @@ namespace AIBridge {
       if (ReferenceEquals(other, this)) {
         return true;
       }
+      if (Decided != other.Decided) return false;
       if (Suit != other.Suit) return false;
       if (Level != other.Level) return false;
       if (Doubled != other.Doubled) return false;
+      if(!contractHistory_.Equals(other.contractHistory_)) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override int GetHashCode() {
       int hash = 1;
+      if (Decided != false) hash ^= Decided.GetHashCode();
       if (Suit != global::AIBridge.Suit.Club) hash ^= Suit.GetHashCode();
       if (Level != 0) hash ^= Level.GetHashCode();
       if (Doubled != global::AIBridge.Contract.Types.Doubled.No) hash ^= Doubled.GetHashCode();
+      hash ^= contractHistory_.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -616,18 +1419,23 @@ namespace AIBridge {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
     #else
-      if (Suit != global::AIBridge.Suit.Club) {
+      if (Decided != false) {
         output.WriteRawTag(8);
+        output.WriteBool(Decided);
+      }
+      if (Suit != global::AIBridge.Suit.Club) {
+        output.WriteRawTag(16);
         output.WriteEnum((int) Suit);
       }
       if (Level != 0) {
-        output.WriteRawTag(16);
+        output.WriteRawTag(24);
         output.WriteUInt32(Level);
       }
       if (Doubled != global::AIBridge.Contract.Types.Doubled.No) {
-        output.WriteRawTag(24);
+        output.WriteRawTag(32);
         output.WriteEnum((int) Doubled);
       }
+      contractHistory_.WriteTo(output, _repeated_contractHistory_codec);
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -637,18 +1445,23 @@ namespace AIBridge {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (Suit != global::AIBridge.Suit.Club) {
+      if (Decided != false) {
         output.WriteRawTag(8);
+        output.WriteBool(Decided);
+      }
+      if (Suit != global::AIBridge.Suit.Club) {
+        output.WriteRawTag(16);
         output.WriteEnum((int) Suit);
       }
       if (Level != 0) {
-        output.WriteRawTag(16);
+        output.WriteRawTag(24);
         output.WriteUInt32(Level);
       }
       if (Doubled != global::AIBridge.Contract.Types.Doubled.No) {
-        output.WriteRawTag(24);
+        output.WriteRawTag(32);
         output.WriteEnum((int) Doubled);
       }
+      contractHistory_.WriteTo(ref output, _repeated_contractHistory_codec);
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
       }
@@ -658,6 +1471,9 @@ namespace AIBridge {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
       int size = 0;
+      if (Decided != false) {
+        size += 1 + 1;
+      }
       if (Suit != global::AIBridge.Suit.Club) {
         size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) Suit);
       }
@@ -667,6 +1483,7 @@ namespace AIBridge {
       if (Doubled != global::AIBridge.Contract.Types.Doubled.No) {
         size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) Doubled);
       }
+      size += contractHistory_.CalculateSize(_repeated_contractHistory_codec);
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
       }
@@ -678,6 +1495,9 @@ namespace AIBridge {
       if (other == null) {
         return;
       }
+      if (other.Decided != false) {
+        Decided = other.Decided;
+      }
       if (other.Suit != global::AIBridge.Suit.Club) {
         Suit = other.Suit;
       }
@@ -687,6 +1507,7 @@ namespace AIBridge {
       if (other.Doubled != global::AIBridge.Contract.Types.Doubled.No) {
         Doubled = other.Doubled;
       }
+      contractHistory_.Add(other.contractHistory_);
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
 
@@ -702,15 +1523,23 @@ namespace AIBridge {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
           case 8: {
-            Suit = (global::AIBridge.Suit) input.ReadEnum();
+            Decided = input.ReadBool();
             break;
           }
           case 16: {
-            Level = input.ReadUInt32();
+            Suit = (global::AIBridge.Suit) input.ReadEnum();
             break;
           }
           case 24: {
+            Level = input.ReadUInt32();
+            break;
+          }
+          case 32: {
             Doubled = (global::AIBridge.Contract.Types.Doubled) input.ReadEnum();
+            break;
+          }
+          case 42: {
+            contractHistory_.AddEntriesFrom(input, _repeated_contractHistory_codec);
             break;
           }
         }
@@ -728,15 +1557,23 @@ namespace AIBridge {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
           case 8: {
-            Suit = (global::AIBridge.Suit) input.ReadEnum();
+            Decided = input.ReadBool();
             break;
           }
           case 16: {
-            Level = input.ReadUInt32();
+            Suit = (global::AIBridge.Suit) input.ReadEnum();
             break;
           }
           case 24: {
+            Level = input.ReadUInt32();
+            break;
+          }
+          case 32: {
             Doubled = (global::AIBridge.Contract.Types.Doubled) input.ReadEnum();
+            break;
+          }
+          case 42: {
+            contractHistory_.AddEntriesFrom(ref input, _repeated_contractHistory_codec);
             break;
           }
         }
@@ -771,7 +1608,7 @@ namespace AIBridge {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::AIBridge.MessageReflection.Descriptor.MessageTypes[3]; }
+      get { return global::AIBridge.MessageReflection.Descriptor.MessageTypes[5]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -788,7 +1625,7 @@ namespace AIBridge {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public Hello(Hello other) : this() {
-      seat_ = other.seat_;
+      seat_ = other.seat_ != null ? other.seat_.Clone() : null;
       code_ = other.code_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
@@ -800,7 +1637,7 @@ namespace AIBridge {
 
     /// <summary>Field number for the "seat" field.</summary>
     public const int SeatFieldNumber = 1;
-    private global::AIBridge.Player seat_ = global::AIBridge.Player.Declarer;
+    private global::AIBridge.Player seat_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public global::AIBridge.Player Seat {
       get { return seat_; }
@@ -833,7 +1670,7 @@ namespace AIBridge {
       if (ReferenceEquals(other, this)) {
         return true;
       }
-      if (Seat != other.Seat) return false;
+      if (!object.Equals(Seat, other.Seat)) return false;
       if (Code != other.Code) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
@@ -841,7 +1678,7 @@ namespace AIBridge {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override int GetHashCode() {
       int hash = 1;
-      if (Seat != global::AIBridge.Player.Declarer) hash ^= Seat.GetHashCode();
+      if (seat_ != null) hash ^= Seat.GetHashCode();
       if (Code != 0) hash ^= Code.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
@@ -859,9 +1696,9 @@ namespace AIBridge {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
     #else
-      if (Seat != global::AIBridge.Player.Declarer) {
-        output.WriteRawTag(8);
-        output.WriteEnum((int) Seat);
+      if (seat_ != null) {
+        output.WriteRawTag(10);
+        output.WriteMessage(Seat);
       }
       if (Code != 0) {
         output.WriteRawTag(16);
@@ -876,9 +1713,9 @@ namespace AIBridge {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (Seat != global::AIBridge.Player.Declarer) {
-        output.WriteRawTag(8);
-        output.WriteEnum((int) Seat);
+      if (seat_ != null) {
+        output.WriteRawTag(10);
+        output.WriteMessage(Seat);
       }
       if (Code != 0) {
         output.WriteRawTag(16);
@@ -893,8 +1730,8 @@ namespace AIBridge {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
       int size = 0;
-      if (Seat != global::AIBridge.Player.Declarer) {
-        size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) Seat);
+      if (seat_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(Seat);
       }
       if (Code != 0) {
         size += 1 + pb::CodedOutputStream.ComputeUInt32Size(Code);
@@ -910,8 +1747,11 @@ namespace AIBridge {
       if (other == null) {
         return;
       }
-      if (other.Seat != global::AIBridge.Player.Declarer) {
-        Seat = other.Seat;
+      if (other.seat_ != null) {
+        if (seat_ == null) {
+          Seat = new global::AIBridge.Player();
+        }
+        Seat.MergeFrom(other.Seat);
       }
       if (other.Code != 0) {
         Code = other.Code;
@@ -930,8 +1770,11 @@ namespace AIBridge {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
-          case 8: {
-            Seat = (global::AIBridge.Player) input.ReadEnum();
+          case 10: {
+            if (seat_ == null) {
+              Seat = new global::AIBridge.Player();
+            }
+            input.ReadMessage(Seat);
             break;
           }
           case 16: {
@@ -952,8 +1795,11 @@ namespace AIBridge {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
-          case 8: {
-            Seat = (global::AIBridge.Player) input.ReadEnum();
+          case 10: {
+            if (seat_ == null) {
+              Seat = new global::AIBridge.Player();
+            }
+            input.ReadMessage(Seat);
             break;
           }
           case 16: {
@@ -979,7 +1825,7 @@ namespace AIBridge {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::AIBridge.MessageReflection.Descriptor.MessageTypes[4]; }
+      get { return global::AIBridge.MessageReflection.Descriptor.MessageTypes[6]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -998,6 +1844,7 @@ namespace AIBridge {
     public HelloResponse(HelloResponse other) : this() {
       seated_ = other.seated_;
       tableID_ = other.tableID_;
+      code_ = other.code_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -1028,6 +1875,17 @@ namespace AIBridge {
       }
     }
 
+    /// <summary>Field number for the "code" field.</summary>
+    public const int CodeFieldNumber = 3;
+    private uint code_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public uint Code {
+      get { return code_; }
+      set {
+        code_ = value;
+      }
+    }
+
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override bool Equals(object other) {
       return Equals(other as HelloResponse);
@@ -1043,6 +1901,7 @@ namespace AIBridge {
       }
       if (Seated != other.Seated) return false;
       if (TableID != other.TableID) return false;
+      if (Code != other.Code) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -1051,6 +1910,7 @@ namespace AIBridge {
       int hash = 1;
       if (Seated != false) hash ^= Seated.GetHashCode();
       if (TableID != 0) hash ^= TableID.GetHashCode();
+      if (Code != 0) hash ^= Code.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -1075,6 +1935,10 @@ namespace AIBridge {
         output.WriteRawTag(16);
         output.WriteUInt32(TableID);
       }
+      if (Code != 0) {
+        output.WriteRawTag(24);
+        output.WriteUInt32(Code);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -1092,6 +1956,10 @@ namespace AIBridge {
         output.WriteRawTag(16);
         output.WriteUInt32(TableID);
       }
+      if (Code != 0) {
+        output.WriteRawTag(24);
+        output.WriteUInt32(Code);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
       }
@@ -1106,6 +1974,9 @@ namespace AIBridge {
       }
       if (TableID != 0) {
         size += 1 + pb::CodedOutputStream.ComputeUInt32Size(TableID);
+      }
+      if (Code != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeUInt32Size(Code);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -1123,6 +1994,9 @@ namespace AIBridge {
       }
       if (other.TableID != 0) {
         TableID = other.TableID;
+      }
+      if (other.Code != 0) {
+        Code = other.Code;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
@@ -1144,6 +2018,10 @@ namespace AIBridge {
           }
           case 16: {
             TableID = input.ReadUInt32();
+            break;
+          }
+          case 24: {
+            Code = input.ReadUInt32();
             break;
           }
         }
@@ -1168,6 +2046,10 @@ namespace AIBridge {
             TableID = input.ReadUInt32();
             break;
           }
+          case 24: {
+            Code = input.ReadUInt32();
+            break;
+          }
         }
       }
     }
@@ -1187,7 +2069,7 @@ namespace AIBridge {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::AIBridge.MessageReflection.Descriptor.MessageTypes[5]; }
+      get { return global::AIBridge.MessageReflection.Descriptor.MessageTypes[7]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -1206,7 +2088,7 @@ namespace AIBridge {
     public GameState(GameState other) : this() {
       tableID_ = other.tableID_;
       vulnerability_ = other.vulnerability_;
-      who_ = other.who_;
+      who_ = other.who_ != null ? other.who_.Clone() : null;
       hand_ = other.hand_.Clone();
       dummy_ = other.dummy_.Clone();
       playHistory_ = other.playHistory_.Clone();
@@ -1244,7 +2126,7 @@ namespace AIBridge {
 
     /// <summary>Field number for the "who" field.</summary>
     public const int WhoFieldNumber = 3;
-    private global::AIBridge.Player who_ = global::AIBridge.Player.Declarer;
+    private global::AIBridge.Player who_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public global::AIBridge.Player Who {
       get { return who_; }
@@ -1275,11 +2157,11 @@ namespace AIBridge {
 
     /// <summary>Field number for the "playHistory" field.</summary>
     public const int PlayHistoryFieldNumber = 6;
-    private static readonly pb::FieldCodec<global::AIBridge.TrickHistory> _repeated_playHistory_codec
-        = pb::FieldCodec.ForMessage(50, global::AIBridge.TrickHistory.Parser);
-    private readonly pbc::RepeatedField<global::AIBridge.TrickHistory> playHistory_ = new pbc::RepeatedField<global::AIBridge.TrickHistory>();
+    private static readonly pb::FieldCodec<global::AIBridge.Round> _repeated_playHistory_codec
+        = pb::FieldCodec.ForMessage(50, global::AIBridge.Round.Parser);
+    private readonly pbc::RepeatedField<global::AIBridge.Round> playHistory_ = new pbc::RepeatedField<global::AIBridge.Round>();
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public pbc::RepeatedField<global::AIBridge.TrickHistory> PlayHistory {
+    public pbc::RepeatedField<global::AIBridge.Round> PlayHistory {
       get { return playHistory_; }
     }
 
@@ -1319,7 +2201,7 @@ namespace AIBridge {
       }
       if (TableID != other.TableID) return false;
       if (Vulnerability != other.Vulnerability) return false;
-      if (Who != other.Who) return false;
+      if (!object.Equals(Who, other.Who)) return false;
       if(!hand_.Equals(other.hand_)) return false;
       if(!dummy_.Equals(other.dummy_)) return false;
       if(!playHistory_.Equals(other.playHistory_)) return false;
@@ -1333,7 +2215,7 @@ namespace AIBridge {
       int hash = 1;
       if (TableID != 0) hash ^= TableID.GetHashCode();
       if (Vulnerability != global::AIBridge.Vul.None) hash ^= Vulnerability.GetHashCode();
-      if (Who != global::AIBridge.Player.Declarer) hash ^= Who.GetHashCode();
+      if (who_ != null) hash ^= Who.GetHashCode();
       hash ^= hand_.GetHashCode();
       hash ^= dummy_.GetHashCode();
       hash ^= playHistory_.GetHashCode();
@@ -1363,9 +2245,9 @@ namespace AIBridge {
         output.WriteRawTag(16);
         output.WriteEnum((int) Vulnerability);
       }
-      if (Who != global::AIBridge.Player.Declarer) {
-        output.WriteRawTag(24);
-        output.WriteEnum((int) Who);
+      if (who_ != null) {
+        output.WriteRawTag(26);
+        output.WriteMessage(Who);
       }
       hand_.WriteTo(output, _repeated_hand_codec);
       dummy_.WriteTo(output, _repeated_dummy_codec);
@@ -1392,9 +2274,9 @@ namespace AIBridge {
         output.WriteRawTag(16);
         output.WriteEnum((int) Vulnerability);
       }
-      if (Who != global::AIBridge.Player.Declarer) {
-        output.WriteRawTag(24);
-        output.WriteEnum((int) Who);
+      if (who_ != null) {
+        output.WriteRawTag(26);
+        output.WriteMessage(Who);
       }
       hand_.WriteTo(ref output, _repeated_hand_codec);
       dummy_.WriteTo(ref output, _repeated_dummy_codec);
@@ -1419,8 +2301,8 @@ namespace AIBridge {
       if (Vulnerability != global::AIBridge.Vul.None) {
         size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) Vulnerability);
       }
-      if (Who != global::AIBridge.Player.Declarer) {
-        size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) Who);
+      if (who_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(Who);
       }
       size += hand_.CalculateSize(_repeated_hand_codec);
       size += dummy_.CalculateSize(_repeated_dummy_codec);
@@ -1446,8 +2328,11 @@ namespace AIBridge {
       if (other.Vulnerability != global::AIBridge.Vul.None) {
         Vulnerability = other.Vulnerability;
       }
-      if (other.Who != global::AIBridge.Player.Declarer) {
-        Who = other.Who;
+      if (other.who_ != null) {
+        if (who_ == null) {
+          Who = new global::AIBridge.Player();
+        }
+        Who.MergeFrom(other.Who);
       }
       hand_.Add(other.hand_);
       dummy_.Add(other.dummy_);
@@ -1481,8 +2366,11 @@ namespace AIBridge {
             Vulnerability = (global::AIBridge.Vul) input.ReadEnum();
             break;
           }
-          case 24: {
-            Who = (global::AIBridge.Player) input.ReadEnum();
+          case 26: {
+            if (who_ == null) {
+              Who = new global::AIBridge.Player();
+            }
+            input.ReadMessage(Who);
             break;
           }
           case 34: {
@@ -1530,8 +2418,11 @@ namespace AIBridge {
             Vulnerability = (global::AIBridge.Vul) input.ReadEnum();
             break;
           }
-          case 24: {
-            Who = (global::AIBridge.Player) input.ReadEnum();
+          case 26: {
+            if (who_ == null) {
+              Who = new global::AIBridge.Player();
+            }
+            input.ReadMessage(Who);
             break;
           }
           case 34: {
@@ -1576,7 +2467,7 @@ namespace AIBridge {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::AIBridge.MessageReflection.Descriptor.MessageTypes[6]; }
+      get { return global::AIBridge.MessageReflection.Descriptor.MessageTypes[8]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -1594,7 +2485,7 @@ namespace AIBridge {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public Play(Play other) : this() {
       tableID_ = other.tableID_;
-      who_ = other.who_;
+      who_ = other.who_ != null ? other.who_.Clone() : null;
       card_ = other.card_ != null ? other.card_.Clone() : null;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
@@ -1617,7 +2508,7 @@ namespace AIBridge {
 
     /// <summary>Field number for the "who" field.</summary>
     public const int WhoFieldNumber = 2;
-    private global::AIBridge.Player who_ = global::AIBridge.Player.Declarer;
+    private global::AIBridge.Player who_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public global::AIBridge.Player Who {
       get { return who_; }
@@ -1651,7 +2542,7 @@ namespace AIBridge {
         return true;
       }
       if (TableID != other.TableID) return false;
-      if (Who != other.Who) return false;
+      if (!object.Equals(Who, other.Who)) return false;
       if (!object.Equals(Card, other.Card)) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
@@ -1660,7 +2551,7 @@ namespace AIBridge {
     public override int GetHashCode() {
       int hash = 1;
       if (TableID != 0) hash ^= TableID.GetHashCode();
-      if (Who != global::AIBridge.Player.Declarer) hash ^= Who.GetHashCode();
+      if (who_ != null) hash ^= Who.GetHashCode();
       if (card_ != null) hash ^= Card.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
@@ -1682,9 +2573,9 @@ namespace AIBridge {
         output.WriteRawTag(8);
         output.WriteUInt32(TableID);
       }
-      if (Who != global::AIBridge.Player.Declarer) {
-        output.WriteRawTag(16);
-        output.WriteEnum((int) Who);
+      if (who_ != null) {
+        output.WriteRawTag(18);
+        output.WriteMessage(Who);
       }
       if (card_ != null) {
         output.WriteRawTag(26);
@@ -1703,9 +2594,9 @@ namespace AIBridge {
         output.WriteRawTag(8);
         output.WriteUInt32(TableID);
       }
-      if (Who != global::AIBridge.Player.Declarer) {
-        output.WriteRawTag(16);
-        output.WriteEnum((int) Who);
+      if (who_ != null) {
+        output.WriteRawTag(18);
+        output.WriteMessage(Who);
       }
       if (card_ != null) {
         output.WriteRawTag(26);
@@ -1723,8 +2614,8 @@ namespace AIBridge {
       if (TableID != 0) {
         size += 1 + pb::CodedOutputStream.ComputeUInt32Size(TableID);
       }
-      if (Who != global::AIBridge.Player.Declarer) {
-        size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) Who);
+      if (who_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(Who);
       }
       if (card_ != null) {
         size += 1 + pb::CodedOutputStream.ComputeMessageSize(Card);
@@ -1743,8 +2634,11 @@ namespace AIBridge {
       if (other.TableID != 0) {
         TableID = other.TableID;
       }
-      if (other.Who != global::AIBridge.Player.Declarer) {
-        Who = other.Who;
+      if (other.who_ != null) {
+        if (who_ == null) {
+          Who = new global::AIBridge.Player();
+        }
+        Who.MergeFrom(other.Who);
       }
       if (other.card_ != null) {
         if (card_ == null) {
@@ -1770,8 +2664,11 @@ namespace AIBridge {
             TableID = input.ReadUInt32();
             break;
           }
-          case 16: {
-            Who = (global::AIBridge.Player) input.ReadEnum();
+          case 18: {
+            if (who_ == null) {
+              Who = new global::AIBridge.Player();
+            }
+            input.ReadMessage(Who);
             break;
           }
           case 26: {
@@ -1799,8 +2696,11 @@ namespace AIBridge {
             TableID = input.ReadUInt32();
             break;
           }
-          case 16: {
-            Who = (global::AIBridge.Player) input.ReadEnum();
+          case 18: {
+            if (who_ == null) {
+              Who = new global::AIBridge.Player();
+            }
+            input.ReadMessage(Who);
             break;
           }
           case 26: {
@@ -1829,7 +2729,7 @@ namespace AIBridge {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::AIBridge.MessageReflection.Descriptor.MessageTypes[7]; }
+      get { return global::AIBridge.MessageReflection.Descriptor.MessageTypes[9]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
