@@ -9,7 +9,7 @@ enum Role {
     NO = 4;
 }
 
-enum Direction {
+enum Seat {
     NORTH = 0;
     EAST = 1;
     SOUTH = 2;
@@ -43,7 +43,7 @@ enum Vul {
 
 message Player {
     Role role = 1;
-    Direction seat = 2;
+    Seat seat = 2;
 }
 
 message Card {

@@ -24,50 +24,50 @@ namespace TestSocket {
     static MessageReflection() {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
-            "Cg1tZXNzYWdlLnByb3RvEgp0ZXN0U29ja2V0Ik0KBlBsYXllchIeCgRyb2xl",
-            "GAEgASgOMhAudGVzdFNvY2tldC5Sb2xlEiMKBHNlYXQYAiABKA4yFS50ZXN0",
-            "U29ja2V0LkRpcmVjdGlvbiI0CgRDYXJkEh4KBHN1aXQYASABKA4yEC50ZXN0",
-            "U29ja2V0LlN1aXQSDAoEcmFuaxgCIAEoDSJKCgVSb3VuZBIgCgRsZWFkGAEg",
-            "ASgLMhIudGVzdFNvY2tldC5QbGF5ZXISHwoFY2FyZHMYAiADKAsyEC50ZXN0",
-            "U29ja2V0LkNhcmQioAMKEEN1cnJlbnRTaXR1YXRpb24SDwoHdGFibGVJRBgB",
-            "IAEoDRImCg12dWxuZXJhYmlsaXR5GAIgASgOMg8udGVzdFNvY2tldC5WdWwS",
-            "JgoIY29udHJhY3QYAyABKAsyFC50ZXN0U29ja2V0LkNvbnRyYWN0EiQKCHdo",
-            "b3NUdXJuGAQgASgLMhIudGVzdFNvY2tldC5QbGF5ZXISFAoMZmluaXNoZWRE",
-            "dW1zGAUgASgNEhcKD2NvbnRyYWN0ZXJTY29yZRgGIAEoDRIVCg1kZWZlbmRl",
-            "clNjb3JlGAcgASgNEicKDWRlY2xhcmVyQ2FyZHMYCCADKAsyEC50ZXN0U29j",
-            "a2V0LkNhcmQSIwoJbG9wcENhcmRzGAkgAygLMhAudGVzdFNvY2tldC5DYXJk",
-            "EiQKCmR1bW15Q2FyZHMYCiADKAsyEC50ZXN0U29ja2V0LkNhcmQSIwoJcm9w",
-            "cENhcmRzGAsgAygLMhAudGVzdFNvY2tldC5DYXJkEiYKC3BsYXlIaXN0b3J5",
-            "GAwgAygLMhEudGVzdFNvY2tldC5Sb3VuZCLGAQoIQ29udHJhY3QSDwoHZGVj",
-            "aWRlZBgBIAEoCBIeCgRzdWl0GAIgASgOMhAudGVzdFNvY2tldC5TdWl0Eg0K",
-            "BWxldmVsGAMgASgNEi0KB2RvdWJsZWQYBCABKA4yHC50ZXN0U29ja2V0LkNv",
-            "bnRyYWN0LkRvdWJsZWQSKQoPY29udHJhY3RIaXN0b3J5GAUgAygLMhAudGVz",
-            "dFNvY2tldC5DYXJkIiAKB0RvdWJsZWQSBgoCTk8QABIFCgFYEAESBgoCWFgQ",
-            "AiI3CgVIZWxsbxIgCgRzZWF0GAEgASgLMhIudGVzdFNvY2tldC5QbGF5ZXIS",
-            "DAoEY29kZRgCIAEoDSI+Cg1IZWxsb1Jlc3BvbnNlEg4KBnNlYXRlZBgBIAEo",
-            "CBIPCgd0YWJsZUlEGAIgASgNEgwKBGNvZGUYAyABKA0inAIKCUdhbWVTdGF0",
-            "ZRIPCgd0YWJsZUlEGAEgASgNEiYKDXZ1bG5lcmFiaWxpdHkYAiABKA4yDy50",
-            "ZXN0U29ja2V0LlZ1bBIfCgN3aG8YAyABKAsyEi50ZXN0U29ja2V0LlBsYXll",
-            "chIeCgRoYW5kGAQgAygLMhAudGVzdFNvY2tldC5DYXJkEh8KBWR1bW15GAUg",
-            "AygLMhAudGVzdFNvY2tldC5DYXJkEiYKC3BsYXlIaXN0b3J5GAYgAygLMhEu",
-            "dGVzdFNvY2tldC5Sb3VuZBImCghjb250cmFjdBgHIAEoCzIULnRlc3RTb2Nr",
-            "ZXQuQ29udHJhY3QSJAoKdmFsaWRQbGF5cxgIIAMoCzIQLnRlc3RTb2NrZXQu",
-            "Q2FyZCJYCgRQbGF5Eg8KB3RhYmxlSUQYASABKA0SHwoDd2hvGAIgASgLMhIu",
-            "dGVzdFNvY2tldC5QbGF5ZXISHgoEY2FyZBgDIAEoCzIQLnRlc3RTb2NrZXQu",
-            "Q2FyZCKWAQoKR2FtZVJlc3VsdBIPCgd0YWJsZUlEGAEgASgNEiYKCGNvbnRy",
-            "YWN0GAIgASgLMhQudGVzdFNvY2tldC5Db250cmFjdBIOCgZyZXN1bHQYAyAB",
-            "KAUSFQoNZGVjbGFyZXJTY29yZRgEIAEoBRITCgtkZWNsYXJlclBhchgFIAEo",
-            "BRITCgtkZWNsYXJlcklNUBgGIAEoBSo7CgRSb2xlEgwKCERFQ0xBUkVSEAAS",
-            "CAoETE9QUBABEgkKBURVTU1ZEAISCAoEUk9QUBADEgYKAk5PEAQqNQoJRGly",
-            "ZWN0aW9uEgkKBU5PUlRIEAASCAoERUFTVBABEgkKBVNPVVRIEAISCAoEV0VT",
-            "VBADKowBCgRTdWl0EggKBENMVUIQABIFCgFDEAASCwoHRElBTU9ORBABEgUK",
-            "AUQQARIJCgVIRUFSVBACEgUKAUgQAhIJCgVTUEFERRADEgUKAVMQAxILCgdO",
-            "T1RSVU1QEAQSBgoCTlQQBBIKCgZET1VCTEUQBRIFCgFYEAUSCAoEUEFTUxAG",
-            "EgUKAVAQBhoCEAEqNQoDVnVsEggKBE5PTkUQABIMCghDT05UUkFDVBABEgwK",
-            "CERFRkVOREVSEAISCAoEQk9USBADYgZwcm90bzM="));
+            "Cg1tZXNzYWdlLnByb3RvEgp0ZXN0U29ja2V0IkgKBlBsYXllchIeCgRyb2xl",
+            "GAEgASgOMhAudGVzdFNvY2tldC5Sb2xlEh4KBHNlYXQYAiABKA4yEC50ZXN0",
+            "U29ja2V0LlNlYXQiNAoEQ2FyZBIeCgRzdWl0GAEgASgOMhAudGVzdFNvY2tl",
+            "dC5TdWl0EgwKBHJhbmsYAiABKA0iSgoFUm91bmQSIAoEbGVhZBgBIAEoCzIS",
+            "LnRlc3RTb2NrZXQuUGxheWVyEh8KBWNhcmRzGAIgAygLMhAudGVzdFNvY2tl",
+            "dC5DYXJkIqADChBDdXJyZW50U2l0dWF0aW9uEg8KB3RhYmxlSUQYASABKA0S",
+            "JgoNdnVsbmVyYWJpbGl0eRgCIAEoDjIPLnRlc3RTb2NrZXQuVnVsEiYKCGNv",
+            "bnRyYWN0GAMgASgLMhQudGVzdFNvY2tldC5Db250cmFjdBIkCgh3aG9zVHVy",
+            "bhgEIAEoCzISLnRlc3RTb2NrZXQuUGxheWVyEhQKDGZpbmlzaGVkRHVtcxgF",
+            "IAEoDRIXCg9jb250cmFjdGVyU2NvcmUYBiABKA0SFQoNZGVmZW5kZXJTY29y",
+            "ZRgHIAEoDRInCg1kZWNsYXJlckNhcmRzGAggAygLMhAudGVzdFNvY2tldC5D",
+            "YXJkEiMKCWxvcHBDYXJkcxgJIAMoCzIQLnRlc3RTb2NrZXQuQ2FyZBIkCgpk",
+            "dW1teUNhcmRzGAogAygLMhAudGVzdFNvY2tldC5DYXJkEiMKCXJvcHBDYXJk",
+            "cxgLIAMoCzIQLnRlc3RTb2NrZXQuQ2FyZBImCgtwbGF5SGlzdG9yeRgMIAMo",
+            "CzIRLnRlc3RTb2NrZXQuUm91bmQixgEKCENvbnRyYWN0Eg8KB2RlY2lkZWQY",
+            "ASABKAgSHgoEc3VpdBgCIAEoDjIQLnRlc3RTb2NrZXQuU3VpdBINCgVsZXZl",
+            "bBgDIAEoDRItCgdkb3VibGVkGAQgASgOMhwudGVzdFNvY2tldC5Db250cmFj",
+            "dC5Eb3VibGVkEikKD2NvbnRyYWN0SGlzdG9yeRgFIAMoCzIQLnRlc3RTb2Nr",
+            "ZXQuQ2FyZCIgCgdEb3VibGVkEgYKAk5PEAASBQoBWBABEgYKAlhYEAIiNwoF",
+            "SGVsbG8SIAoEc2VhdBgBIAEoCzISLnRlc3RTb2NrZXQuUGxheWVyEgwKBGNv",
+            "ZGUYAiABKA0iPgoNSGVsbG9SZXNwb25zZRIOCgZzZWF0ZWQYASABKAgSDwoH",
+            "dGFibGVJRBgCIAEoDRIMCgRjb2RlGAMgASgNIpwCCglHYW1lU3RhdGUSDwoH",
+            "dGFibGVJRBgBIAEoDRImCg12dWxuZXJhYmlsaXR5GAIgASgOMg8udGVzdFNv",
+            "Y2tldC5WdWwSHwoDd2hvGAMgASgLMhIudGVzdFNvY2tldC5QbGF5ZXISHgoE",
+            "aGFuZBgEIAMoCzIQLnRlc3RTb2NrZXQuQ2FyZBIfCgVkdW1teRgFIAMoCzIQ",
+            "LnRlc3RTb2NrZXQuQ2FyZBImCgtwbGF5SGlzdG9yeRgGIAMoCzIRLnRlc3RT",
+            "b2NrZXQuUm91bmQSJgoIY29udHJhY3QYByABKAsyFC50ZXN0U29ja2V0LkNv",
+            "bnRyYWN0EiQKCnZhbGlkUGxheXMYCCADKAsyEC50ZXN0U29ja2V0LkNhcmQi",
+            "WAoEUGxheRIPCgd0YWJsZUlEGAEgASgNEh8KA3dobxgCIAEoCzISLnRlc3RT",
+            "b2NrZXQuUGxheWVyEh4KBGNhcmQYAyABKAsyEC50ZXN0U29ja2V0LkNhcmQi",
+            "lgEKCkdhbWVSZXN1bHQSDwoHdGFibGVJRBgBIAEoDRImCghjb250cmFjdBgC",
+            "IAEoCzIULnRlc3RTb2NrZXQuQ29udHJhY3QSDgoGcmVzdWx0GAMgASgFEhUK",
+            "DWRlY2xhcmVyU2NvcmUYBCABKAUSEwoLZGVjbGFyZXJQYXIYBSABKAUSEwoL",
+            "ZGVjbGFyZXJJTVAYBiABKAUqOwoEUm9sZRIMCghERUNMQVJFUhAAEggKBExP",
+            "UFAQARIJCgVEVU1NWRACEggKBFJPUFAQAxIGCgJOTxAEKjAKBFNlYXQSCQoF",
+            "Tk9SVEgQABIICgRFQVNUEAESCQoFU09VVEgQAhIICgRXRVNUEAMqjAEKBFN1",
+            "aXQSCAoEQ0xVQhAAEgUKAUMQABILCgdESUFNT05EEAESBQoBRBABEgkKBUhF",
+            "QVJUEAISBQoBSBACEgkKBVNQQURFEAMSBQoBUxADEgsKB05PVFJVTVAQBBIG",
+            "CgJOVBAEEgoKBkRPVUJMRRAFEgUKAVgQBRIICgRQQVNTEAYSBQoBUBAGGgIQ",
+            "ASo1CgNWdWwSCAoETk9ORRAAEgwKCENPTlRSQUNUEAESDAoIREVGRU5ERVIQ",
+            "AhIICgRCT1RIEANiBnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
-          new pbr::GeneratedClrTypeInfo(new[] {typeof(global::TestSocket.Role), typeof(global::TestSocket.Direction), typeof(global::TestSocket.Suit), typeof(global::TestSocket.Vul), }, null, new pbr::GeneratedClrTypeInfo[] {
+          new pbr::GeneratedClrTypeInfo(new[] {typeof(global::TestSocket.Role), typeof(global::TestSocket.Seat), typeof(global::TestSocket.Suit), typeof(global::TestSocket.Vul), }, null, new pbr::GeneratedClrTypeInfo[] {
             new pbr::GeneratedClrTypeInfo(typeof(global::TestSocket.Player), global::TestSocket.Player.Parser, new[]{ "Role", "Seat" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::TestSocket.Card), global::TestSocket.Card.Parser, new[]{ "Suit", "Rank" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::TestSocket.Round), global::TestSocket.Round.Parser, new[]{ "Lead", "Cards" }, null, null, null, null),
@@ -92,7 +92,7 @@ namespace TestSocket {
     [pbr::OriginalName("NO")] No = 4,
   }
 
-  public enum Direction {
+  public enum Seat {
     [pbr::OriginalName("NORTH")] North = 0,
     [pbr::OriginalName("EAST")] East = 1,
     [pbr::OriginalName("SOUTH")] South = 2,
@@ -178,9 +178,9 @@ namespace TestSocket {
 
     /// <summary>Field number for the "seat" field.</summary>
     public const int SeatFieldNumber = 2;
-    private global::TestSocket.Direction seat_ = global::TestSocket.Direction.North;
+    private global::TestSocket.Seat seat_ = global::TestSocket.Seat.North;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public global::TestSocket.Direction Seat {
+    public global::TestSocket.Seat Seat {
       get { return seat_; }
       set {
         seat_ = value;
@@ -209,7 +209,7 @@ namespace TestSocket {
     public override int GetHashCode() {
       int hash = 1;
       if (Role != global::TestSocket.Role.Declarer) hash ^= Role.GetHashCode();
-      if (Seat != global::TestSocket.Direction.North) hash ^= Seat.GetHashCode();
+      if (Seat != global::TestSocket.Seat.North) hash ^= Seat.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -230,7 +230,7 @@ namespace TestSocket {
         output.WriteRawTag(8);
         output.WriteEnum((int) Role);
       }
-      if (Seat != global::TestSocket.Direction.North) {
+      if (Seat != global::TestSocket.Seat.North) {
         output.WriteRawTag(16);
         output.WriteEnum((int) Seat);
       }
@@ -247,7 +247,7 @@ namespace TestSocket {
         output.WriteRawTag(8);
         output.WriteEnum((int) Role);
       }
-      if (Seat != global::TestSocket.Direction.North) {
+      if (Seat != global::TestSocket.Seat.North) {
         output.WriteRawTag(16);
         output.WriteEnum((int) Seat);
       }
@@ -263,7 +263,7 @@ namespace TestSocket {
       if (Role != global::TestSocket.Role.Declarer) {
         size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) Role);
       }
-      if (Seat != global::TestSocket.Direction.North) {
+      if (Seat != global::TestSocket.Seat.North) {
         size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) Seat);
       }
       if (_unknownFields != null) {
@@ -280,7 +280,7 @@ namespace TestSocket {
       if (other.Role != global::TestSocket.Role.Declarer) {
         Role = other.Role;
       }
-      if (other.Seat != global::TestSocket.Direction.North) {
+      if (other.Seat != global::TestSocket.Seat.North) {
         Seat = other.Seat;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
@@ -302,7 +302,7 @@ namespace TestSocket {
             break;
           }
           case 16: {
-            Seat = (global::TestSocket.Direction) input.ReadEnum();
+            Seat = (global::TestSocket.Seat) input.ReadEnum();
             break;
           }
         }
@@ -324,7 +324,7 @@ namespace TestSocket {
             break;
           }
           case 16: {
-            Seat = (global::TestSocket.Direction) input.ReadEnum();
+            Seat = (global::TestSocket.Seat) input.ReadEnum();
             break;
           }
         }

@@ -24,49 +24,49 @@ namespace AIBridge {
     static MessageReflection() {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
-            "Cg1tZXNzYWdlLnByb3RvEghBSUJyaWRnZSJJCgZQbGF5ZXISHAoEcm9sZRgB",
-            "IAEoDjIOLkFJQnJpZGdlLlJvbGUSIQoEc2VhdBgCIAEoDjITLkFJQnJpZGdl",
-            "LkRpcmVjdGlvbiIyCgRDYXJkEhwKBHN1aXQYASABKA4yDi5BSUJyaWRnZS5T",
-            "dWl0EgwKBHJhbmsYAiABKA0iRgoFUm91bmQSHgoEbGVhZBgBIAEoCzIQLkFJ",
-            "QnJpZGdlLlBsYXllchIdCgVjYXJkcxgCIAMoCzIOLkFJQnJpZGdlLkNhcmQi",
-            "kAMKEEN1cnJlbnRTaXR1YXRpb24SDwoHdGFibGVJRBgBIAEoDRIkCg12dWxu",
-            "ZXJhYmlsaXR5GAIgASgOMg0uQUlCcmlkZ2UuVnVsEiQKCGNvbnRyYWN0GAMg",
-            "ASgLMhIuQUlCcmlkZ2UuQ29udHJhY3QSIgoId2hvc1R1cm4YBCABKAsyEC5B",
-            "SUJyaWRnZS5QbGF5ZXISFAoMZmluaXNoZWREdW1zGAUgASgNEhcKD2NvbnRy",
-            "YWN0ZXJTY29yZRgGIAEoDRIVCg1kZWZlbmRlclNjb3JlGAcgASgNEiUKDWRl",
-            "Y2xhcmVyQ2FyZHMYCCADKAsyDi5BSUJyaWRnZS5DYXJkEiEKCWxvcHBDYXJk",
-            "cxgJIAMoCzIOLkFJQnJpZGdlLkNhcmQSIgoKZHVtbXlDYXJkcxgKIAMoCzIO",
-            "LkFJQnJpZGdlLkNhcmQSIQoJcm9wcENhcmRzGAsgAygLMg4uQUlCcmlkZ2Uu",
-            "Q2FyZBIkCgtwbGF5SGlzdG9yeRgMIAMoCzIPLkFJQnJpZGdlLlJvdW5kIsAB",
-            "CghDb250cmFjdBIPCgdkZWNpZGVkGAEgASgIEhwKBHN1aXQYAiABKA4yDi5B",
-            "SUJyaWRnZS5TdWl0Eg0KBWxldmVsGAMgASgNEisKB2RvdWJsZWQYBCABKA4y",
-            "Gi5BSUJyaWRnZS5Db250cmFjdC5Eb3VibGVkEicKD2NvbnRyYWN0SGlzdG9y",
-            "eRgFIAMoCzIOLkFJQnJpZGdlLkNhcmQiIAoHRG91YmxlZBIGCgJOTxAAEgUK",
-            "AVgQARIGCgJYWBACIjUKBUhlbGxvEh4KBHNlYXQYASABKAsyEC5BSUJyaWRn",
-            "ZS5QbGF5ZXISDAoEY29kZRgCIAEoDSI+Cg1IZWxsb1Jlc3BvbnNlEg4KBnNl",
-            "YXRlZBgBIAEoCBIPCgd0YWJsZUlEGAIgASgNEgwKBGNvZGUYAyABKA0ijgIK",
-            "CUdhbWVTdGF0ZRIPCgd0YWJsZUlEGAEgASgNEiQKDXZ1bG5lcmFiaWxpdHkY",
-            "AiABKA4yDS5BSUJyaWRnZS5WdWwSHQoDd2hvGAMgASgLMhAuQUlCcmlkZ2Uu",
-            "UGxheWVyEhwKBGhhbmQYBCADKAsyDi5BSUJyaWRnZS5DYXJkEh0KBWR1bW15",
-            "GAUgAygLMg4uQUlCcmlkZ2UuQ2FyZBIkCgtwbGF5SGlzdG9yeRgGIAMoCzIP",
-            "LkFJQnJpZGdlLlJvdW5kEiQKCGNvbnRyYWN0GAcgASgLMhIuQUlCcmlkZ2Uu",
-            "Q29udHJhY3QSIgoKdmFsaWRQbGF5cxgIIAMoCzIOLkFJQnJpZGdlLkNhcmQi",
-            "VAoEUGxheRIPCgd0YWJsZUlEGAEgASgNEh0KA3dobxgCIAEoCzIQLkFJQnJp",
-            "ZGdlLlBsYXllchIcCgRjYXJkGAMgASgLMg4uQUlCcmlkZ2UuQ2FyZCKUAQoK",
-            "R2FtZVJlc3VsdBIPCgd0YWJsZUlEGAEgASgNEiQKCGNvbnRyYWN0GAIgASgL",
-            "MhIuQUlCcmlkZ2UuQ29udHJhY3QSDgoGcmVzdWx0GAMgASgFEhUKDWRlY2xh",
-            "cmVyU2NvcmUYBCABKAUSEwoLZGVjbGFyZXJQYXIYBSABKAUSEwoLZGVjbGFy",
-            "ZXJJTVAYBiABKAUqOwoEUm9sZRIMCghERUNMQVJFUhAAEggKBExPUFAQARIJ",
-            "CgVEVU1NWRACEggKBFJPUFAQAxIGCgJOTxAEKjUKCURpcmVjdGlvbhIJCgVO",
-            "T1JUSBAAEggKBEVBU1QQARIJCgVTT1VUSBACEggKBFdFU1QQAyqMAQoEU3Vp",
-            "dBIICgRDTFVCEAASBQoBQxAAEgsKB0RJQU1PTkQQARIFCgFEEAESCQoFSEVB",
-            "UlQQAhIFCgFIEAISCQoFU1BBREUQAxIFCgFTEAMSCwoHTk9UUlVNUBAEEgYK",
-            "Ak5UEAQSCgoGRE9VQkxFEAUSBQoBWBAFEggKBFBBU1MQBhIFCgFQEAYaAhAB",
-            "KjUKA1Z1bBIICgROT05FEAASDAoIQ09OVFJBQ1QQARIMCghERUZFTkRFUhAC",
-            "EggKBEJPVEgQA2IGcHJvdG8z"));
+            "Cg1tZXNzYWdlLnByb3RvEghBSUJyaWRnZSJECgZQbGF5ZXISHAoEcm9sZRgB",
+            "IAEoDjIOLkFJQnJpZGdlLlJvbGUSHAoEc2VhdBgCIAEoDjIOLkFJQnJpZGdl",
+            "LlNlYXQiMgoEQ2FyZBIcCgRzdWl0GAEgASgOMg4uQUlCcmlkZ2UuU3VpdBIM",
+            "CgRyYW5rGAIgASgNIkYKBVJvdW5kEh4KBGxlYWQYASABKAsyEC5BSUJyaWRn",
+            "ZS5QbGF5ZXISHQoFY2FyZHMYAiADKAsyDi5BSUJyaWRnZS5DYXJkIpADChBD",
+            "dXJyZW50U2l0dWF0aW9uEg8KB3RhYmxlSUQYASABKA0SJAoNdnVsbmVyYWJp",
+            "bGl0eRgCIAEoDjINLkFJQnJpZGdlLlZ1bBIkCghjb250cmFjdBgDIAEoCzIS",
+            "LkFJQnJpZGdlLkNvbnRyYWN0EiIKCHdob3NUdXJuGAQgASgLMhAuQUlCcmlk",
+            "Z2UuUGxheWVyEhQKDGZpbmlzaGVkRHVtcxgFIAEoDRIXCg9jb250cmFjdGVy",
+            "U2NvcmUYBiABKA0SFQoNZGVmZW5kZXJTY29yZRgHIAEoDRIlCg1kZWNsYXJl",
+            "ckNhcmRzGAggAygLMg4uQUlCcmlkZ2UuQ2FyZBIhCglsb3BwQ2FyZHMYCSAD",
+            "KAsyDi5BSUJyaWRnZS5DYXJkEiIKCmR1bW15Q2FyZHMYCiADKAsyDi5BSUJy",
+            "aWRnZS5DYXJkEiEKCXJvcHBDYXJkcxgLIAMoCzIOLkFJQnJpZGdlLkNhcmQS",
+            "JAoLcGxheUhpc3RvcnkYDCADKAsyDy5BSUJyaWRnZS5Sb3VuZCLAAQoIQ29u",
+            "dHJhY3QSDwoHZGVjaWRlZBgBIAEoCBIcCgRzdWl0GAIgASgOMg4uQUlCcmlk",
+            "Z2UuU3VpdBINCgVsZXZlbBgDIAEoDRIrCgdkb3VibGVkGAQgASgOMhouQUlC",
+            "cmlkZ2UuQ29udHJhY3QuRG91YmxlZBInCg9jb250cmFjdEhpc3RvcnkYBSAD",
+            "KAsyDi5BSUJyaWRnZS5DYXJkIiAKB0RvdWJsZWQSBgoCTk8QABIFCgFYEAES",
+            "BgoCWFgQAiI1CgVIZWxsbxIeCgRzZWF0GAEgASgLMhAuQUlCcmlkZ2UuUGxh",
+            "eWVyEgwKBGNvZGUYAiABKA0iPgoNSGVsbG9SZXNwb25zZRIOCgZzZWF0ZWQY",
+            "ASABKAgSDwoHdGFibGVJRBgCIAEoDRIMCgRjb2RlGAMgASgNIo4CCglHYW1l",
+            "U3RhdGUSDwoHdGFibGVJRBgBIAEoDRIkCg12dWxuZXJhYmlsaXR5GAIgASgO",
+            "Mg0uQUlCcmlkZ2UuVnVsEh0KA3dobxgDIAEoCzIQLkFJQnJpZGdlLlBsYXll",
+            "chIcCgRoYW5kGAQgAygLMg4uQUlCcmlkZ2UuQ2FyZBIdCgVkdW1teRgFIAMo",
+            "CzIOLkFJQnJpZGdlLkNhcmQSJAoLcGxheUhpc3RvcnkYBiADKAsyDy5BSUJy",
+            "aWRnZS5Sb3VuZBIkCghjb250cmFjdBgHIAEoCzISLkFJQnJpZGdlLkNvbnRy",
+            "YWN0EiIKCnZhbGlkUGxheXMYCCADKAsyDi5BSUJyaWRnZS5DYXJkIlQKBFBs",
+            "YXkSDwoHdGFibGVJRBgBIAEoDRIdCgN3aG8YAiABKAsyEC5BSUJyaWRnZS5Q",
+            "bGF5ZXISHAoEY2FyZBgDIAEoCzIOLkFJQnJpZGdlLkNhcmQilAEKCkdhbWVS",
+            "ZXN1bHQSDwoHdGFibGVJRBgBIAEoDRIkCghjb250cmFjdBgCIAEoCzISLkFJ",
+            "QnJpZGdlLkNvbnRyYWN0Eg4KBnJlc3VsdBgDIAEoBRIVCg1kZWNsYXJlclNj",
+            "b3JlGAQgASgFEhMKC2RlY2xhcmVyUGFyGAUgASgFEhMKC2RlY2xhcmVySU1Q",
+            "GAYgASgFKjsKBFJvbGUSDAoIREVDTEFSRVIQABIICgRMT1BQEAESCQoFRFVN",
+            "TVkQAhIICgRST1BQEAMSBgoCTk8QBCowCgRTZWF0EgkKBU5PUlRIEAASCAoE",
+            "RUFTVBABEgkKBVNPVVRIEAISCAoEV0VTVBADKowBCgRTdWl0EggKBENMVUIQ",
+            "ABIFCgFDEAASCwoHRElBTU9ORBABEgUKAUQQARIJCgVIRUFSVBACEgUKAUgQ",
+            "AhIJCgVTUEFERRADEgUKAVMQAxILCgdOT1RSVU1QEAQSBgoCTlQQBBIKCgZE",
+            "T1VCTEUQBRIFCgFYEAUSCAoEUEFTUxAGEgUKAVAQBhoCEAEqNQoDVnVsEggK",
+            "BE5PTkUQABIMCghDT05UUkFDVBABEgwKCERFRkVOREVSEAISCAoEQk9USBAD",
+            "YgZwcm90bzM="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
-          new pbr::GeneratedClrTypeInfo(new[] {typeof(global::AIBridge.Role), typeof(global::AIBridge.Direction), typeof(global::AIBridge.Suit), typeof(global::AIBridge.Vul), }, null, new pbr::GeneratedClrTypeInfo[] {
+          new pbr::GeneratedClrTypeInfo(new[] {typeof(global::AIBridge.Role), typeof(global::AIBridge.Seat), typeof(global::AIBridge.Suit), typeof(global::AIBridge.Vul), }, null, new pbr::GeneratedClrTypeInfo[] {
             new pbr::GeneratedClrTypeInfo(typeof(global::AIBridge.Player), global::AIBridge.Player.Parser, new[]{ "Role", "Seat" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::AIBridge.Card), global::AIBridge.Card.Parser, new[]{ "Suit", "Rank" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::AIBridge.Round), global::AIBridge.Round.Parser, new[]{ "Lead", "Cards" }, null, null, null, null),
@@ -91,7 +91,7 @@ namespace AIBridge {
     [pbr::OriginalName("NO")] No = 4,
   }
 
-  public enum Direction {
+  public enum Seat {
     [pbr::OriginalName("NORTH")] North = 0,
     [pbr::OriginalName("EAST")] East = 1,
     [pbr::OriginalName("SOUTH")] South = 2,
@@ -177,9 +177,9 @@ namespace AIBridge {
 
     /// <summary>Field number for the "seat" field.</summary>
     public const int SeatFieldNumber = 2;
-    private global::AIBridge.Direction seat_ = global::AIBridge.Direction.North;
+    private global::AIBridge.Seat seat_ = global::AIBridge.Seat.North;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public global::AIBridge.Direction Seat {
+    public global::AIBridge.Seat Seat {
       get { return seat_; }
       set {
         seat_ = value;
@@ -208,7 +208,7 @@ namespace AIBridge {
     public override int GetHashCode() {
       int hash = 1;
       if (Role != global::AIBridge.Role.Declarer) hash ^= Role.GetHashCode();
-      if (Seat != global::AIBridge.Direction.North) hash ^= Seat.GetHashCode();
+      if (Seat != global::AIBridge.Seat.North) hash ^= Seat.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -229,7 +229,7 @@ namespace AIBridge {
         output.WriteRawTag(8);
         output.WriteEnum((int) Role);
       }
-      if (Seat != global::AIBridge.Direction.North) {
+      if (Seat != global::AIBridge.Seat.North) {
         output.WriteRawTag(16);
         output.WriteEnum((int) Seat);
       }
@@ -246,7 +246,7 @@ namespace AIBridge {
         output.WriteRawTag(8);
         output.WriteEnum((int) Role);
       }
-      if (Seat != global::AIBridge.Direction.North) {
+      if (Seat != global::AIBridge.Seat.North) {
         output.WriteRawTag(16);
         output.WriteEnum((int) Seat);
       }
@@ -262,7 +262,7 @@ namespace AIBridge {
       if (Role != global::AIBridge.Role.Declarer) {
         size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) Role);
       }
-      if (Seat != global::AIBridge.Direction.North) {
+      if (Seat != global::AIBridge.Seat.North) {
         size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) Seat);
       }
       if (_unknownFields != null) {
@@ -279,7 +279,7 @@ namespace AIBridge {
       if (other.Role != global::AIBridge.Role.Declarer) {
         Role = other.Role;
       }
-      if (other.Seat != global::AIBridge.Direction.North) {
+      if (other.Seat != global::AIBridge.Seat.North) {
         Seat = other.Seat;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
@@ -301,7 +301,7 @@ namespace AIBridge {
             break;
           }
           case 16: {
-            Seat = (global::AIBridge.Direction) input.ReadEnum();
+            Seat = (global::AIBridge.Seat) input.ReadEnum();
             break;
           }
         }
@@ -323,7 +323,7 @@ namespace AIBridge {
             break;
           }
           case 16: {
-            Seat = (global::AIBridge.Direction) input.ReadEnum();
+            Seat = (global::AIBridge.Seat) input.ReadEnum();
             break;
           }
         }
