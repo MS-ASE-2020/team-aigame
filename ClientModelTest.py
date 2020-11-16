@@ -114,18 +114,22 @@ class clientThread(threading.Thread):  # 继承父类threading.Thread
             game_state_message = message.GameState()  # 读取GameState
             game_state_message.ParseFromString(protobufdata)
             tableid = game_state_message.tableID
-            print('id:', tableid)
-            print(game_state_message)
+            # print('id:', tableid)
+            # print(game_state_message)
             player = game_state_message.who
             feature = GameState2feature(game_state_message)
-            print(len(feature))
+            # print(len(feature))
             card_logits = net(torch.tensor(feature).float())
             # 加一层mask
             validPlays = game_state_message.validPlays
+            print(seat,validPlays)
             output_mask = [0] * 52
             for card in validPlays:
+                # print(card)
                 output_mask[card.suit * 13 + card.rank] = 1
-            masked_logits = card_logits.data * torch.tensor(output_mask)
+            # print(output_mask)
+            # print(card_logits.data)
+            masked_logits = card_logits.data * torch.tensor(output_mask) + torch.tensor(output_mask)
             pred = masked_logits.max(0)[1]
             card = message.Card()
             card.suit = int(int(pred) / 13)
