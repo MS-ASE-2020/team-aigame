@@ -55,6 +55,7 @@ message Contract {
 message Hello {
     Player seat = 1;
     uint32 code = 2;
+    bool isObserver = 3;
 }
 
 message HelloResponse {
