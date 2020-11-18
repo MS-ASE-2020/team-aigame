@@ -165,19 +165,14 @@ namespace testSocket
                         case 3: tmpSocket = ropp; tmpCard = roppCard; break;
                     }
                     GameState m = GetGameState((starter + p) % 4, tmpCard, dummyCard, history);
-                    m.TableID = (uint)score;
+                    m.TableID = 1;
                     if(tmpSocket==declarer && declarer == watcher)
                     {
                         h.Code = 2;
                         tmpSocket.Send(h.ToByteArray());
                         tmpSocket.Receive(buffer);
-                        tmpSocket.Send(m.ToByteArray());
-                        tmpSocket.Receive(buffer);
                     }
-                    else
-                    {
-                        tmpSocket.Send(m.ToByteArray());
-                    }
+                    tmpSocket.Send(m.ToByteArray());
                     Console.WriteLine("send message to {0}", (starter + p) % 4);
                     int length = tmpSocket.Receive(buffer);
                     Console.WriteLine("receive message from {0}", (starter + p) % 4);

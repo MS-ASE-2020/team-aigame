@@ -9,7 +9,7 @@ using pb = global::Google.Protobuf;
 using pbc = global::Google.Protobuf.Collections;
 using pbr = global::Google.Protobuf.Reflection;
 using scg = global::System.Collections.Generic;
-namespace TestSocket {
+namespace testSocket {
 
   /// <summary>Holder for reflection information generated from message1.proto</summary>
   public static partial class Message1Reflection {
@@ -53,15 +53,15 @@ namespace TestSocket {
             "b3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
-          new pbr::GeneratedClrTypeInfo(new[] {typeof(global::TestSocket.Player), typeof(global::TestSocket.Suit), typeof(global::TestSocket.Vul), }, null, new pbr::GeneratedClrTypeInfo[] {
-            new pbr::GeneratedClrTypeInfo(typeof(global::TestSocket.Card), global::TestSocket.Card.Parser, new[]{ "Suit", "Rank" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::TestSocket.TrickHistory), global::TestSocket.TrickHistory.Parser, new[]{ "Lead", "Cards" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::TestSocket.Contract), global::TestSocket.Contract.Parser, new[]{ "Suit", "Level", "Doubled" }, null, new[]{ typeof(global::TestSocket.Contract.Types.Doubled) }, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::TestSocket.Hello), global::TestSocket.Hello.Parser, new[]{ "Seat", "Code" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::TestSocket.HelloResponse), global::TestSocket.HelloResponse.Parser, new[]{ "Seated", "TableID" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::TestSocket.GameState), global::TestSocket.GameState.Parser, new[]{ "TableID", "Vulnerability", "Who", "Hand", "Dummy", "PlayHistory", "Contract", "ValidPlays" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::TestSocket.Play), global::TestSocket.Play.Parser, new[]{ "TableID", "Who", "Card" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::TestSocket.GameResult), global::TestSocket.GameResult.Parser, new[]{ "TableID", "Contract", "Result", "DeclarerScore", "DeclarerPar", "DeclarerIMP" }, null, null, null, null)
+          new pbr::GeneratedClrTypeInfo(new[] {typeof(global::testSocket.Player), typeof(global::testSocket.Suit), typeof(global::testSocket.Vul), }, null, new pbr::GeneratedClrTypeInfo[] {
+            new pbr::GeneratedClrTypeInfo(typeof(global::testSocket.Card), global::testSocket.Card.Parser, new[]{ "Suit", "Rank" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::testSocket.TrickHistory), global::testSocket.TrickHistory.Parser, new[]{ "Lead", "Cards" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::testSocket.Contract), global::testSocket.Contract.Parser, new[]{ "Suit", "Level", "Doubled" }, null, new[]{ typeof(global::testSocket.Contract.Types.Doubled) }, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::testSocket.Hello), global::testSocket.Hello.Parser, new[]{ "Seat", "Code" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::testSocket.HelloResponse), global::testSocket.HelloResponse.Parser, new[]{ "Seated", "TableID" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::testSocket.GameState), global::testSocket.GameState.Parser, new[]{ "TableID", "Vulnerability", "Who", "Hand", "Dummy", "PlayHistory", "Contract", "ValidPlays" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::testSocket.Play), global::testSocket.Play.Parser, new[]{ "TableID", "Who", "Card" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::testSocket.GameResult), global::testSocket.GameResult.Parser, new[]{ "TableID", "Contract", "Result", "DeclarerScore", "DeclarerPar", "DeclarerIMP" }, null, null, null, null)
           }));
     }
     #endregion
@@ -110,7 +110,7 @@ namespace TestSocket {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::TestSocket.Message1Reflection.Descriptor.MessageTypes[0]; }
+      get { return global::testSocket.Message1Reflection.Descriptor.MessageTypes[0]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -139,9 +139,9 @@ namespace TestSocket {
 
     /// <summary>Field number for the "suit" field.</summary>
     public const int SuitFieldNumber = 1;
-    private global::TestSocket.Suit suit_ = global::TestSocket.Suit.Club;
+    private global::testSocket.Suit suit_ = global::testSocket.Suit.Club;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public global::TestSocket.Suit Suit {
+    public global::testSocket.Suit Suit {
       get { return suit_; }
       set {
         suit_ = value;
@@ -180,7 +180,7 @@ namespace TestSocket {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override int GetHashCode() {
       int hash = 1;
-      if (Suit != global::TestSocket.Suit.Club) hash ^= Suit.GetHashCode();
+      if (Suit != global::testSocket.Suit.Club) hash ^= Suit.GetHashCode();
       if (Rank != 0) hash ^= Rank.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
@@ -198,7 +198,7 @@ namespace TestSocket {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
     #else
-      if (Suit != global::TestSocket.Suit.Club) {
+      if (Suit != global::testSocket.Suit.Club) {
         output.WriteRawTag(8);
         output.WriteEnum((int) Suit);
       }
@@ -215,7 +215,7 @@ namespace TestSocket {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (Suit != global::TestSocket.Suit.Club) {
+      if (Suit != global::testSocket.Suit.Club) {
         output.WriteRawTag(8);
         output.WriteEnum((int) Suit);
       }
@@ -232,7 +232,7 @@ namespace TestSocket {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
       int size = 0;
-      if (Suit != global::TestSocket.Suit.Club) {
+      if (Suit != global::testSocket.Suit.Club) {
         size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) Suit);
       }
       if (Rank != 0) {
@@ -249,7 +249,7 @@ namespace TestSocket {
       if (other == null) {
         return;
       }
-      if (other.Suit != global::TestSocket.Suit.Club) {
+      if (other.Suit != global::testSocket.Suit.Club) {
         Suit = other.Suit;
       }
       if (other.Rank != 0) {
@@ -270,7 +270,7 @@ namespace TestSocket {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
           case 8: {
-            Suit = (global::TestSocket.Suit) input.ReadEnum();
+            Suit = (global::testSocket.Suit) input.ReadEnum();
             break;
           }
           case 16: {
@@ -292,7 +292,7 @@ namespace TestSocket {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
           case 8: {
-            Suit = (global::TestSocket.Suit) input.ReadEnum();
+            Suit = (global::testSocket.Suit) input.ReadEnum();
             break;
           }
           case 16: {
@@ -318,7 +318,7 @@ namespace TestSocket {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::TestSocket.Message1Reflection.Descriptor.MessageTypes[1]; }
+      get { return global::testSocket.Message1Reflection.Descriptor.MessageTypes[1]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -347,9 +347,9 @@ namespace TestSocket {
 
     /// <summary>Field number for the "lead" field.</summary>
     public const int LeadFieldNumber = 1;
-    private global::TestSocket.Player lead_ = global::TestSocket.Player.Declarer;
+    private global::testSocket.Player lead_ = global::testSocket.Player.Declarer;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public global::TestSocket.Player Lead {
+    public global::testSocket.Player Lead {
       get { return lead_; }
       set {
         lead_ = value;
@@ -358,11 +358,11 @@ namespace TestSocket {
 
     /// <summary>Field number for the "cards" field.</summary>
     public const int CardsFieldNumber = 2;
-    private static readonly pb::FieldCodec<global::TestSocket.Card> _repeated_cards_codec
-        = pb::FieldCodec.ForMessage(18, global::TestSocket.Card.Parser);
-    private readonly pbc::RepeatedField<global::TestSocket.Card> cards_ = new pbc::RepeatedField<global::TestSocket.Card>();
+    private static readonly pb::FieldCodec<global::testSocket.Card> _repeated_cards_codec
+        = pb::FieldCodec.ForMessage(18, global::testSocket.Card.Parser);
+    private readonly pbc::RepeatedField<global::testSocket.Card> cards_ = new pbc::RepeatedField<global::testSocket.Card>();
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public pbc::RepeatedField<global::TestSocket.Card> Cards {
+    public pbc::RepeatedField<global::testSocket.Card> Cards {
       get { return cards_; }
     }
 
@@ -387,7 +387,7 @@ namespace TestSocket {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override int GetHashCode() {
       int hash = 1;
-      if (Lead != global::TestSocket.Player.Declarer) hash ^= Lead.GetHashCode();
+      if (Lead != global::testSocket.Player.Declarer) hash ^= Lead.GetHashCode();
       hash ^= cards_.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
@@ -405,7 +405,7 @@ namespace TestSocket {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
     #else
-      if (Lead != global::TestSocket.Player.Declarer) {
+      if (Lead != global::testSocket.Player.Declarer) {
         output.WriteRawTag(8);
         output.WriteEnum((int) Lead);
       }
@@ -419,7 +419,7 @@ namespace TestSocket {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (Lead != global::TestSocket.Player.Declarer) {
+      if (Lead != global::testSocket.Player.Declarer) {
         output.WriteRawTag(8);
         output.WriteEnum((int) Lead);
       }
@@ -433,7 +433,7 @@ namespace TestSocket {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
       int size = 0;
-      if (Lead != global::TestSocket.Player.Declarer) {
+      if (Lead != global::testSocket.Player.Declarer) {
         size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) Lead);
       }
       size += cards_.CalculateSize(_repeated_cards_codec);
@@ -448,7 +448,7 @@ namespace TestSocket {
       if (other == null) {
         return;
       }
-      if (other.Lead != global::TestSocket.Player.Declarer) {
+      if (other.Lead != global::testSocket.Player.Declarer) {
         Lead = other.Lead;
       }
       cards_.Add(other.cards_);
@@ -467,7 +467,7 @@ namespace TestSocket {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
           case 8: {
-            Lead = (global::TestSocket.Player) input.ReadEnum();
+            Lead = (global::testSocket.Player) input.ReadEnum();
             break;
           }
           case 18: {
@@ -489,7 +489,7 @@ namespace TestSocket {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
           case 8: {
-            Lead = (global::TestSocket.Player) input.ReadEnum();
+            Lead = (global::testSocket.Player) input.ReadEnum();
             break;
           }
           case 18: {
@@ -515,7 +515,7 @@ namespace TestSocket {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::TestSocket.Message1Reflection.Descriptor.MessageTypes[2]; }
+      get { return global::testSocket.Message1Reflection.Descriptor.MessageTypes[2]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -545,9 +545,9 @@ namespace TestSocket {
 
     /// <summary>Field number for the "suit" field.</summary>
     public const int SuitFieldNumber = 1;
-    private global::TestSocket.Suit suit_ = global::TestSocket.Suit.Club;
+    private global::testSocket.Suit suit_ = global::testSocket.Suit.Club;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public global::TestSocket.Suit Suit {
+    public global::testSocket.Suit Suit {
       get { return suit_; }
       set {
         suit_ = value;
@@ -567,9 +567,9 @@ namespace TestSocket {
 
     /// <summary>Field number for the "doubled" field.</summary>
     public const int DoubledFieldNumber = 3;
-    private global::TestSocket.Contract.Types.Doubled doubled_ = global::TestSocket.Contract.Types.Doubled.No;
+    private global::testSocket.Contract.Types.Doubled doubled_ = global::testSocket.Contract.Types.Doubled.No;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public global::TestSocket.Contract.Types.Doubled Doubled {
+    public global::testSocket.Contract.Types.Doubled Doubled {
       get { return doubled_; }
       set {
         doubled_ = value;
@@ -598,9 +598,9 @@ namespace TestSocket {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override int GetHashCode() {
       int hash = 1;
-      if (Suit != global::TestSocket.Suit.Club) hash ^= Suit.GetHashCode();
+      if (Suit != global::testSocket.Suit.Club) hash ^= Suit.GetHashCode();
       if (Level != 0) hash ^= Level.GetHashCode();
-      if (Doubled != global::TestSocket.Contract.Types.Doubled.No) hash ^= Doubled.GetHashCode();
+      if (Doubled != global::testSocket.Contract.Types.Doubled.No) hash ^= Doubled.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -617,7 +617,7 @@ namespace TestSocket {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
     #else
-      if (Suit != global::TestSocket.Suit.Club) {
+      if (Suit != global::testSocket.Suit.Club) {
         output.WriteRawTag(8);
         output.WriteEnum((int) Suit);
       }
@@ -625,7 +625,7 @@ namespace TestSocket {
         output.WriteRawTag(16);
         output.WriteUInt32(Level);
       }
-      if (Doubled != global::TestSocket.Contract.Types.Doubled.No) {
+      if (Doubled != global::testSocket.Contract.Types.Doubled.No) {
         output.WriteRawTag(24);
         output.WriteEnum((int) Doubled);
       }
@@ -638,7 +638,7 @@ namespace TestSocket {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (Suit != global::TestSocket.Suit.Club) {
+      if (Suit != global::testSocket.Suit.Club) {
         output.WriteRawTag(8);
         output.WriteEnum((int) Suit);
       }
@@ -646,7 +646,7 @@ namespace TestSocket {
         output.WriteRawTag(16);
         output.WriteUInt32(Level);
       }
-      if (Doubled != global::TestSocket.Contract.Types.Doubled.No) {
+      if (Doubled != global::testSocket.Contract.Types.Doubled.No) {
         output.WriteRawTag(24);
         output.WriteEnum((int) Doubled);
       }
@@ -659,13 +659,13 @@ namespace TestSocket {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
       int size = 0;
-      if (Suit != global::TestSocket.Suit.Club) {
+      if (Suit != global::testSocket.Suit.Club) {
         size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) Suit);
       }
       if (Level != 0) {
         size += 1 + pb::CodedOutputStream.ComputeUInt32Size(Level);
       }
-      if (Doubled != global::TestSocket.Contract.Types.Doubled.No) {
+      if (Doubled != global::testSocket.Contract.Types.Doubled.No) {
         size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) Doubled);
       }
       if (_unknownFields != null) {
@@ -679,13 +679,13 @@ namespace TestSocket {
       if (other == null) {
         return;
       }
-      if (other.Suit != global::TestSocket.Suit.Club) {
+      if (other.Suit != global::testSocket.Suit.Club) {
         Suit = other.Suit;
       }
       if (other.Level != 0) {
         Level = other.Level;
       }
-      if (other.Doubled != global::TestSocket.Contract.Types.Doubled.No) {
+      if (other.Doubled != global::testSocket.Contract.Types.Doubled.No) {
         Doubled = other.Doubled;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
@@ -703,7 +703,7 @@ namespace TestSocket {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
           case 8: {
-            Suit = (global::TestSocket.Suit) input.ReadEnum();
+            Suit = (global::testSocket.Suit) input.ReadEnum();
             break;
           }
           case 16: {
@@ -711,7 +711,7 @@ namespace TestSocket {
             break;
           }
           case 24: {
-            Doubled = (global::TestSocket.Contract.Types.Doubled) input.ReadEnum();
+            Doubled = (global::testSocket.Contract.Types.Doubled) input.ReadEnum();
             break;
           }
         }
@@ -729,7 +729,7 @@ namespace TestSocket {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
           case 8: {
-            Suit = (global::TestSocket.Suit) input.ReadEnum();
+            Suit = (global::testSocket.Suit) input.ReadEnum();
             break;
           }
           case 16: {
@@ -737,7 +737,7 @@ namespace TestSocket {
             break;
           }
           case 24: {
-            Doubled = (global::TestSocket.Contract.Types.Doubled) input.ReadEnum();
+            Doubled = (global::testSocket.Contract.Types.Doubled) input.ReadEnum();
             break;
           }
         }
@@ -772,7 +772,7 @@ namespace TestSocket {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::TestSocket.Message1Reflection.Descriptor.MessageTypes[3]; }
+      get { return global::testSocket.Message1Reflection.Descriptor.MessageTypes[3]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -801,9 +801,9 @@ namespace TestSocket {
 
     /// <summary>Field number for the "seat" field.</summary>
     public const int SeatFieldNumber = 1;
-    private global::TestSocket.Player seat_ = global::TestSocket.Player.Declarer;
+    private global::testSocket.Player seat_ = global::testSocket.Player.Declarer;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public global::TestSocket.Player Seat {
+    public global::testSocket.Player Seat {
       get { return seat_; }
       set {
         seat_ = value;
@@ -842,7 +842,7 @@ namespace TestSocket {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override int GetHashCode() {
       int hash = 1;
-      if (Seat != global::TestSocket.Player.Declarer) hash ^= Seat.GetHashCode();
+      if (Seat != global::testSocket.Player.Declarer) hash ^= Seat.GetHashCode();
       if (Code != 0) hash ^= Code.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
@@ -860,7 +860,7 @@ namespace TestSocket {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
     #else
-      if (Seat != global::TestSocket.Player.Declarer) {
+      if (Seat != global::testSocket.Player.Declarer) {
         output.WriteRawTag(8);
         output.WriteEnum((int) Seat);
       }
@@ -877,7 +877,7 @@ namespace TestSocket {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (Seat != global::TestSocket.Player.Declarer) {
+      if (Seat != global::testSocket.Player.Declarer) {
         output.WriteRawTag(8);
         output.WriteEnum((int) Seat);
       }
@@ -894,7 +894,7 @@ namespace TestSocket {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
       int size = 0;
-      if (Seat != global::TestSocket.Player.Declarer) {
+      if (Seat != global::testSocket.Player.Declarer) {
         size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) Seat);
       }
       if (Code != 0) {
@@ -911,7 +911,7 @@ namespace TestSocket {
       if (other == null) {
         return;
       }
-      if (other.Seat != global::TestSocket.Player.Declarer) {
+      if (other.Seat != global::testSocket.Player.Declarer) {
         Seat = other.Seat;
       }
       if (other.Code != 0) {
@@ -932,7 +932,7 @@ namespace TestSocket {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
           case 8: {
-            Seat = (global::TestSocket.Player) input.ReadEnum();
+            Seat = (global::testSocket.Player) input.ReadEnum();
             break;
           }
           case 16: {
@@ -954,7 +954,7 @@ namespace TestSocket {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
           case 8: {
-            Seat = (global::TestSocket.Player) input.ReadEnum();
+            Seat = (global::testSocket.Player) input.ReadEnum();
             break;
           }
           case 16: {
@@ -980,7 +980,7 @@ namespace TestSocket {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::TestSocket.Message1Reflection.Descriptor.MessageTypes[4]; }
+      get { return global::testSocket.Message1Reflection.Descriptor.MessageTypes[4]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -1188,7 +1188,7 @@ namespace TestSocket {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::TestSocket.Message1Reflection.Descriptor.MessageTypes[5]; }
+      get { return global::testSocket.Message1Reflection.Descriptor.MessageTypes[5]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -1234,9 +1234,9 @@ namespace TestSocket {
 
     /// <summary>Field number for the "vulnerability" field.</summary>
     public const int VulnerabilityFieldNumber = 2;
-    private global::TestSocket.Vul vulnerability_ = global::TestSocket.Vul.None;
+    private global::testSocket.Vul vulnerability_ = global::testSocket.Vul.None;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public global::TestSocket.Vul Vulnerability {
+    public global::testSocket.Vul Vulnerability {
       get { return vulnerability_; }
       set {
         vulnerability_ = value;
@@ -1245,9 +1245,9 @@ namespace TestSocket {
 
     /// <summary>Field number for the "who" field.</summary>
     public const int WhoFieldNumber = 3;
-    private global::TestSocket.Player who_ = global::TestSocket.Player.Declarer;
+    private global::testSocket.Player who_ = global::testSocket.Player.Declarer;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public global::TestSocket.Player Who {
+    public global::testSocket.Player Who {
       get { return who_; }
       set {
         who_ = value;
@@ -1256,39 +1256,39 @@ namespace TestSocket {
 
     /// <summary>Field number for the "hand" field.</summary>
     public const int HandFieldNumber = 4;
-    private static readonly pb::FieldCodec<global::TestSocket.Card> _repeated_hand_codec
-        = pb::FieldCodec.ForMessage(34, global::TestSocket.Card.Parser);
-    private readonly pbc::RepeatedField<global::TestSocket.Card> hand_ = new pbc::RepeatedField<global::TestSocket.Card>();
+    private static readonly pb::FieldCodec<global::testSocket.Card> _repeated_hand_codec
+        = pb::FieldCodec.ForMessage(34, global::testSocket.Card.Parser);
+    private readonly pbc::RepeatedField<global::testSocket.Card> hand_ = new pbc::RepeatedField<global::testSocket.Card>();
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public pbc::RepeatedField<global::TestSocket.Card> Hand {
+    public pbc::RepeatedField<global::testSocket.Card> Hand {
       get { return hand_; }
     }
 
     /// <summary>Field number for the "dummy" field.</summary>
     public const int DummyFieldNumber = 5;
-    private static readonly pb::FieldCodec<global::TestSocket.Card> _repeated_dummy_codec
-        = pb::FieldCodec.ForMessage(42, global::TestSocket.Card.Parser);
-    private readonly pbc::RepeatedField<global::TestSocket.Card> dummy_ = new pbc::RepeatedField<global::TestSocket.Card>();
+    private static readonly pb::FieldCodec<global::testSocket.Card> _repeated_dummy_codec
+        = pb::FieldCodec.ForMessage(42, global::testSocket.Card.Parser);
+    private readonly pbc::RepeatedField<global::testSocket.Card> dummy_ = new pbc::RepeatedField<global::testSocket.Card>();
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public pbc::RepeatedField<global::TestSocket.Card> Dummy {
+    public pbc::RepeatedField<global::testSocket.Card> Dummy {
       get { return dummy_; }
     }
 
     /// <summary>Field number for the "playHistory" field.</summary>
     public const int PlayHistoryFieldNumber = 6;
-    private static readonly pb::FieldCodec<global::TestSocket.TrickHistory> _repeated_playHistory_codec
-        = pb::FieldCodec.ForMessage(50, global::TestSocket.TrickHistory.Parser);
-    private readonly pbc::RepeatedField<global::TestSocket.TrickHistory> playHistory_ = new pbc::RepeatedField<global::TestSocket.TrickHistory>();
+    private static readonly pb::FieldCodec<global::testSocket.TrickHistory> _repeated_playHistory_codec
+        = pb::FieldCodec.ForMessage(50, global::testSocket.TrickHistory.Parser);
+    private readonly pbc::RepeatedField<global::testSocket.TrickHistory> playHistory_ = new pbc::RepeatedField<global::testSocket.TrickHistory>();
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public pbc::RepeatedField<global::TestSocket.TrickHistory> PlayHistory {
+    public pbc::RepeatedField<global::testSocket.TrickHistory> PlayHistory {
       get { return playHistory_; }
     }
 
     /// <summary>Field number for the "contract" field.</summary>
     public const int ContractFieldNumber = 7;
-    private global::TestSocket.Contract contract_;
+    private global::testSocket.Contract contract_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public global::TestSocket.Contract Contract {
+    public global::testSocket.Contract Contract {
       get { return contract_; }
       set {
         contract_ = value;
@@ -1297,11 +1297,11 @@ namespace TestSocket {
 
     /// <summary>Field number for the "validPlays" field.</summary>
     public const int ValidPlaysFieldNumber = 8;
-    private static readonly pb::FieldCodec<global::TestSocket.Card> _repeated_validPlays_codec
-        = pb::FieldCodec.ForMessage(66, global::TestSocket.Card.Parser);
-    private readonly pbc::RepeatedField<global::TestSocket.Card> validPlays_ = new pbc::RepeatedField<global::TestSocket.Card>();
+    private static readonly pb::FieldCodec<global::testSocket.Card> _repeated_validPlays_codec
+        = pb::FieldCodec.ForMessage(66, global::testSocket.Card.Parser);
+    private readonly pbc::RepeatedField<global::testSocket.Card> validPlays_ = new pbc::RepeatedField<global::testSocket.Card>();
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public pbc::RepeatedField<global::TestSocket.Card> ValidPlays {
+    public pbc::RepeatedField<global::testSocket.Card> ValidPlays {
       get { return validPlays_; }
     }
 
@@ -1333,8 +1333,8 @@ namespace TestSocket {
     public override int GetHashCode() {
       int hash = 1;
       if (TableID != 0) hash ^= TableID.GetHashCode();
-      if (Vulnerability != global::TestSocket.Vul.None) hash ^= Vulnerability.GetHashCode();
-      if (Who != global::TestSocket.Player.Declarer) hash ^= Who.GetHashCode();
+      if (Vulnerability != global::testSocket.Vul.None) hash ^= Vulnerability.GetHashCode();
+      if (Who != global::testSocket.Player.Declarer) hash ^= Who.GetHashCode();
       hash ^= hand_.GetHashCode();
       hash ^= dummy_.GetHashCode();
       hash ^= playHistory_.GetHashCode();
@@ -1360,11 +1360,11 @@ namespace TestSocket {
         output.WriteRawTag(8);
         output.WriteUInt32(TableID);
       }
-      if (Vulnerability != global::TestSocket.Vul.None) {
+      if (Vulnerability != global::testSocket.Vul.None) {
         output.WriteRawTag(16);
         output.WriteEnum((int) Vulnerability);
       }
-      if (Who != global::TestSocket.Player.Declarer) {
+      if (Who != global::testSocket.Player.Declarer) {
         output.WriteRawTag(24);
         output.WriteEnum((int) Who);
       }
@@ -1389,11 +1389,11 @@ namespace TestSocket {
         output.WriteRawTag(8);
         output.WriteUInt32(TableID);
       }
-      if (Vulnerability != global::TestSocket.Vul.None) {
+      if (Vulnerability != global::testSocket.Vul.None) {
         output.WriteRawTag(16);
         output.WriteEnum((int) Vulnerability);
       }
-      if (Who != global::TestSocket.Player.Declarer) {
+      if (Who != global::testSocket.Player.Declarer) {
         output.WriteRawTag(24);
         output.WriteEnum((int) Who);
       }
@@ -1417,10 +1417,10 @@ namespace TestSocket {
       if (TableID != 0) {
         size += 1 + pb::CodedOutputStream.ComputeUInt32Size(TableID);
       }
-      if (Vulnerability != global::TestSocket.Vul.None) {
+      if (Vulnerability != global::testSocket.Vul.None) {
         size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) Vulnerability);
       }
-      if (Who != global::TestSocket.Player.Declarer) {
+      if (Who != global::testSocket.Player.Declarer) {
         size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) Who);
       }
       size += hand_.CalculateSize(_repeated_hand_codec);
@@ -1444,10 +1444,10 @@ namespace TestSocket {
       if (other.TableID != 0) {
         TableID = other.TableID;
       }
-      if (other.Vulnerability != global::TestSocket.Vul.None) {
+      if (other.Vulnerability != global::testSocket.Vul.None) {
         Vulnerability = other.Vulnerability;
       }
-      if (other.Who != global::TestSocket.Player.Declarer) {
+      if (other.Who != global::testSocket.Player.Declarer) {
         Who = other.Who;
       }
       hand_.Add(other.hand_);
@@ -1455,7 +1455,7 @@ namespace TestSocket {
       playHistory_.Add(other.playHistory_);
       if (other.contract_ != null) {
         if (contract_ == null) {
-          Contract = new global::TestSocket.Contract();
+          Contract = new global::testSocket.Contract();
         }
         Contract.MergeFrom(other.Contract);
       }
@@ -1479,11 +1479,11 @@ namespace TestSocket {
             break;
           }
           case 16: {
-            Vulnerability = (global::TestSocket.Vul) input.ReadEnum();
+            Vulnerability = (global::testSocket.Vul) input.ReadEnum();
             break;
           }
           case 24: {
-            Who = (global::TestSocket.Player) input.ReadEnum();
+            Who = (global::testSocket.Player) input.ReadEnum();
             break;
           }
           case 34: {
@@ -1500,7 +1500,7 @@ namespace TestSocket {
           }
           case 58: {
             if (contract_ == null) {
-              Contract = new global::TestSocket.Contract();
+              Contract = new global::testSocket.Contract();
             }
             input.ReadMessage(Contract);
             break;
@@ -1528,11 +1528,11 @@ namespace TestSocket {
             break;
           }
           case 16: {
-            Vulnerability = (global::TestSocket.Vul) input.ReadEnum();
+            Vulnerability = (global::testSocket.Vul) input.ReadEnum();
             break;
           }
           case 24: {
-            Who = (global::TestSocket.Player) input.ReadEnum();
+            Who = (global::testSocket.Player) input.ReadEnum();
             break;
           }
           case 34: {
@@ -1549,7 +1549,7 @@ namespace TestSocket {
           }
           case 58: {
             if (contract_ == null) {
-              Contract = new global::TestSocket.Contract();
+              Contract = new global::testSocket.Contract();
             }
             input.ReadMessage(Contract);
             break;
@@ -1577,7 +1577,7 @@ namespace TestSocket {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::TestSocket.Message1Reflection.Descriptor.MessageTypes[6]; }
+      get { return global::testSocket.Message1Reflection.Descriptor.MessageTypes[6]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -1618,9 +1618,9 @@ namespace TestSocket {
 
     /// <summary>Field number for the "who" field.</summary>
     public const int WhoFieldNumber = 2;
-    private global::TestSocket.Player who_ = global::TestSocket.Player.Declarer;
+    private global::testSocket.Player who_ = global::testSocket.Player.Declarer;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public global::TestSocket.Player Who {
+    public global::testSocket.Player Who {
       get { return who_; }
       set {
         who_ = value;
@@ -1629,9 +1629,9 @@ namespace TestSocket {
 
     /// <summary>Field number for the "card" field.</summary>
     public const int CardFieldNumber = 3;
-    private global::TestSocket.Card card_;
+    private global::testSocket.Card card_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public global::TestSocket.Card Card {
+    public global::testSocket.Card Card {
       get { return card_; }
       set {
         card_ = value;
@@ -1661,7 +1661,7 @@ namespace TestSocket {
     public override int GetHashCode() {
       int hash = 1;
       if (TableID != 0) hash ^= TableID.GetHashCode();
-      if (Who != global::TestSocket.Player.Declarer) hash ^= Who.GetHashCode();
+      if (Who != global::testSocket.Player.Declarer) hash ^= Who.GetHashCode();
       if (card_ != null) hash ^= Card.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
@@ -1683,7 +1683,7 @@ namespace TestSocket {
         output.WriteRawTag(8);
         output.WriteUInt32(TableID);
       }
-      if (Who != global::TestSocket.Player.Declarer) {
+      if (Who != global::testSocket.Player.Declarer) {
         output.WriteRawTag(16);
         output.WriteEnum((int) Who);
       }
@@ -1704,7 +1704,7 @@ namespace TestSocket {
         output.WriteRawTag(8);
         output.WriteUInt32(TableID);
       }
-      if (Who != global::TestSocket.Player.Declarer) {
+      if (Who != global::testSocket.Player.Declarer) {
         output.WriteRawTag(16);
         output.WriteEnum((int) Who);
       }
@@ -1724,7 +1724,7 @@ namespace TestSocket {
       if (TableID != 0) {
         size += 1 + pb::CodedOutputStream.ComputeUInt32Size(TableID);
       }
-      if (Who != global::TestSocket.Player.Declarer) {
+      if (Who != global::testSocket.Player.Declarer) {
         size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) Who);
       }
       if (card_ != null) {
@@ -1744,12 +1744,12 @@ namespace TestSocket {
       if (other.TableID != 0) {
         TableID = other.TableID;
       }
-      if (other.Who != global::TestSocket.Player.Declarer) {
+      if (other.Who != global::testSocket.Player.Declarer) {
         Who = other.Who;
       }
       if (other.card_ != null) {
         if (card_ == null) {
-          Card = new global::TestSocket.Card();
+          Card = new global::testSocket.Card();
         }
         Card.MergeFrom(other.Card);
       }
@@ -1772,12 +1772,12 @@ namespace TestSocket {
             break;
           }
           case 16: {
-            Who = (global::TestSocket.Player) input.ReadEnum();
+            Who = (global::testSocket.Player) input.ReadEnum();
             break;
           }
           case 26: {
             if (card_ == null) {
-              Card = new global::TestSocket.Card();
+              Card = new global::testSocket.Card();
             }
             input.ReadMessage(Card);
             break;
@@ -1801,12 +1801,12 @@ namespace TestSocket {
             break;
           }
           case 16: {
-            Who = (global::TestSocket.Player) input.ReadEnum();
+            Who = (global::testSocket.Player) input.ReadEnum();
             break;
           }
           case 26: {
             if (card_ == null) {
-              Card = new global::TestSocket.Card();
+              Card = new global::testSocket.Card();
             }
             input.ReadMessage(Card);
             break;
@@ -1830,7 +1830,7 @@ namespace TestSocket {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::TestSocket.Message1Reflection.Descriptor.MessageTypes[7]; }
+      get { return global::testSocket.Message1Reflection.Descriptor.MessageTypes[7]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -1874,9 +1874,9 @@ namespace TestSocket {
 
     /// <summary>Field number for the "contract" field.</summary>
     public const int ContractFieldNumber = 2;
-    private global::TestSocket.Contract contract_;
+    private global::testSocket.Contract contract_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public global::TestSocket.Contract Contract {
+    public global::testSocket.Contract Contract {
       get { return contract_; }
       set {
         contract_ = value;
@@ -2074,7 +2074,7 @@ namespace TestSocket {
       }
       if (other.contract_ != null) {
         if (contract_ == null) {
-          Contract = new global::TestSocket.Contract();
+          Contract = new global::testSocket.Contract();
         }
         Contract.MergeFrom(other.Contract);
       }
@@ -2110,7 +2110,7 @@ namespace TestSocket {
           }
           case 18: {
             if (contract_ == null) {
-              Contract = new global::TestSocket.Contract();
+              Contract = new global::testSocket.Contract();
             }
             input.ReadMessage(Contract);
             break;
@@ -2151,7 +2151,7 @@ namespace TestSocket {
           }
           case 18: {
             if (contract_ == null) {
-              Contract = new global::TestSocket.Contract();
+              Contract = new global::testSocket.Contract();
             }
             input.ReadMessage(Contract);
             break;

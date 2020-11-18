@@ -92,6 +92,18 @@ namespace AIBridge
             }
         }
 
+        private int Suit2Encode(string s)
+        {
+            if (string.Compare(s, "\u2663") == 0)
+                return 0;
+            else if (string.Compare(s, "\u2666") == 0)
+                return 1;
+            else if (string.Compare(s, "\u2665") == 0)
+                return 2;
+            else
+                return 3;
+        }
+
         /// <summary>
         /// from int to card number ( 2-A)
         /// </summary>
@@ -120,6 +132,20 @@ namespace AIBridge
             }
         }
 
+        private int Number2Encode(string s)
+        {
+            if (string.Compare(s, "A") == 0)
+                return 12;
+            else if (string.Compare(s, "K") == 0)
+                return 11;
+            else if (string.Compare(s, "Q") == 0)
+                return 10;
+            else if (string.Compare(s, "J") == 0)
+                return 9;
+            else
+                return Convert.ToInt32(s) - 2;
+        }
+
         /// <summary>
         /// <para>when timer is started, this will be call after a few seconds later,</para>
         /// <para>clear the desk and decide which player will be the first in the next round</para>
@@ -139,8 +165,16 @@ namespace AIBridge
                 {
                     if (this.CardUI[direction, i] == null)
                         this.CardUI[direction, i] = new CardControl();
-                    this.CardUI[direction, i].Suit = Encode2Suit(this.Card[(direction+this.seat)%4, i, 0]);
-                    this.CardUI[direction, i].Number = Encode2Number(this.Card[(direction + this.seat) % 4, i, 1]);
+                    if(this.watching || direction==0 || direction == 2)
+                    {
+                        this.CardUI[direction, i].Suit = Encode2Suit(this.Card[(direction + this.seat) % 4, i, 0]);
+                        this.CardUI[direction, i].Number = Encode2Number(this.Card[(direction + this.seat) % 4, i, 1]);
+                    }
+                    else
+                    {
+                        this.CardUI[direction, i].Suit = Encode2Suit(-1);
+                        this.CardUI[direction, i].Number = Encode2Number(-1);
+                    }
                     this.CardUI[direction, i].Owner = direction.ToString();
                 }));
                 
@@ -190,9 +224,25 @@ namespace AIBridge
         /// <param name="e"></param>
         private void selectCard(object sender, RoutedEventArgs e)
         {
+            CardControl card = (CardControl)sender;
             this.Dispatcher.Invoke(new Action(delegate
             {
-                CardControl card = sender as CardControl;
+                card.MouseDoubleClick -= selectCard;
+                Play m = new Play();
+                m.Who = (Player)Convert.ToInt32(card.Owner);
+                Card c = new Card();
+                c.Suit = (Suit)Suit2Encode(card.Suit);
+                c.Rank = (uint)Number2Encode(card.Number);
+                m.Card = c;
+                this.socket.Send(m.ToByteArray());
+                this.ContinueButton.Click += Button_Click_1;
+            }));
+        }
+
+        private void cardOut(CardControl card)
+        {
+            this.Dispatcher.Invoke(new Action(delegate
+            {
                 switch (Convert.ToInt32(card.Owner))
                 {
                     case 0: this.Me.Children.Remove(card); this.MeCard.Children.Clear(); this.MeCard.Children.Add(card); break;
@@ -202,8 +252,6 @@ namespace AIBridge
                     default: break;
                 }
             }));
-            
-
         }
 
         /// <summary>
@@ -360,14 +408,10 @@ namespace AIBridge
                         m.MergeFrom(receivedData);
                         code = 1;
                         int who = (int)m.Who;
-                        int score = (int)m.TableID;
-                        this.Dispatcher.Invoke(new Action(delegate
+                        int toplay = (int)m.TableID;
+                        if (toplay == 0)
                         {
-                            this.scoreLabel.Content = score.ToString();
-                        }));
-                        for (int i = 0; i < 13; i++)
-                        {
-                            if(who==2 || who==0 || this.watching)
+                            for (int i = 0; i < 13; i++)
                             {
                                 if (i < m.Hand.Count)
                                 {
@@ -382,15 +426,30 @@ namespace AIBridge
                                     this.inhand[who, i] = false;
                                 }
                             }
-                            
+                            Console.WriteLine("{0} card received", who);
+                            sendContinue();
                         }
-                        Console.WriteLine("{0} card received", who);
-                        if (!this.watching && (this.seat == who || (this.seat==0 && who==2)))
+                        else
                         {
-                            UserEnable(who, true);
-                            this.ContinueButton.Visibility = Visibility.Hidden;
+                            for(int i = 0; i < 13; i++)
+                            {
+                                for(int j = 0; j < m.ValidPlays.Count; j++)
+                                {
+                                    if(this.Card[who, i, 0] == (int)m.ValidPlays[j].Suit && this.Card[who, i, 1] == (int)m.ValidPlays[j].Rank)
+                                    {
+                                        this.Dispatcher.Invoke(new Action(delegate
+                                        {
+                                            this.CardUI[who, i].MouseDoubleClick += selectCard;
+                                        }));
+                                        break;
+                                    }
+                                }
+                            }
+                            this.Dispatcher.Invoke(new Action(delegate
+                            {
+                                this.ContinueButton.Click -= Button_Click_1;
+                            }));
                         }
-                        sendContinue();
                     }
                     else if (code == 3)
                     {
@@ -413,8 +472,13 @@ namespace AIBridge
                             if(this.Card[who, i, 0]==(int)card.Suit && this.Card[who, i, 1] == (int)card.Rank)
                             {
                                 sc = this.CardUI[(4 + who - this.seat) % 4, i];
+                                this.Dispatcher.Invoke(new Action(delegate
+                                {
+                                    sc.Suit = Encode2Suit(this.Card[who, i, 0]);
+                                    sc.Number = Encode2Number(this.Card[who, i, 1]);
+                                }));
                                 this.inhand[who, i] = false;
-                                selectCard(sc, null);
+                                cardOut(sc);
                                 break;
                             }
                         }
@@ -461,7 +525,8 @@ namespace AIBridge
                 clearCardInThisTurn();
                 this.count = 0;
             }
-            //this.watcherTimer.Stop();
+            this.watcherTimer.Stop();
+            Console.WriteLine("send continue");
             sendContinue();
         }
 
@@ -484,12 +549,12 @@ namespace AIBridge
                 this.clearTimer.AutoReset = false;
                 this.clearTimer.Stop();
             }
-            else
-            {
+            //else
+            //{
                 this.watcherTimer.Elapsed += new System.Timers.ElapsedEventHandler(time2nextPlay);
                 this.watcherTimer.AutoReset = false;
                 this.watcherTimer.Stop();
-            }
+            //}
             startConnection();
         }
 

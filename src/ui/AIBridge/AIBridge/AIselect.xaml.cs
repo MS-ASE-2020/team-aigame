@@ -29,7 +29,7 @@ namespace AIBridge
         }
         private void EASY_click(object sender, RoutedEventArgs e)
         {
-            currentPage.Content = new PlayPage(true);
+            currentPage.Content = new PlayPage(false);
         }
 
         private void MID_click(object sender, RoutedEventArgs e)
