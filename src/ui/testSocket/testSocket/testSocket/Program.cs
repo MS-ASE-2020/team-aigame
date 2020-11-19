@@ -183,6 +183,7 @@ namespace testSocket
                     watcher.Send(h.ToByteArray());
                     watcher.Receive(buffer);
                     watcher.Send(rm.ToByteArray());
+                    Console.WriteLine("send play message");
 
                     Card selected = rm.Card;
                     if ((starter + p) % 4 == 2)

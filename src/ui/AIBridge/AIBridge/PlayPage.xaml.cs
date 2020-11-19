@@ -236,6 +236,10 @@ namespace AIBridge
                 m.Card = c;
                 this.socket.Send(m.ToByteArray());
                 this.ContinueButton.Click += Button_Click_1;
+                for(int i = 0; i < 13; i++)
+                {
+                    this.CardUI[Convert.ToInt32(card.Owner), i].MouseDoubleClick -= selectCard;
+                }
             }));
         }
 
@@ -483,6 +487,14 @@ namespace AIBridge
                             }
                         }
                         this.WaitAnimation = true;
+                        if (this.count < 4 && !this.watching)
+                        {
+                            this.watcherTimer.Interval = 50;
+                        }
+                        else
+                        {
+                            this.watcherTimer.Interval = 2000;
+                        }
                         this.watcherTimer.Start();
                     }
                     else if (code == 5)
@@ -518,15 +530,15 @@ namespace AIBridge
 
         private void time2nextPlay(object sender, System.Timers.ElapsedEventArgs e)
         {
-            Console.Write("timer elapsed");
+            Console.Write("timer elapsed, count:{0}", this.count);
             this.WaitAnimation = false;
             if (this.count == 4)
             {
                 clearCardInThisTurn();
+                Console.WriteLine("clear card");
                 this.count = 0;
             }
             this.watcherTimer.Stop();
-            Console.WriteLine("send continue");
             sendContinue();
         }
 
@@ -551,10 +563,19 @@ namespace AIBridge
             }
             //else
             //{
-                this.watcherTimer.Elapsed += new System.Timers.ElapsedEventHandler(time2nextPlay);
-                this.watcherTimer.AutoReset = false;
-                this.watcherTimer.Stop();
+            if (!this.watching)
+            {
+                this.watcherTimer = new System.Timers.Timer(1000);
+            }
+            
+            this.watcherTimer.Elapsed += new System.Timers.ElapsedEventHandler(time2nextPlay);
+            this.watcherTimer.AutoReset = false;
+            this.watcherTimer.Stop();
             //}
+            if (!this.watching)
+            {
+                this.ContinueButton.Visibility = Visibility.Hidden;
+            }
             startConnection();
         }
 
