@@ -74,6 +74,20 @@ message GameState {
     repeated Card validPlays = 8;
 }
 
+message playerHand {
+    Player who = 1;
+    repeated Card hand = 2;
+}
+
+message broadcastState{
+    uint32 tableID = 1;
+    Vul vulnerability = 2;
+    Player whoseTurn = 3;
+    repeated playerHand allHands = 4;
+    repeated TrickHistory playHistory = 5;
+    Contract contract = 6;
+};
+
 message Play {
     uint32 tableID = 1;
     Player who = 2;
