@@ -24,10 +24,6 @@ namespace AIBridge
         {
             InitializeComponent();
         }
-        public CardControl(int direction)
-        {
-            InitializeComponent();
-        }
 
         public string Suit
         {

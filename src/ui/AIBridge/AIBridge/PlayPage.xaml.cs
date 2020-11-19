@@ -165,7 +165,9 @@ namespace AIBridge
                 this.Dispatcher.Invoke(new Action(delegate
                 {
                     if (this.CardUI[direction, i] == null)
+                    {
                         this.CardUI[direction, i] = new CardControl();
+                    }
                     if(this.watching || direction==0 || direction == 2)
                     {
                         this.CardUI[direction, i].Suit = Encode2Suit(this.Card[(direction + this.seat) % 4, i, 0]);
