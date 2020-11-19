@@ -86,6 +86,8 @@ message broadcastState{
     repeated playerHand allHands = 4;
     repeated TrickHistory playHistory = 5;
     Contract contract = 6;
+    uint32 tricksWonByDeclarer = 7;
+    uint32 tricksWonByDefender = 8;
 };
 
 message Play {
