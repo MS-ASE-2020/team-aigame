@@ -47,34 +47,46 @@ namespace testSocket
                     case 2: ropp = tmp; Console.WriteLine("ropp connected"); break;
                 }
             }
-            watcher = listener.Accept();
-            Console.WriteLine("watcher connected!");
-            Hello h = new Hello();
-            int length = watcher.Receive(buffer);
-            h.MergeFrom(buffer.Take(length).ToArray());
-            if (h.Code == 2)
+            while (true)
             {
-                Console.WriteLine("watcher in the game");
-                declarer = watcher;
-            }
-            try
-            {
-                while (true)
+                try
                 {
-                    run(declarer, lopp, ropp, watcher);
-                    h.Code = 5;
-                    watcher.Send(h.ToByteArray());
-                    watcher.Receive(buffer);
-                    watcher.Send(h.ToByteArray());
-                    watcher.Receive(buffer);
+                    Console.WriteLine("waiting for new watcher");
+                    watcher = listener.Accept();
+                    Console.WriteLine("watcher connected!");
+                    Hello h = new Hello();
+                    int length = watcher.Receive(buffer);
+                    h.MergeFrom(buffer.Take(length).ToArray());
+                    Socket tmp = declarer;
+                    if (h.Code == 2)
+                    {
+                        Console.WriteLine("watcher in the game");
+                        tmp = watcher;
+                    }
+                    try
+                    {
+                        while (true)
+                        {
+                            run(tmp, lopp, ropp, watcher);
+                            h.Code = 5;
+                            watcher.Send(h.ToByteArray());
+                            watcher.Receive(buffer);
+                            watcher.Send(h.ToByteArray());
+                            watcher.Receive(buffer);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine(ex);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex);
+                    
                 }
             }
-            catch(Exception ex)
-            {
-                Console.WriteLine(ex);
-                Console.ReadKey();
-
-            }
+            
             
             
             //listener.BeginAccept(new AsyncCallback(assignPort), listener);
@@ -174,12 +186,15 @@ namespace testSocket
                     }
                     tmpSocket.Send(m.ToByteArray());
                     Console.WriteLine("send message to {0}", (starter + p) % 4);
+                    Console.WriteLine("test now!!!!!!!!!!!!");
+                    Thread.Sleep(2000);
                     int length = tmpSocket.Receive(buffer);
                     Console.WriteLine("receive message from {0}", (starter + p) % 4);
                     Play rm = new Play();
                     rm.MergeFrom(buffer.Take(length).ToArray());
                     rm.TableID = (uint)score;
                     h.Code = 3;
+                    Console.WriteLine("running ok");
                     watcher.Send(h.ToByteArray());
                     watcher.Receive(buffer);
                     watcher.Send(rm.ToByteArray());

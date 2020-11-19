@@ -234,7 +234,14 @@ namespace AIBridge
                 c.Suit = (Suit)Suit2Encode(card.Suit);
                 c.Rank = (uint)Number2Encode(card.Number);
                 m.Card = c;
-                this.socket.Send(m.ToByteArray());
+                try
+                {
+                    this.socket.Send(m.ToByteArray());
+                }
+                catch (Exception ex)
+                {
+
+                }
                 this.ContinueButton.Click += Button_Click_1;
                 for(int i = 0; i < 13; i++)
                 {
@@ -294,7 +301,14 @@ namespace AIBridge
                 c.Suit = (Suit)Convert.ToInt32(card.Suit);
                 c.Rank = (uint)Convert.ToInt32(card.Number);
                 m.Card = c;
-                this.socket.Send(m.ToByteArray());
+                try
+                {
+                    this.socket.Send(m.ToByteArray());
+                }
+                catch(Exception ex)
+                {
+
+                }
             }));
 
 
@@ -361,7 +375,14 @@ namespace AIBridge
                 h.Code = 1;
             else
                 h.Code = 2;
-            socket.Send(h.ToByteArray());
+            try
+            {
+                socket.Send(h.ToByteArray());
+            }
+            catch (Exception ex)
+            {
+
+            }
         }
 
 
@@ -376,137 +397,145 @@ namespace AIBridge
             {
                 socket.BeginReceive(data, 0, data.Length, SocketFlags.None, asyncResult =>
                 {
-                    int length = socket.EndReceive(asyncResult);
-                    Console.WriteLine("{0} bytes received", length);
-                    byte[] receivedData = data.Take(length).ToArray();
-                    if (code == 1)
+                    try
                     {
-                        Hello m = new Hello();
-                        m.MergeFrom(receivedData);
-                        code = (int)m.Code;
-                        if (code == 4)
+                        int length = socket.EndReceive(asyncResult);
+                        Console.WriteLine("{0} bytes received", length);
+                        byte[] receivedData = data.Take(length).ToArray();
+                        if (code == 1)
                         {
-                            this.seat = 0;
-                            Console.WriteLine("card updated");
-                            for(int i = 0; i < 4; i++)
+                            Hello m = new Hello();
+                            m.MergeFrom(receivedData);
+                            code = (int)m.Code;
+                            if (code == 4)
                             {
-                                updateCardUI(i);    // update all
-                            }
-                            for(int i = 0; i < 4; i++)
-                            {
-                                showCardInHand(i);
-                            }
-                            code = 1;
-                            this.Dispatcher.Invoke(new Action(delegate
-                            { 
-                                this.WaitAnimation = true;
-                                this.watcherTimer.Start();
-                                this.scoreLabel.Content = "0";
-                            }));
-                        }
-                        sendContinue();
-                    }
-                    else if (code == 2)
-                    {
-                        GameState m = new GameState();
-                        m.MergeFrom(receivedData);
-                        code = 1;
-                        int who = (int)m.Who;
-                        int toplay = (int)m.TableID;
-                        if (toplay == 0)
-                        {
-                            for (int i = 0; i < 13; i++)
-                            {
-                                if (i < m.Hand.Count)
+                                this.seat = 0;
+                                Console.WriteLine("card updated");
+                                for (int i = 0; i < 4; i++)
                                 {
-                                    this.Card[who, i, 0] = (int)m.Hand[i].Suit;
-                                    this.Card[who, i, 1] = (int)m.Hand[i].Rank;
-                                    this.inhand[who, i] = true;
+                                    updateCardUI(i);    // update all
                                 }
-                                else
+                                for (int i = 0; i < 4; i++)
                                 {
-                                    this.Card[who, i, 0] = -1;
-                                    this.Card[who, i, 1] = -1;
-                                    this.inhand[who, i] = false;
+                                    showCardInHand(i);
                                 }
-                            }
-                            Console.WriteLine("{0} card received", who);
-                            sendContinue();
-                        }
-                        else
-                        {
-                            for(int i = 0; i < 13; i++)
-                            {
-                                for(int j = 0; j < m.ValidPlays.Count; j++)
-                                {
-                                    if(this.Card[who, i, 0] == (int)m.ValidPlays[j].Suit && this.Card[who, i, 1] == (int)m.ValidPlays[j].Rank)
-                                    {
-                                        this.Dispatcher.Invoke(new Action(delegate
-                                        {
-                                            this.CardUI[who, i].MouseDoubleClick += selectCard;
-                                        }));
-                                        break;
-                                    }
-                                }
-                            }
-                            this.Dispatcher.Invoke(new Action(delegate
-                            {
-                                this.ContinueButton.Click -= Button_Click_1;
-                            }));
-                        }
-                    }
-                    else if (code == 3)
-                    {
-                        Play m = new Play();
-                        m.MergeFrom(receivedData);
-                        int score = (int)m.TableID;
-                        this.Dispatcher.Invoke(new Action(delegate
-                        {
-                            Console.WriteLine("score:{0}", score);
-                            this.scoreLabel.Content = score.ToString();
-                        }));
-                        this.count += 1;
-
-                        code = 1;
-                        int who = (int)m.Who;
-                        Card card = m.Card;
-                        CardControl sc = null;
-                        for(int i = 0; i < 13; i++)
-                        {
-                            if(this.Card[who, i, 0]==(int)card.Suit && this.Card[who, i, 1] == (int)card.Rank)
-                            {
-                                sc = this.CardUI[(4 + who - this.seat) % 4, i];
+                                code = 1;
                                 this.Dispatcher.Invoke(new Action(delegate
                                 {
-                                    sc.Suit = Encode2Suit(this.Card[who, i, 0]);
-                                    sc.Number = Encode2Number(this.Card[who, i, 1]);
+                                    this.WaitAnimation = true;
+                                    this.watcherTimer.Start();
+                                    this.scoreLabel.Content = "0";
                                 }));
-                                this.inhand[who, i] = false;
-                                cardOut(sc);
-                                break;
+                            }
+                            sendContinue();
+                        }
+                        else if (code == 2)
+                        {
+                            GameState m = new GameState();
+                            m.MergeFrom(receivedData);
+                            code = 1;
+                            int who = (int)m.Who;
+                            int toplay = (int)m.TableID;
+                            if (toplay == 0)
+                            {
+                                for (int i = 0; i < 13; i++)
+                                {
+                                    if (i < m.Hand.Count)
+                                    {
+                                        this.Card[who, i, 0] = (int)m.Hand[i].Suit;
+                                        this.Card[who, i, 1] = (int)m.Hand[i].Rank;
+                                        this.inhand[who, i] = true;
+                                    }
+                                    else
+                                    {
+                                        this.Card[who, i, 0] = -1;
+                                        this.Card[who, i, 1] = -1;
+                                        this.inhand[who, i] = false;
+                                    }
+                                }
+                                Console.WriteLine("{0} card received", who);
+                                sendContinue();
+                            }
+                            else
+                            {
+                                for (int i = 0; i < 13; i++)
+                                {
+                                    for (int j = 0; j < m.ValidPlays.Count; j++)
+                                    {
+                                        if (this.Card[who, i, 0] == (int)m.ValidPlays[j].Suit && this.Card[who, i, 1] == (int)m.ValidPlays[j].Rank)
+                                        {
+                                            this.Dispatcher.Invoke(new Action(delegate
+                                            {
+                                                this.CardUI[who, i].MouseDoubleClick += selectCard;
+                                            }));
+                                            break;
+                                        }
+                                    }
+                                }
+                                this.Dispatcher.Invoke(new Action(delegate
+                                {
+                                    this.ContinueButton.Click -= Button_Click_1;
+                                }));
                             }
                         }
-                        this.WaitAnimation = true;
-                        if (this.count < 4 && !this.watching)
+                        else if (code == 3)
                         {
-                            this.watcherTimer.Interval = 50;
+                            Play m = new Play();
+                            m.MergeFrom(receivedData);
+                            int score = (int)m.TableID;
+                            this.Dispatcher.Invoke(new Action(delegate
+                            {
+                                Console.WriteLine("score:{0}", score);
+                                this.scoreLabel.Content = score.ToString();
+                            }));
+                            this.count += 1;
+
+                            code = 1;
+                            int who = (int)m.Who;
+                            Card card = m.Card;
+                            CardControl sc = null;
+                            for (int i = 0; i < 13; i++)
+                            {
+                                if (this.Card[who, i, 0] == (int)card.Suit && this.Card[who, i, 1] == (int)card.Rank)
+                                {
+                                    sc = this.CardUI[(4 + who - this.seat) % 4, i];
+                                    this.Dispatcher.Invoke(new Action(delegate
+                                    {
+                                        sc.Suit = Encode2Suit(this.Card[who, i, 0]);
+                                        sc.Number = Encode2Number(this.Card[who, i, 1]);
+                                    }));
+                                    this.inhand[who, i] = false;
+                                    cardOut(sc);
+                                    break;
+                                }
+                            }
+                            this.WaitAnimation = true;
+                            if (this.count < 4 && !this.watching)
+                            {
+                                this.watcherTimer.Interval = 50;
+                            }
+                            else
+                            {
+                                this.watcherTimer.Interval = 2000;
+                            }
+                            this.watcherTimer.Start();
                         }
-                        else
+                        else if (code == 5)
                         {
-                            this.watcherTimer.Interval = 2000;
+                            Console.WriteLine("received restart ok signal");
+                            this.Dispatcher.Invoke(new Action(delegate
+                            {
+                                this.restart.Visibility = Visibility.Visible;
+                            }));
+                            code = 1;
                         }
-                        this.watcherTimer.Start();
+                        startReceive(socket, code);
                     }
-                    else if (code == 5)
+                    catch (Exception ex)
                     {
-                        Console.WriteLine("received restart ok signal");
-                        this.Dispatcher.Invoke(new Action(delegate
-                        {
-                            this.restart.Visibility = Visibility.Visible;
-                        }));
-                        code = 1;
+
                     }
-                    startReceive(socket, code);
+                    
                 }, null);
             }
             catch (Exception ex)
@@ -524,7 +553,14 @@ namespace AIBridge
         {
             Hello m = new Hello();
             m.Code = 1;
-            this.socket.Send(m.ToByteArray());
+            try
+            {
+                this.socket.Send(m.ToByteArray());
+            }
+            catch(Exception ex)
+            {
+
+            }
         }
 
 
@@ -581,6 +617,8 @@ namespace AIBridge
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
+            this.socket.Shutdown(SocketShutdown.Both);
+            this.socket.Close();
             NavigationService.GetNavigationService(this).GoBack();
         }
 
