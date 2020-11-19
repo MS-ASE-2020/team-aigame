@@ -186,8 +186,6 @@ namespace testSocket
                     }
                     tmpSocket.Send(m.ToByteArray());
                     Console.WriteLine("send message to {0}", (starter + p) % 4);
-                    Console.WriteLine("test now!!!!!!!!!!!!");
-                    Thread.Sleep(2000);
                     int length = tmpSocket.Receive(buffer);
                     Console.WriteLine("receive message from {0}", (starter + p) % 4);
                     Play rm = new Play();

@@ -12,7 +12,7 @@
     <Grid>
         <Frame Name="currentPage" NavigationUIVisibility="Hidden">
             <Frame.Content>
-                <Grid>
+                <Grid Background="DarkGreen">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*"/>
                         <RowDefinition Height="3*"/>
@@ -39,17 +39,20 @@
                     <WrapPanel Name="RightCard" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Center"/>
                     <WrapPanel Name="MeCard" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Bottom"/>
                     <WrapPanel Name="OpponentCard" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                    <WrapPanel Name="contractPanel" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <Label Name="contractLabel" Content="no trump 3" FontSize="20" Foreground="White"/>
+                    </WrapPanel>
                     <WrapPanel Name="back" Grid.Row="2" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center">
                         <Button Content="BACK" FontSize="40" Click="Button_Click"/>
                     </WrapPanel>
                     <WrapPanel Name="continue" Grid.Row="0" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center">
                         <Button Name="ContinueButton" Content="Continue" FontSize="30" Click="Button_Click_1"/>
                     </WrapPanel>
-                    <WrapPanel Name="restart" Grid.Row="0" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center">
-                        <Button Content="Restart" FontSize="30" Click="Button_Click_restart" Visibility="Hidden"/>
+                    <WrapPanel Name="tipsPanel" Grid.Row="0" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <Label Name="tipsLabel" FontSize="30" Foreground="White"/>
                     </WrapPanel>
-                    <WrapPanel Name="score" Grid.Row="2" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center">
-                        <Label Name="scoreLabel" FontSize="40"/>
+                    <WrapPanel Name="scorePanel" Grid.Row="2" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <Label Name="scoreLabel" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White"/>
                     </WrapPanel>
                 </Grid>
             </Frame.Content>

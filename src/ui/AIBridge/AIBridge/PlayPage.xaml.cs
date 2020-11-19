@@ -54,7 +54,8 @@ namespace AIBridge
         private bool WaitAnimation = false;
         private int count = 0;
         private int seat = -1;
-        private int cardsReceived = 0;
+        private int score = 0;
+        private int round = 0;
         // record the cards played in one round
         // when count reaches 4, timer is started to keep the cards on the desk and after that, clear
 
@@ -210,7 +211,17 @@ namespace AIBridge
                 }
                 for(int i = 0; i < 13; i++)
                 {
-                    if(this.inhand[direction, i])
+                    //if (direction == 1)
+                    //{
+                    //    RotateTransform rotateTransform = new RotateTransform(90);
+                    //    this.CardUI[direction, i].RenderTransform = rotateTransform;
+                    //}
+                    //else if (direction == 3)
+                    //{
+                    //    RotateTransform rotateTransform = new RotateTransform(270);
+                    //    this.CardUI[direction, i].RenderTransform = rotateTransform;
+                    //}
+                    if (this.inhand[direction, i])
                         tmp.Add(this.CardUI[direction, i]);
                 }
             }));
@@ -227,6 +238,7 @@ namespace AIBridge
             CardControl card = (CardControl)sender;
             this.Dispatcher.Invoke(new Action(delegate
             {
+                this.tipsLabel.Content = "";
                 card.MouseDoubleClick -= selectCard;
                 Play m = new Play();
                 m.Who = (Player)Convert.ToInt32(card.Owner);
@@ -254,13 +266,34 @@ namespace AIBridge
         {
             this.Dispatcher.Invoke(new Action(delegate
             {
+
+                RotateTransform rotateTransform = new RotateTransform(0);
                 switch (Convert.ToInt32(card.Owner))
                 {
-                    case 0: this.Me.Children.Remove(card); this.MeCard.Children.Clear(); this.MeCard.Children.Add(card); break;
-                    case 1: this.Left.Children.Remove(card); this.LeftCard.Children.Clear(); this.LeftCard.Children.Add(card); break;
-                    case 2: this.Opponent.Children.Remove(card); this.OpponentCard.Children.Clear(); this.OpponentCard.Children.Add(card); break;
-                    case 3: this.Right.Children.Remove(card); this.RightCard.Children.Clear(); this.RightCard.Children.Add(card); break;
-                    default: break;
+                    case 0: 
+                        this.Me.Children.Remove(card); 
+                        this.MeCard.Children.Clear(); 
+                        this.MeCard.Children.Add(card); 
+                        break;
+                    case 1: 
+                        this.Left.Children.Remove(card); 
+                        this.LeftCard.Children.Clear(); 
+                        card.RenderTransform = rotateTransform;
+                        this.LeftCard.Children.Add(card); 
+                        break;
+                    case 2: 
+                        this.Opponent.Children.Remove(card); 
+                        this.OpponentCard.Children.Clear(); 
+                        this.OpponentCard.Children.Add(card); 
+                        break;
+                    case 3: 
+                        this.Right.Children.Remove(card);
+                        this.RightCard.Children.Clear();
+                        card.RenderTransform = rotateTransform;
+                        this.RightCard.Children.Add(card);
+                        break;
+                    default: 
+                        break;
                 }
             }));
         }
@@ -424,7 +457,7 @@ namespace AIBridge
                                 {
                                     this.WaitAnimation = true;
                                     this.watcherTimer.Start();
-                                    this.scoreLabel.Content = "0";
+                                    this.scoreLabel.Content = "declarer:0\ndefender:0";
                                 }));
                             }
                             sendContinue();
@@ -475,6 +508,14 @@ namespace AIBridge
                                 this.Dispatcher.Invoke(new Action(delegate
                                 {
                                     this.ContinueButton.Click -= Button_Click_1;
+                                    if (who == 0)
+                                    {
+                                        this.tipsLabel.Content = "Your Turn!\nDeclarer";
+                                    }
+                                    else
+                                    {
+                                        this.tipsLabel.Content = "Your Turn!\nDummy";
+                                    }
                                 }));
                             }
                         }
@@ -486,7 +527,8 @@ namespace AIBridge
                             this.Dispatcher.Invoke(new Action(delegate
                             {
                                 Console.WriteLine("score:{0}", score);
-                                this.scoreLabel.Content = score.ToString();
+                                this.score = score;
+                                this.scoreLabel.Content = "declarer:" + this.score.ToString() + "\ndefender:" + (this.round-this.score).ToString();
                             }));
                             this.count += 1;
 
@@ -523,10 +565,6 @@ namespace AIBridge
                         else if (code == 5)
                         {
                             Console.WriteLine("received restart ok signal");
-                            this.Dispatcher.Invoke(new Action(delegate
-                            {
-                                this.restart.Visibility = Visibility.Visible;
-                            }));
                             code = 1;
                         }
                         startReceive(socket, code);
@@ -573,6 +611,7 @@ namespace AIBridge
                 clearCardInThisTurn();
                 Console.WriteLine("clear card");
                 this.count = 0;
+                this.round += 1;
             }
             this.watcherTimer.Stop();
             sendContinue();
@@ -638,18 +677,11 @@ namespace AIBridge
                 {
                     clearCardInThisTurn();
                     this.count = 0;
+                    this.round += 1;
                 }
                 sendContinue();
             }
         }
 
-        private void Button_Click_restart(object sender, RoutedEventArgs e)
-        {
-            sendContinue();
-            this.Dispatcher.Invoke(new Action(delegate
-            {
-                this.restart.Visibility = Visibility.Hidden;
-            }));
-        }
     }
 }
