@@ -75,7 +75,7 @@ class NetworkManager final{
         return 0;
     }
 
-    static int recv(int socket, char const* data, size_t capacity, size_t &copied){
+    static int recv(int socket, char* data, size_t capacity, size_t &copied){
         copied = 0;
         uint32_t sizebuf;
         ssize_t ret = ::recv(socket, &sizebuf, sizeof(uint32_t), MSG_PEEK);
