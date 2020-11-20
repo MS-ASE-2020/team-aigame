@@ -4,7 +4,7 @@
 #include "message.pb.h"
 
 int main(int argc, char* argv[]){
-    if(argc < 3){
+    if(argc < 4){
         return 1;
     }
 

@@ -6,7 +6,13 @@
 #include "networkManager.h"
 
 int main(){
-    NetworkManager mgr(10086);
+    if(argc < 2){
+        return 1;
+    }
+
+    short port = atoi(argv[1]);
+
+    NetworkManager mgr(port);
     int connectedPlayer = 0;
 
     size_t capacity = 4096;
