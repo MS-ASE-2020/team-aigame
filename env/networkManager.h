@@ -64,16 +64,19 @@ class NetworkManager final{
         close(m_listen);
     }
 
-    static int send(int socket, char* data, size_t datalen){
+    static int send(int socket, char* data, size_t datalen, size_t &sent){
+        sent = 0;
         uint32_t len = static_cast<uint32_t>(datalen);
         uint32_t lenConverted = htonl(len);
         NetworkManager::send_internal(socket, &lenConverted, sizeof(lenConverted));
         NetworkManager::send_internal(socket, data, datalen);
 
+        sent = datalen + sizeof(lenConverted);
         return 0;
     }
 
-    static int recv(int socket, char *data, size_t capacity){
+    static int recv(int socket, char *data, size_t capacity, size_t &copied){
+        copied = 0;
         uint32_t sizebuf;
         ssize_t ret = ::recv(socket, &sizebuf, sizeof(uint32_t), MSG_PEEK);
         if(ret != sizeof(uint32_t)){
@@ -82,12 +85,12 @@ class NetworkManager final{
         }
 
         uint32_t size = ntohl(sizebuf);
-        if(size > capacity){
-            return static_cast<int>(size);
-        }
-
         size_t totalSize = size + sizeof(size);
         size_t read = 0;
+        if(totalSize > capacity){
+            return static_cast<int>(totalSize);
+        }
+
         while(read < totalSize){
             ret = ::recv(socket, data + read, totalSize - read, 0);
             if(ret <= 0){
@@ -97,6 +100,8 @@ class NetworkManager final{
 
             read += ret;
         }
+
+        copied = read;
 
         return 0;
     }

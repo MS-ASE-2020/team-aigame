@@ -13,15 +13,21 @@ int main(){
     AlgoLib::DataStructure::ScaleArray<char> buffer(4096);
     while(connectedPlayer < 4){
         NetworkManager::Connection conn = mgr.waitForConnection();
-        int ret = mgr.recv(conn, buffer.data(), buffer.size());
+        size_t msglen = 0;
+        int ret = mgr.recv(conn, buffer.data(), buffer.capacity(), msglen);
         if(ret > 0){
-            buffer.resize(ret);
-            ret = mgr.recv(conn, buffer.data(), buffer.size());
+            buffer.reserve(ret);
+            ret = mgr.recv(conn, buffer.data(), buffer.capacity(), msglen);
             if(ret != 0){
                 printf("NetworkManager::recv() fails\n");
                 throw 1;
             }
         }
+
+        Hello msgHello;
+        msgHello.ParseFromArray(buffer.data() + sizeof(uint32_t), msglen - sizeof(uint32_t));
+        
+        printf("Hello for table %u\n", msgHello.code());
     }
 
 
