@@ -28,6 +28,7 @@ enum Suit {
 };
 
 struct Card {
+ public:
     Suit suit;
     int rank;
     Card() { }
