@@ -55,7 +55,7 @@ class Client final{
     public:
     Client(struct sockaddr_in remoteAddr){
         m_socket = socket(AF_INET, SOCK_STREAM, 0);
-        connect(m_socket, &remoteAddr, sizeof(remoteAddr));
+        connect(m_socket, (sockaddr *)&remoteAddr, sizeof(remoteAddr));
     }
 
     ~Client(){

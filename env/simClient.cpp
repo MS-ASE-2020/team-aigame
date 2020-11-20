@@ -8,6 +8,6 @@ int main(){
     addr.sin_port = htons(10086);
     inet_aton("10.0.0.5", &(addr.sin_addr));
 
-    Client(addr);
+    Client client(addr);
     return 0;
 }
