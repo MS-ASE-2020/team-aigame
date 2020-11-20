@@ -4,7 +4,6 @@
 #include "localPlayer.h"
 #include "dummyPlayer.h"
 #include "networkManager.h"
-#include "scaleArray.hpp"
 
 int main(){
     NetworkManager mgr(10086);
@@ -34,7 +33,7 @@ int main(){
     }
 
     delete[] buffer;
-    
+
     BridgeGame game;
     IPlayer *player[4];
     player[Player::DUMMY] = new DummyPlayer;
