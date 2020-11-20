@@ -124,7 +124,7 @@ class Client final{
         return NetworkManager::send(m_socket, data, datalen, sent);
     }
 
-    int recv(char const* data, size_t capacity, size_t &copied){
+    int recv(char* data, size_t capacity, size_t &copied){
         return NetworkManager::recv(m_socket, data, capacity, copied);
     }
 };
