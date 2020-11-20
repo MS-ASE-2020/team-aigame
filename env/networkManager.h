@@ -11,10 +11,12 @@
 
 #include <cstdio>
 
-class NetworkManager{
+class NetworkManager final{
     private:
     int m_listen;
     public:
+    using Connection = int;
+
     NetworkManager(unsigned short port){
         m_listen = socket(AF_INET, SOCK_STREAM, 0);
         if(m_listen == -1){
@@ -31,9 +33,32 @@ class NetworkManager{
             printf("bind() failed on port %hu.\n", port);
             throw 1;
         }
+
+        if(listen(m_listen, 5) == -1){
+            printf("listen() failed on port %hu.\n", port);
+            throw 1;
+        }
+    }
+
+    Connection waitForConnection(){
+        return accept(m_listen, nullptr, nullptr);
     }
 
     ~NetworkManager(){
         close(m_listen);
+    }
+};
+
+class Client final{
+    private:
+    int m_socket;
+    public:
+    Client(struct sockaddr_in remoteAddr){
+        m_socket = socket(AF_INET, SOCK_STREAM, 0);
+        connect(m_socket, &remoteAddr, sizeof(remoteAddr));
+    }
+
+    ~Client(){
+        close(m_socket);
     }
 };
