@@ -7,6 +7,4 @@ project(AIGame)
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
-find_package(Protobuf)
-
 add_subdirectory(env)
