@@ -1,5 +1,5 @@
-./env &
-./client 0
-./client 1
-./client 2
-./client 3
+./env 5758 &
+./client 0 10.0.0.5 5758
+./client 1 10.0.0.5 5758
+./client 2 10.0.0.5 5758
+./client 3 10.0.0.5 5758
