@@ -15,9 +15,9 @@ void LocalPlayer::play(BridgeGame *pEngine){
             throw 1;
         }
 
-        choices = &(pHand->filter([](Card c){
+        choices = pHand->filter([](Card c){
             return true;
-        }));
+        });
     }
     else{
         // Follow
