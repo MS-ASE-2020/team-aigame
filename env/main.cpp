@@ -7,9 +7,14 @@
 
 int main(){
     NetworkManager mgr(10086);
-    mgr.waitForConnection();
+    int connectedPlayer = 0;
 
-    
+    while(connectedPlayer < 4){
+        NetworkManager::Connection conn = mgr.waitForConnection();
+        
+    }
+
+
     BridgeGame game;
     IPlayer *player[4];
     player[Player::DUMMY] = new DummyPlayer;
