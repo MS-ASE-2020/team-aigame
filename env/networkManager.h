@@ -119,4 +119,12 @@ class Client final{
     ~Client(){
         close(m_socket);
     }
+
+    static int send(char* data, size_t datalen, size_t &sent){
+        return NetworkManager::send(m_socket, data, datalen, sent);
+    }
+
+    static int recv(char *data, size_t capacity, size_t &copied){
+        return NetworkManager::recv(m_socket, data, capacity, copied);
+    }
 };
