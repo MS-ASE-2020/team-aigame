@@ -10,14 +10,17 @@ int main(){
     NetworkManager mgr(10086);
     int connectedPlayer = 0;
 
-    AlgoLib::DataStructure::ScaleArray<char> buffer(4096);
+    size_t capacity = 4096;
+    char *buffer = new char[capacity];
     while(connectedPlayer < 4){
         NetworkManager::Connection conn = mgr.waitForConnection();
         size_t msglen = 0;
-        int ret = mgr.recv(conn, buffer.data(), buffer.capacity(), msglen);
+        int ret = mgr.recv(conn, buffer, capacity, msglen);
         if(ret > 0){
-            buffer.reserve(ret);
-            ret = mgr.recv(conn, buffer.data(), buffer.capacity(), msglen);
+            capacity = ret;
+            delete[] buffer;
+            buffer = new char[capacity];
+            ret = mgr.recv(conn, buffer, capacity, msglen);
             if(ret != 0){
                 printf("NetworkManager::recv() fails\n");
                 throw 1;
@@ -25,12 +28,13 @@ int main(){
         }
 
         Hello msgHello;
-        msgHello.ParseFromArray(buffer.data() + sizeof(uint32_t), msglen - sizeof(uint32_t));
+        msgHello.ParseFromArray(buffer + sizeof(uint32_t), msglen - sizeof(uint32_t));
         
         printf("Hello for table %u\n", msgHello.code());
     }
 
-
+    delete[] buffer;
+    
     BridgeGame game;
     IPlayer *player[4];
     player[Player::DUMMY] = new DummyPlayer;
