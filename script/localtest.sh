@@ -1,5 +1,8 @@
-./env 5758 &
-./client 0 10.0.0.5 5758
-./client 1 10.0.0.5 5758
-./client 2 10.0.0.5 5758
-./client 3 10.0.0.5 5758
+#!/bin/bash
+# $1: server port
+$ip=$(hostname -i)
+./env $1 &
+./client 0 $ip $1
+./client 1 $ip $1
+./client 2 $ip $1
+./client 3 $ip $1
