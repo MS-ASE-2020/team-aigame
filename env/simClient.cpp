@@ -4,16 +4,17 @@
 #include "message.pb.h"
 
 int main(int argc, char* argv[]){
-    if(argc < 2){
+    if(argc < 3){
         return 1;
     }
 
     int selection = atoi(argv[1]);
+    short port = atoi(argv[3]);
 
     struct sockaddr_in addr;
     addr.sin_family = AF_INET;
-    addr.sin_port = htons(10086);
-    inet_aton("10.0.0.5", &(addr.sin_addr));
+    addr.sin_port = htons(port);
+    inet_aton(argv[2], &(addr.sin_addr));
 
     Client client(addr);
 
