@@ -24,13 +24,14 @@ enum Suit {
     DOUBLE = 5,
     X = 5,
     PASS = 6,
-    P = 6
+    P = 6,
+    UNDEFINED = 7
 };
 
-struct Card {
- public:
-    Suit suit;
-    int rank;
+class Card {
+    public:
+    Suit suit = UNDEFINED;
+    int rank = -1;
     Card() { }
     Card(int x, int y) {
         assert(y>=0 && y<=12);
@@ -43,12 +44,24 @@ struct Card {
         suit = x;
         rank = y;
     }
-
     bool operator==(const Card& x) const {
         return rank == x.rank && suit == x.suit;
     }
 
     bool operator!=(const Card& x) const {
         return !(*this == x);
+    }
+
+    friend ostream& operator<< (ostream& os, const Card& x) {
+        string t;
+        switch(x.suit){
+            case CLUB: t = "CLUB"; break;
+            case DIAMOND: t = "DIAMOND"; break;
+            case HEART: t = "HEART"; break;
+            case SPADE: t = "SPADE"; break;
+            default: t = "other suit"; break;
+        }
+        os << t << "," << x.rank;
+        return os;
     }
 };

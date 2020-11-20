@@ -15,7 +15,7 @@ enum Role {
     LOPP = 1,
     DUMMY = 2,
     ROPP = 3,
-    NO = 4
+    NOROLE = 4
 };
 
 enum Direction {
@@ -23,10 +23,11 @@ enum Direction {
     EAST = 1,
     SOUTH = 2,
     WEST = 3,
-    NO = 4
+    NODIRECTION = 4
 };
 
-struct Player {
+class Player{
+ public:
     Role role;
     Direction direction;
     Player() { 
@@ -54,6 +55,10 @@ struct Player {
         direction = y;
     }
 
+    Player nextPlayer(){
+        return Player((role+1)%4, (direction+1)%4);
+    }
+
     bool operator==(const Player& x) const {
         return role == x.role && direction == x.direction;
     }
@@ -62,4 +67,14 @@ struct Player {
         return !(*this == x);
     }
 
+    friend ostream& operator<< (ostream& os, const Player& x) {
+        if(x.role!=NOROLE)
+            os << "role: " << x.role << ", direction: " << x.direction;
+        else
+        {
+            os << "no player";
+        }
+        
+        return os;
+    }
 };
