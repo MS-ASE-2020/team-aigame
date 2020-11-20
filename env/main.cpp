@@ -3,8 +3,10 @@
 #include "message.pb.h"
 #include "localPlayer.h"
 #include "dummyPlayer.h"
+#include "networkManager.h"
 
 int main(){
+    NetworkManager mgr(10086);
     BridgeGame game;
     IPlayer *player[4];
     player[Player::DUMMY] = new DummyPlayer;
