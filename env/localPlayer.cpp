@@ -8,36 +8,36 @@ bool LocalPlayer::isReady(){
 }
 
 void LocalPlayer::play(BridgeGame *pEngine){
-    std::vector<Card> &choices = std::vector<Card>();
+    std::vector<Card> *choices = nullptr;
     if(pEngine->getCurrentCardInTrick() == 0){
         // Lead new trick
         if(pEngine->getCurrentTrick() >= 13){
             throw 1;
         }
 
-        choices = pHand->filter([](Card c){
+        choices = &(pHand->filter([](Card c){
             return true;
-        });
+        }));
     }
     else{
         // Follow
         Card lead = pEngine->getHistory(pEngine->getCurrentTrick(), 0);
-        choices = pHand->filter([&lead](Card c){
+        choices = &(pHand->filter([&lead](Card c){
             return c.suit() == lead.suit();
-        });
+        }));
 
-        if(choices.empty()){
-            choices = pHand->filter([&lead](Card c){
+        if(choices->empty()){
+            choices = &(pHand->filter([&lead](Card c){
                 return true;
-            });
+            }));
         }
     }
 
     std::random_device rd;
     std::mt19937 gen(rd());
-    std::uniform_int_distribution<int> dist(0, choices.size() - 1);
+    std::uniform_int_distribution<int> dist(0, choices->size() - 1);
     
-    Card chosen = choices[dist(gen)];
+    Card chosen = choices->at(dist(gen));
     StringConverter *global = StringConverter::getInstance();
     printf("Play card %s%s\n", global->convert(chosen.suit()), global->convert(chosen.rank()));
     pEngine->playCard(identity, chosen);

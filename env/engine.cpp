@@ -197,7 +197,7 @@ void BridgeGame::dumpState(FILE *fout){
     StringConverter * global = StringConverter::getInstance();
 
     for(int i = 0; i < 4; ++i){
-        fprintf(fout, seats[i]);
+        fprintf(fout, "%s", seats[i]);
         for(auto suit: suits){
             fprintf(fout, "\t%s ", global->convert(suit));
             std::vector<Card> suitcard = hands[i].filter([suit](Card c){
