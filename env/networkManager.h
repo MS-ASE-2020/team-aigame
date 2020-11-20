@@ -14,6 +14,22 @@
 class NetworkManager final{
     private:
     int m_listen;
+
+    static int send_internal(int socket, void *data, size_t datalen){
+        size_t sent = 0;
+        while(sent < datalen){
+            ssize_t ret = ::send(socket, data, datalen, 0);
+            if(ret <= 0){
+                printf("::send() fails\n");
+                throw 1;
+            }
+
+            sent += ret;
+        }
+
+        return 0;
+    }
+
     public:
     using Connection = int;
 
@@ -46,6 +62,43 @@ class NetworkManager final{
 
     ~NetworkManager(){
         close(m_listen);
+    }
+
+    static int send(int socket, char* data, size_t datalen){
+        uint32_t len = static_cast<uint32_t>(datalen);
+        uint32_t lenConverted = htonl(len);
+        NetworkManager::send_internal(socket, &lenConverted, sizeof(lenConverted));
+        NetworkManager::send_internal(socket, data, datalen);
+
+        return 0;
+    }
+
+    static int recv(int socket, char *data, size_t capacity){
+        uint32_t sizebuf;
+        ssize_t ret = ::recv(socket, &sizebuf, sizeof(uint32_t), MSG_PEEK);
+        if(ret != sizeof(uint32_t)){
+            printf("::recv() fails\n");
+            throw 1;
+        }
+
+        uint32_t size = ntohl(sizebuf);
+        if(size > capacity){
+            return static_cast<int>(size);
+        }
+
+        size_t totalSize = size + sizeof(size);
+        size_t read = 0;
+        while(read < totalSize){
+            ret = ::recv(socket, data + read, totalSize - read, 0);
+            if(ret <= 0){
+                printf("::recv() fails\n");
+                throw 1;
+            }
+
+            read += ret;
+        }
+
+        return 0;
     }
 };
 

@@ -4,14 +4,24 @@
 #include "localPlayer.h"
 #include "dummyPlayer.h"
 #include "networkManager.h"
+#include "scaleArray.hpp"
 
 int main(){
     NetworkManager mgr(10086);
     int connectedPlayer = 0;
 
+    AlgoLib::DataStructure::ScaleArray<char> buffer(4096);
     while(connectedPlayer < 4){
         NetworkManager::Connection conn = mgr.waitForConnection();
-        
+        int ret = mgr.recv(conn, buffer.data(), buffer.size());
+        if(ret > 0){
+            buffer.resize(ret);
+            ret = mgr.recv(conn, buffer.data(), buffer.size());
+            if(ret != 0){
+                printf("NetworkManager::recv() fails\n");
+                throw 1;
+            }
+        }
     }
 
 
