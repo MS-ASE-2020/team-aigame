@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
+using System.Runtime.CompilerServices;
 using System.ServiceModel.Security;
 using System.Text;
 using System.Threading;
@@ -224,7 +225,56 @@ namespace AIBridge
                     //    this.CardUI[direction, i].RenderTransform = rotateTransform;
                     //}
                     if (this.inhand[direction, i])
-                        tmp.Add(this.CardUI[direction, i]);
+                    {
+                        //tmp.Add(this.CardUI[direction, i]);
+                        StackPanel panel = null;
+                        for (int j = 0; j < tmp.Count; j++)
+                        {
+                            StackPanel t = tmp[j] as StackPanel;
+                            CardControl c = t.Children[0] as CardControl;
+                            if (string.Compare(c.Suit, this.CardUI[direction, i].Suit) == 0)
+                            {
+                                panel = t;
+                                break;
+                            }
+                        }
+                        bool newPanel = false;
+                        if (panel == null)
+                        {
+                            newPanel = true;
+                            panel = new StackPanel();
+                            panel.Orientation = Orientation.Horizontal;
+                            panel.Width = 110;
+                            panel.Height = 150;
+                            panel.MaxHeight = 150;
+                            panel.HorizontalAlignment = HorizontalAlignment.Left;
+                        }
+                        else
+                        {
+                            panel.Width += 20;
+                        }
+                        if (tmp.Count > 0 && newPanel && direction % 2 == 1)
+                        {
+                            Thickness panelThickness = new Thickness();
+                            panelThickness.Top = -107;
+                            panel.Margin = panelThickness;
+                        }
+                        double horizontalOffset = 0;
+                        double verticalOffset = 0;
+                        if (panel.Children.Count > 0)
+                        {
+                            horizontalOffset = -80;
+                            Thickness thickness = new Thickness();
+                            thickness.Left = horizontalOffset;
+                            thickness.Top = verticalOffset;
+                            this.CardUI[direction, i].Margin = thickness;
+                        }
+                        this.CardUI[direction, i].MaxHeight = 150;
+                        panel.Children.Add(this.CardUI[direction, i]);
+                        if(newPanel)
+                            tmp.Add(panel);
+                    }
+                        
                 }
             }));
             
@@ -268,35 +318,70 @@ namespace AIBridge
         {
             this.Dispatcher.Invoke(new Action(delegate
             {
-
-                RotateTransform rotateTransform = new RotateTransform(0);
+                UIElementCollection tmp = null;
+                UIElementCollection tmp1 = null;
                 switch (Convert.ToInt32(card.Owner))
                 {
-                    case 0: 
-                        this.Me.Children.Remove(card); 
-                        this.MeCard.Children.Clear(); 
-                        this.MeCard.Children.Add(card); 
-                        break;
-                    case 1: 
-                        this.Left.Children.Remove(card); 
-                        this.LeftCard.Children.Clear(); 
-                        card.RenderTransform = rotateTransform;
-                        this.LeftCard.Children.Add(card); 
-                        break;
-                    case 2: 
-                        this.Opponent.Children.Remove(card); 
-                        this.OpponentCard.Children.Clear(); 
-                        this.OpponentCard.Children.Add(card); 
-                        break;
-                    case 3: 
-                        this.Right.Children.Remove(card);
-                        this.RightCard.Children.Clear();
-                        card.RenderTransform = rotateTransform;
-                        this.RightCard.Children.Add(card);
-                        break;
-                    default: 
-                        break;
+                    case 0: tmp = this.Me.Children; tmp1 = this.MeCard.Children; break;
+                    case 1: tmp = this.Left.Children; tmp1 = this.LeftCard.Children; break;
+                    case 2: tmp = this.Opponent.Children; tmp1 = this.OpponentCard.Children; break;
+                    case 3: tmp = this.Right.Children; tmp1 = this.RightCard.Children; break;
                 }
+                for(int i = 0; i < tmp.Count; i++)
+                {
+                    StackPanel t = tmp[i] as StackPanel;
+                    for(int j = 0; j < t.Children.Count; j++)
+                    {
+                        CardControl c = t.Children[j] as CardControl;
+                        if (c == card)
+                        {
+                            t.Children.Remove(card);
+                            card.Margin = new Thickness();
+                            tmp1.Add(card);
+                            t.Width -= 20;
+                            if (t.Children.Count == 0)
+                            {
+                                tmp.Remove(t);
+                                if (tmp.Count > 0)
+                                {
+                                    StackPanel t_ = tmp[0] as StackPanel;
+                                    t_.Margin = new Thickness();
+                                }
+                            }
+                            else if(j == 0 && t.Children.Count > 0)
+                            {
+                                CardControl c_ = t.Children[0] as CardControl;
+                                c_.Margin = new Thickness();
+                            }
+                            break;
+                        }
+                    }
+                }
+                //switch (Convert.ToInt32(card.Owner))
+                //{
+                //    case 0: 
+                //        this.Me.Children.Remove(card); 
+                //        this.MeCard.Children.Clear(); 
+                //        this.MeCard.Children.Add(card); 
+                //        break;
+                //    case 1: 
+                //        this.Left.Children.Remove(card); 
+                //        this.LeftCard.Children.Clear(); 
+                //        this.LeftCard.Children.Add(card); 
+                //        break;
+                //    case 2: 
+                //        this.Opponent.Children.Remove(card); 
+                //        this.OpponentCard.Children.Clear(); 
+                //        this.OpponentCard.Children.Add(card); 
+                //        break;
+                //    case 3: 
+                //        this.Right.Children.Remove(card);
+                //        this.RightCard.Children.Clear();
+                //        this.RightCard.Children.Add(card);
+                //        break;
+                //    default: 
+                //        break;
+                //}
             }));
         }
 
