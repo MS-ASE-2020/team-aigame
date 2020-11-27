@@ -169,9 +169,9 @@ def declarer(game_state: GameState, rule: str) -> Card:
             max_len_suit = len_suits.index(max(len_suits))
             # 考虑出长套
             for card in dummy_suits[max_len_suit]:
-                if card.rank > 10:
-                    return get_sorted_card(contract,hand_suits[max_len_suit],False)
-            return get_sorted_card(contract, hand_suits[max_len_suit],True)
+                if card.rank > 9 and len(hand_suits[max_len_suit]) >= 1:
+                    return get_sorted_card(contract, hand_suits[max_len_suit], False)
+            return get_sorted_card(contract, hand_suits[max_len_suit], True) if len(hand_suits[max_len_suit]) >=1 else get_sorted_card(contract, validPlays, True)
         elif len(trickHistory_new.cards) == 1:
             tmp_contract = Contract()
             tmp_contract.suit = trickHistory_new.cards[0].suit
@@ -194,19 +194,20 @@ def declarer(game_state: GameState, rule: str) -> Card:
             else:
                 return sorted_hand_cards[-1]#sorted_hand_cards[1] if len(sorted_hand_cards)>=2 else sorted_hand_cards[0]
         else:
+            # 第四家打牌: 如果同伴的牌已经打过了庄家，那么出最小，否则出按照有大出大，否则出小
             tmp_contract = Contract()
             tmp_contract.suit = trickHistory_new.cards[0].suit
-            max_card = get_sorted_card(tmp_contract, validPlays, True)
-            max_card_history = max_card
-            for card in trickHistory_new.cards:
-                if cmp_two_cards(max_card_history, card, tmp_contract) == -1:
-                    max_card_history = card
-            if max_card_history == max_card:
-                # max_card最大
-                return max_card
-            else:
-                # 取最小
+            if cmp_two_cards(trickHistory_new.cards[1], trickHistory_new.cards[0], tmp_contract) == 1 and \
+                    cmp_two_cards(trickHistory_new.cards[1], trickHistory_new.cards[2], tmp_contract) == 1:
                 return get_sorted_card(tmp_contract, validPlays, False)
+            else:
+                max_card = get_sorted_card(tmp_contract, validPlays, True)
+                if cmp_two_cards(max_card, trickHistory_new.cards[0], tmp_contract) == 1 and \
+                        cmp_two_cards(max_card, trickHistory_new.cards[2], tmp_contract) == 1:
+                    return max_card
+                else:
+                    # 取最小
+                    return get_sorted_card(tmp_contract, validPlays, False)
 
 
 def lopp(game_state: GameState, rule: str) -> Card:
@@ -263,13 +264,15 @@ def lopp(game_state: GameState, rule: str) -> Card:
             return get_sorted_card(contract, validPlays, True)
         elif len(trickHistory_new.cards) == 1:
             # 第二家打牌: 原则：第二家打小牌和大牌盖大牌
+            tmp_contract = Contract()
+            tmp_contract.suit = trickHistory_new.cards[0].suit
             if trickHistory_new.cards[0].rank <= 10:
                 # 出最小的牌
-                return get_sorted_card(contract, validPlays, False)
+                return get_sorted_card(tmp_contract, validPlays, False)
             else:
                 # 用大牌盖，如果没有，出最小
-                sorted_cards = get_sorted_cards(contract, validPlays, True)
-                if cmp_two_cards(sorted_cards[0], trickHistory_new.cards[0],contract) == 1:
+                sorted_cards = get_sorted_cards(tmp_contract, validPlays, True)
+                if cmp_two_cards(sorted_cards[0], trickHistory_new.cards[0],tmp_contract) == 1:
                     # 可以大
                     return sorted_cards[0]
                 else:
@@ -277,20 +280,27 @@ def lopp(game_state: GameState, rule: str) -> Card:
                     return sorted_cards[-1]
         elif len(trickHistory_new.cards) == 2:
             # 第三家打牌: 分为两种情况，一种是长四的对应出牌，一种是第三家打大牌原则，不过貌似都应该出最大的牌，一是为了防止阻塞，二是为了赢墩
-            return get_sorted_card(contract,validPlays,True)
+            tmp_contract = Contract()
+            tmp_contract.suit = trickHistory_new.cards[0].suit
+            if get_sorted_card(contract,validPlays,True).suit == tmp_contract.suit:
+                return get_sorted_card(contract,validPlays,True)
+            else:
+                return get_sorted_card(contract, validPlays, False)
         else:
             # 第四家打牌: 如果同伴的牌已经打过了庄家，那么出最小，否则出按照有大出大，否则出小
-            if cmp_two_cards(trickHistory_new.cards[1],trickHistory_new.cards[0],contract) == 1 and \
-            cmp_two_cards(trickHistory_new.cards[1],trickHistory_new.cards[2],contract) == 1:
-                return get_sorted_card(contract,validPlays,False)
+            tmp_contract = Contract()
+            tmp_contract.suit = trickHistory_new.cards[0].suit
+            if cmp_two_cards(trickHistory_new.cards[1], trickHistory_new.cards[0], tmp_contract) == 1 and \
+                    cmp_two_cards(trickHistory_new.cards[1], trickHistory_new.cards[2], tmp_contract) == 1:
+                return get_sorted_card(tmp_contract, validPlays, False)
             else:
-                max_card = get_sorted_card(contract, validPlays, True)
-                if cmp_two_cards(max_card, trickHistory_new.cards[0], contract) == 1 and \
-                        cmp_two_cards(max_card, trickHistory_new.cards[2], contract) == 1:
+                max_card = get_sorted_card(tmp_contract, validPlays, True)
+                if cmp_two_cards(max_card, trickHistory_new.cards[0], tmp_contract) == 1 and \
+                        cmp_two_cards(max_card, trickHistory_new.cards[2], tmp_contract) == 1:
                     return max_card
                 else:
                     # 取最小
-                    return get_sorted_card(contract, validPlays, False)
+                    return get_sorted_card(tmp_contract, validPlays, False)
 
 
 def dummy(game_state: GameState, rule: str) -> Card:
@@ -341,9 +351,9 @@ def dummy(game_state: GameState, rule: str) -> Card:
             max_len_suit = len_suits.index(max(len_suits))
             # 考虑出长套
             for card in dummy_suits[max_len_suit]:
-                if card.rank > 10:
+                if card.rank > 10 and len(hand_suits[max_len_suit]) >= 1:
                     return get_sorted_card(contract, hand_suits[max_len_suit], False)
-            return get_sorted_card(contract, hand_suits[max_len_suit], True)
+            return get_sorted_card(contract, hand_suits[max_len_suit], True) if len(hand_suits[max_len_suit]) >=1 else get_sorted_card(contract, validPlays, True)
         elif len(trickHistory_new.cards) == 1:
             tmp_contract = Contract()
             tmp_contract.suit = trickHistory_new.cards[0].suit
@@ -462,32 +472,33 @@ def ropp(game_state: GameState, rule: str) -> Card:
         playHistorys = game_state.playHistory
         trickHistory_new = playHistorys[-1] if len(playHistorys) > 0 else None
         if trickHistory_new is None:
-            # 首攻 (ropp不可能首攻)
+            # 首攻
             hand_card = get_suits_from_cards(validPlays)
             if contract.suit == 4:
-                #先考虑无将,攻长四
+                # 先考虑无将,攻长四
                 max_len = 0
                 attack_suits = []
-                for cards in hand_card:
-                    if max_len < len(cards):
-                        attack_suits = cards
-                        max_len = len(cards)
+                for i in range(4):
+                    if max_len < len(hand_card[i]):
+                        attack_suits = hand_card[i]
+                        max_len = len(hand_card[i])
                 # 长四
                 return sorted(attack_suits, key=lambda v: v.rank, reverse=True)[3]
             else:
                 return get_sorted_card(contract, validPlays, True)
         elif len(trickHistory_new.cards) == 4:
-            # 第一家出牌
             return get_sorted_card(contract, validPlays, True)
         elif len(trickHistory_new.cards) == 1:
             # 第二家打牌: 原则：第二家打小牌和大牌盖大牌
+            tmp_contract = Contract()
+            tmp_contract.suit = trickHistory_new.cards[0].suit
             if trickHistory_new.cards[0].rank <= 10:
                 # 出最小的牌
-                return get_sorted_card(contract, validPlays, False)
+                return get_sorted_card(tmp_contract, validPlays, False)
             else:
                 # 用大牌盖，如果没有，出最小
-                sorted_cards = get_sorted_cards(contract, validPlays, True)
-                if cmp_two_cards(sorted_cards[0], trickHistory_new.cards[0],contract) == 1:
+                sorted_cards = get_sorted_cards(tmp_contract, validPlays, True)
+                if cmp_two_cards(sorted_cards[0], trickHistory_new.cards[0], tmp_contract) == 1:
                     # 可以大
                     return sorted_cards[0]
                 else:
@@ -495,17 +506,24 @@ def ropp(game_state: GameState, rule: str) -> Card:
                     return sorted_cards[-1]
         elif len(trickHistory_new.cards) == 2:
             # 第三家打牌: 分为两种情况，一种是长四的对应出牌，一种是第三家打大牌原则，不过貌似都应该出最大的牌，一是为了防止阻塞，二是为了赢墩
-            return get_sorted_card(contract,validPlays,True)
+            tmp_contract = Contract()
+            tmp_contract.suit = trickHistory_new.cards[0].suit
+            if get_sorted_card(contract, validPlays, True).suit == tmp_contract.suit:
+                return get_sorted_card(contract, validPlays, True)
+            else:
+                return get_sorted_card(contract, validPlays, False)
         else:
             # 第四家打牌: 如果同伴的牌已经打过了庄家，那么出最小，否则出按照有大出大，否则出小
-            if cmp_two_cards(trickHistory_new.cards[1],trickHistory_new.cards[0],contract) == 1 and \
-            cmp_two_cards(trickHistory_new.cards[1],trickHistory_new.cards[2],contract) == 1:
-                return get_sorted_card(contract,validPlays,False)
+            tmp_contract = Contract()
+            tmp_contract.suit = trickHistory_new.cards[0].suit
+            if cmp_two_cards(trickHistory_new.cards[1], trickHistory_new.cards[0], tmp_contract) == 1 and \
+                    cmp_two_cards(trickHistory_new.cards[1], trickHistory_new.cards[2], tmp_contract) == 1:
+                return get_sorted_card(tmp_contract, validPlays, False)
             else:
-                max_card = get_sorted_card(contract, validPlays, True)
-                if cmp_two_cards(max_card, trickHistory_new.cards[0], contract) == 1 and \
-                        cmp_two_cards(max_card, trickHistory_new.cards[2], contract) == 1:
+                max_card = get_sorted_card(tmp_contract, validPlays, True)
+                if cmp_two_cards(max_card, trickHistory_new.cards[0], tmp_contract) == 1 and \
+                        cmp_two_cards(max_card, trickHistory_new.cards[2], tmp_contract) == 1:
                     return max_card
                 else:
                     # 取最小
-                    return get_sorted_card(contract, validPlays, False)
+                    return get_sorted_card(tmp_contract, validPlays, False)
