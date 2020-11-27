@@ -49,14 +49,14 @@ class clientThread(threading.Thread):  # 继承父类threading.Thread
             # assert player == seat
             if player == 0:
                 # Declare
-                card = declarer(game_state_message, "easy")
+                card = declarer(game_state_message, "hard")
                 # 发送
             elif player == 1:
-                card = lopp(game_state_message, "easy")
+                card = lopp(game_state_message, "hard")
             elif player == 2:
-                card = dummy(game_state_message, "easy")
+                card = dummy(game_state_message, "hard")
             else:
-                card = ropp(game_state_message, "easy")
+                card = ropp(game_state_message, "hard")
             play = message.Play()
             play.tableID = tableid
             play.who = player
