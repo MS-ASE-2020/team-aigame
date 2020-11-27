@@ -364,7 +364,7 @@ def dummy(game_state: GameState, rule: str) -> Card:
                 else:
                     return sorted_hand_cards[-1]
             else:
-                return sorted_hand_cards[1] if len(sorted_hand_cards)>=2 else sorted_hand_cards[0]
+                return sorted_hand_cards[-1]#sorted_hand_cards[1] if len(sorted_hand_cards)>=2 else sorted_hand_cards[0]
         else:
             tmp_contract = Contract()
             tmp_contract.suit = trickHistory_new.cards[0].suit
