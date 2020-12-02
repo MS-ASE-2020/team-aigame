@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="PublishConfigData" autoUpload="Always" serverName="rjl@192.168.2.80:22" remoteFilesAllowedToDisappearOnAutoupload="false">
+    <serverData>
+      <paths name="laboratory">
+        <serverdata>
+          <mappings>
+            <mapping deploy="/data/xww/workspace/contract-bridge-env-master/" local="$PROJECT_DIR$" web="/" />
+          </mappings>
+        </serverdata>
+      </paths>
+      <paths name="rjl@192.168.2.80:22">
+        <serverdata>
+          <mappings>
+            <mapping deploy="/tmp/pycharm_project_801" local="$PROJECT_DIR$" />
+          </mappings>
+        </serverdata>
+      </paths>
+    </serverData>
+    <option name="myAutoUpload" value="ALWAYS" />
+  </component>
+</project>
