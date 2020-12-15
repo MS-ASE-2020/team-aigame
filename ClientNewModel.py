@@ -53,6 +53,15 @@ def GameState2feature(game_state: GameState):
     identity[dict_map[who]] = 1
     playHistorys = game_state.playHistory
     round_index_feature[len(playHistorys)-1] = 1
+    history_cards = [[0]*52]*4
+    teammate_history_cards = [0]*52
+    left_history_cards = [0]*52
+    right_history_cards = [0]*52
+    self_history_cards = [0]*52
+    round_cards = [[0]*52]*4
+    teammate_current_trick = [0]*52
+    left_current_trick = [0]*52
+    right_current_trick = [0]*52
     if len(playHistorys) == 0:
         pass
     else:
@@ -61,18 +70,32 @@ def GameState2feature(game_state: GameState):
             if index != 0 and (history.lead == who or history.lead == (who+2) % 4):
                 dun_count_feature[who % 2] += 1
             elif index != 0:
-                dun_count_feature[(who + 1) % 2] += 1
+                dun_count_feature[(who+1) % 2] += 1
             else:
                 pass
 
+            # history cards
+            who_round = history.lead
             # desktop_cards_feature
             for card in history.cards:
                 desktop_cards_feature[card.suit * 13 + card.rank] = 1
+                if index == len(playHistorys) - 1:
+                    round_cards[who_round % 4][card.suit * 13 + card.rank] = 1
+                history_cards[who_round % 4][card.suit * 13 + card.rank] = 1
+                who_round += 1
 
             # round_out_cards
             if index == len(playHistorys) - 1:
                 for card in history.cards:
                     round_out_cards_feature[card.suit * 13 + card.rank] = 1
+        teammate_current_trick = round_cards[(2+who) % 4]
+        left_current_trick = round_cards[(1+who) % 4]
+        right_current_trick = round_cards[(3+who) % 4]
+        teammate_history_cards = history_cards[(2+who) % 4]
+        left_history_cards = history_cards[(1+who) % 4]
+        right_history_cards = history_cards[(3+who) % 4]
+        self_history_cards = history_cards[who]
+
     for card in game_state.hand:
         hand_card_feature[card.suit * 13 + card.rank] = 1
 
@@ -81,7 +104,7 @@ def GameState2feature(game_state: GameState):
 
     sum_card_feature = np.asarray(hand_card_feature) + np.asarray(open_hand_feature) + np.asarray(desktop_cards_feature)
     remaining_cards_feature = list(np.asarray([1]*52) - sum_card_feature)
-    cat_feature = round_index_feature + bidding_feature + dun_count_feature + identity + hand_card_feature + open_hand_feature + desktop_cards_feature + remaining_cards_feature + round_out_cards_feature
+    cat_feature = round_index_feature + bidding_feature + dun_count_feature + identity + hand_card_feature + open_hand_feature + self_history_cards + teammate_history_cards + left_history_cards + right_history_cards + teammate_current_trick + left_current_trick + right_current_trick
     return cat_feature
 
 
