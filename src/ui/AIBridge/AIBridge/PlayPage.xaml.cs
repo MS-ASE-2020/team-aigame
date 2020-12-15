@@ -57,6 +57,7 @@ namespace AIBridge
         private int seat = -1;
         private int score = 0;
         private int round = 0;
+        private bool needClear = false; // tell whether one round is over and need to clear
         // record the cards played in one round
         // when count reaches 4, timer is started to keep the cards on the desk and after that, clear
 
@@ -139,6 +140,11 @@ namespace AIBridge
             }
         }
 
+        /// <summary>
+        /// from number to rank, 0-12 means 2-A
+        /// </summary>
+        /// <param name="s"></param>
+        /// <returns></returns>
         private int Number2Encode(string s)
         {
             if (string.Compare(s, "A") == 0)
@@ -362,31 +368,6 @@ namespace AIBridge
                         }
                     }
                 }
-                //switch (Convert.ToInt32(card.Owner))
-                //{
-                //    case 0: 
-                //        this.Me.Children.Remove(card); 
-                //        this.MeCard.Children.Clear(); 
-                //        this.MeCard.Children.Add(card); 
-                //        break;
-                //    case 1: 
-                //        this.Left.Children.Remove(card); 
-                //        this.LeftCard.Children.Clear(); 
-                //        this.LeftCard.Children.Add(card); 
-                //        break;
-                //    case 2: 
-                //        this.Opponent.Children.Remove(card); 
-                //        this.OpponentCard.Children.Clear(); 
-                //        this.OpponentCard.Children.Add(card); 
-                //        break;
-                //    case 3: 
-                //        this.Right.Children.Remove(card);
-                //        this.RightCard.Children.Clear();
-                //        this.RightCard.Children.Add(card);
-                //        break;
-                //    default: 
-                //        break;
-                //}
             }));
         }
 
@@ -527,11 +508,13 @@ namespace AIBridge
                         int length = socket.EndReceive(asyncResult);
                         Console.WriteLine("{0} bytes received", length);
                         byte[] receivedData = data.Take(length).ToArray();
+                        // inform ui what next information will be
                         if (code == 1)
                         {
                             Hello m = new Hello();
                             m.MergeFrom(receivedData);
                             code = (int)m.Code;
+                            // if received hello with code 4, means cards are distributed successfully. update ui then
                             if (code == 4)
                             {
                                 this.seat = 0;
@@ -548,12 +531,19 @@ namespace AIBridge
                                 this.Dispatcher.Invoke(new Action(delegate
                                 {
                                     this.WaitAnimation = true;
-                                    this.watcherTimer.Start();
+                                    if (!this.watching)
+                                    {
+                                        this.watcherTimer.Start();  // when playing with models, start watcherTimer, to send continue message automatically
+                                    }
                                     this.scoreLabel.Content = "declarer:0\ndefender:0";
+                                    this.score = 0; // reset score
+                                    this.round = 0; // reset round
                                 }));
                             }
                             sendContinue();
                         }
+                        // receive gamestate
+                        // ui will receive this only when the watcher is not playing, i.e. is watching
                         else if (code == 2)
                         {
                             GameState m = new GameState();
@@ -611,17 +601,14 @@ namespace AIBridge
                                 }));
                             }
                         }
+                        // receive play message
+                        // add count -> when count reaches 4, means 1 round is over, clear desk
+                        // when watching, once a round is over, do not use watcher timer to continue but use continue button only. in other cases, just set the watchertimer to 2s
+                        // when playing(!watching), once a round is over, keep the desk for a while(2s or 3s). in other cases, set the watcher to 500ms
                         else if (code == 3)
                         {
                             Play m = new Play();
                             m.MergeFrom(receivedData);
-                            int score = (int)m.TableID;
-                            this.Dispatcher.Invoke(new Action(delegate
-                            {
-                                Console.WriteLine("score:{0}", score);
-                                this.score = score;
-                                this.scoreLabel.Content = "declarer:" + this.score.ToString() + "\ndefender:" + (this.round-this.score).ToString();
-                            }));
                             this.count += 1;
 
                             code = 1;
@@ -643,16 +630,44 @@ namespace AIBridge
                                     break;
                                 }
                             }
-                            this.WaitAnimation = true;
-                            if (this.count < 4 && !this.watching)
+                            if (this.count == 4)
                             {
-                                this.watcherTimer.Interval = 50;
+                                this.count = 0;
+                                this.round += 1;
+                                this.needClear = true;
                             }
-                            else
+                            // when there will be button
+                            // when only watching, there will always be a button
+                            // when playing, only when 13 rounds is finished, there will be a continue button
+                            if(this.watching || this.round == 13)
+                            {
+                                this.WaitAnimation = true;
+                                this.Dispatcher.Invoke(new Action(delegate
+                                {
+                                    this.ContinueButton.Visibility = Visibility.Visible;
+                                }));
+                            }
+                            if (!this.needClear)
+                            {
+                                if (this.watching)
+                                    this.watcherTimer.Interval = 2000;
+                                else
+                                    this.watcherTimer.Interval = 500;
+                                this.watcherTimer.Start();
+                            }
+                            else if(!this.watching && this.needClear && this.round < 13)
                             {
                                 this.watcherTimer.Interval = 2000;
+                                this.watcherTimer.Start();
                             }
-                            this.watcherTimer.Start();
+
+                            int score = (int)m.Score;
+                            this.Dispatcher.Invoke(new Action(delegate
+                            {
+                                Console.WriteLine("score:{0}", score);
+                                this.score = score;
+                                this.scoreLabel.Content = "declarer:" + this.score.ToString() + "\ndefender:" + (this.round - this.score).ToString();
+                            }));
                         }
                         else if (code == 5)
                         {
@@ -698,12 +713,18 @@ namespace AIBridge
         {
             Console.Write("timer elapsed, count:{0}", this.count);
             this.WaitAnimation = false;
-            if (this.count == 4)
+            if (this.needClear)
             {
                 clearCardInThisTurn();
                 Console.WriteLine("clear card");
-                this.count = 0;
-                this.round += 1;
+                this.needClear = false;
+            }
+            if (!this.watching)
+            {
+                this.Dispatcher.Invoke(new Action(delegate
+                {
+                    this.ContinueButton.Visibility = Visibility.Hidden;
+                }));
             }
             this.watcherTimer.Stop();
             sendContinue();
@@ -732,7 +753,11 @@ namespace AIBridge
             //{
             if (!this.watching)
             {
-                this.watcherTimer = new System.Timers.Timer(1000);
+                this.watcherTimer = new System.Timers.Timer(500);
+            }
+            else
+            {
+                this.watcherTimer = new System.Timers.Timer(2000);
             }
             
             this.watcherTimer.Elapsed += new System.Timers.ElapsedEventHandler(time2nextPlay);
@@ -761,15 +786,21 @@ namespace AIBridge
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            if(this.watching && this.WaitAnimation)
+            if(this.WaitAnimation)
             {
                 this.watcherTimer.Stop();
                 this.WaitAnimation = false;
-                if (this.count == 4)
+                if (this.needClear)
                 {
                     clearCardInThisTurn();
-                    this.count = 0;
-                    this.round += 1;
+                    this.needClear = false;
+                }
+                if (!this.watching)
+                {
+                    this.Dispatcher.Invoke(new Action(delegate
+                    {
+                        this.ContinueButton.Visibility = Visibility.Hidden;
+                    }));
                 }
                 sendContinue();
             }

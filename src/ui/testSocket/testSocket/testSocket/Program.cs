@@ -35,9 +35,9 @@ namespace testSocket
                 Socket tmp = listener.Accept();
                 Hello m = new Hello();
                 if (i != 2)
-                    m.Seat = (Player)i;
+                    m.Score = 0;
                 else
-                    m.Seat = (Player)(i + 1);
+                    m.Score = 0;
                 m.Code = 1;
                 tmp.Send(m.ToByteArray());
                 switch (i)
@@ -190,13 +190,6 @@ namespace testSocket
                     Console.WriteLine("receive message from {0}", (starter + p) % 4);
                     Play rm = new Play();
                     rm.MergeFrom(buffer.Take(length).ToArray());
-                    rm.TableID = (uint)score;
-                    h.Code = 3;
-                    Console.WriteLine("running ok");
-                    watcher.Send(h.ToByteArray());
-                    watcher.Receive(buffer);
-                    watcher.Send(rm.ToByteArray());
-                    Console.WriteLine("send play message");
 
                     Card selected = rm.Card;
                     if ((starter + p) % 4 == 2)
@@ -216,17 +209,30 @@ namespace testSocket
                     }
                     history.Add((int)selected.Suit * 13 + (int)selected.Rank);
                     cardInThisTurn[p] = (int)selected.Suit * 13 + (int)selected.Rank;
+
+                    if (p == 3)
+                    {
+                        int maxPlayer = 0;
+                        for (int i = 0; i < 3; i++)
+                        {
+                            if (cardInThisTurn[i + 1] / 13 == presentSuit && cardInThisTurn[i + 1] % 13 > cardInThisTurn[maxPlayer] % 13)
+                                maxPlayer = i + 1;
+                        }
+                        presentSuit = -1;
+                        starter = (maxPlayer + starter) % 4;
+                        if (starter == 0 || starter == 2)
+                            score += 1;
+                    }
+
+                    rm.Score = (uint)score;
+                    h.Code = 3;
+                    Console.WriteLine("running ok");
+                    watcher.Send(h.ToByteArray());
+                    watcher.Receive(buffer);
+                    watcher.Send(rm.ToByteArray());
+                    Console.WriteLine("send play message");
                 }
-                int maxPlayer = 0;
-                for (int i = 0; i < 3; i++)
-                {
-                    if (cardInThisTurn[i + 1] / 13 == presentSuit && cardInThisTurn[i + 1] % 13 > cardInThisTurn[maxPlayer] % 13)
-                        maxPlayer = i + 1;
-                }
-                presentSuit = -1;
-                starter = (maxPlayer + starter) % 4;
-                if (starter == 0 || starter == 2)
-                    score += 1;
+                
                 printCard(cardInThisTurn);
                 Console.WriteLine("round {0} finished!", round);
             }
