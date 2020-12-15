@@ -94,6 +94,11 @@ namespace AIBridge
             }
         }
 
+        /// <summary>
+        /// from suit icons to number
+        /// </summary>
+        /// <param name="s"></param>
+        /// <returns></returns>
         private int Suit2Encode(string s)
         {
             if (string.Compare(s, "\u2663") == 0)
