@@ -19,18 +19,20 @@ PORT = 6006
 BUFSIZ = 1024
 ADDR = (HOST, PORT)
 
-class MLP(nn.Module):
+class DQN(nn.Module):
 
-    def __init__(self):
-        super(MLP, self).__init__()
-        self.layer1 = nn.Sequential(nn.Linear(290, 200), nn.ReLU(True))
-        self.layer2 = nn.Sequential(nn.Linear(200, 100), nn.ReLU(True))
-        self.layer4 = nn.Sequential(nn.Linear(100, 52), nn.ReLU(True))
+    def __init__(self,dim=498):
+        super(DQN, self).__init__()
+        self.fc1 = nn.Linear(dim, 380)
+        self.fc2 = nn.Linear(380, 250)
+        self.fc3 = nn.Linear(250, 100)
+        self.fc4 = nn.Linear(100, 52)
 
     def forward(self, x):
-        x = self.layer1(x)
-        x = self.layer2(x)
-        x = self.layer4(x)
+        x = F.relu(self.fc1(x))
+        x = F.relu(self.fc2(x))
+        x = F.relu(self.fc3(x))
+        x = F.relu(self.fc4(x))
         return x
 
 
@@ -53,12 +55,12 @@ def GameState2feature(game_state: GameState):
     identity[dict_map[who]] = 1
     playHistorys = game_state.playHistory
     round_index_feature[len(playHistorys)-1] = 1
-    history_cards = [[0]*52]*4
+    history_cards = [[0]*52 for i in range(4)]
     teammate_history_cards = [0]*52
     left_history_cards = [0]*52
     right_history_cards = [0]*52
     self_history_cards = [0]*52
-    round_cards = [[0]*52]*4
+    round_cards = [[0]*52 for i in range(4)]
     teammate_current_trick = [0]*52
     left_current_trick = [0]*52
     right_current_trick = [0]*52
@@ -101,7 +103,7 @@ def GameState2feature(game_state: GameState):
 
     for card in game_state.dummy:
         open_hand_feature[card.suit * 13 + card.rank] = 1
-
+    print(teammate_current_trick,teammate_history_cards)
     sum_card_feature = np.asarray(hand_card_feature) + np.asarray(open_hand_feature) + np.asarray(desktop_cards_feature)
     remaining_cards_feature = list(np.asarray([1]*52) - sum_card_feature)
     cat_feature = round_index_feature + bidding_feature + dun_count_feature + identity + hand_card_feature + open_hand_feature + self_history_cards + teammate_history_cards + left_history_cards + right_history_cards + teammate_current_trick + left_current_trick + right_current_trick
@@ -118,8 +120,9 @@ class clientThread(threading.Thread):  # 继承父类threading.Thread
 
     def run(self):  # 把要执行的代码写到run函数里面 线程在创建后会直接运行run函数
         device = torch.device('cpu')
-        net = MLP().to(device)
-        net.load_state_dict(torch.load('bridge_agent_v1.pth', map_location=torch.device('cpu')))
+        net = DQN().to(device)
+        net.eval()
+        net.load_state_dict(torch.load('D:\Project\\bridge\\bridge_agent_14-16_v5.pth', map_location=torch.device('cpu')))
         protobufhello = self.tcpCliSock.recv(BUFSIZ)
         hello_message = message.Hello()
         hello_message.ParseFromString(protobufhello)
