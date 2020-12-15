@@ -2,3 +2,4 @@
 .idea/
 /message.proto.txt
 src/
+__pycache__/
