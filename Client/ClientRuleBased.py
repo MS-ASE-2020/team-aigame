@@ -5,7 +5,7 @@ import protobuf.message_pb2 as message
 import traceback
 import google.protobuf.any_pb2
 # from google.protobuf import any_pb2 as google_dot_protobuf_dot_any__pb2
-from demo import *
+from RuleBased import *
 import threading
 
 HOST = '127.0.0.1'
