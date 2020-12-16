@@ -8,23 +8,12 @@
       </path>
       <path>
         <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
-        <item name="LOCAL_ROOT" type="e8cecc67:BranchNodeDescriptor" />
-        <item name="GROUP_NODE:yue" type="e8cecc67:BranchNodeDescriptor" />
-      </path>
-      <path>
-        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
         <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
       </path>
       <path>
         <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
         <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
         <item name="GROUP_NODE:origin" type="e8cecc67:BranchNodeDescriptor" />
-      </path>
-      <path>
-        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
-        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
-        <item name="GROUP_NODE:origin" type="e8cecc67:BranchNodeDescriptor" />
-        <item name="GROUP_NODE:v-hexin" type="e8cecc67:BranchNodeDescriptor" />
       </path>
       <path>
         <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
@@ -37,10 +26,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5e645f81-9b61-469b-b85a-70d59f41f57b" name="Default Changelist" comment="&quot;Fix some bug&quot;">
-      <change beforePath="$PROJECT_DIR$/Client/ClientModelTest.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Client/ClientNewModel.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Client/ClientProtoTest.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Client/demo.py" beforeDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/DatasetPreprocessing.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/dataset.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/get_dataset.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/train_data.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/team-aigame.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/team-aigame.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DatasetPreprocessing.py" beforeDir="false" afterPath="$PROJECT_DIR$/DatasetPreprocessing.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -55,9 +48,14 @@
     </option>
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="v-hexin/data1024" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="JupyterTrust" id="b1f8ba18-c7de-40fb-abb9-a9096da29246" />
+  <component name="JupyterTrust" id="d751b263-9fc6-413b-aa03-87adcb301b15" />
   <component name="ProjectId" id="1jB0ufHdBiCrGzh142CxXQJkTaD" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -113,6 +111,14 @@
     <option name="LAST_COMMIT_MESSAGE" value="'preprocess dataset: makerDef and firstPlayers'" />
   </component>
   <component name="WindowStateProjectService">
+    <state x="2104" y="98" key="MergeDialog" timestamp="1608121460037">
+      <screen x="1920" y="0" width="1920" height="1160" />
+    </state>
+    <state x="2104" y="98" key="MergeDialog/0.0.1920.1160/1920.0.1920.1160@1920.0.1920.1160" timestamp="1608121460037" />
+    <state x="2518" y="341" key="MultipleFileMergeDialog" timestamp="1608121460042">
+      <screen x="1920" y="0" width="1920" height="1160" />
+    </state>
+    <state x="2518" y="341" key="MultipleFileMergeDialog/0.0.1920.1160/1920.0.1920.1160@1920.0.1920.1160" timestamp="1608121460042" />
     <state x="800" y="301" key="RollbackChangesDialog" timestamp="1603262676228">
       <screen x="0" y="0" width="1920" height="1200" />
     </state>
@@ -127,8 +133,8 @@
     <state x="623" y="265" width="672" height="678" key="search.everywhere.popup/0.0.1920.1200/1920.0.1920.1200@0.0.1920.1200" timestamp="1603268677572" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/team_aigame$ClientNewModel.coverage" NAME="ClientNewModel Coverage Results" MODIFIED="1608032482754" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/team_aigame$ClientModelTest.coverage" NAME="ClientModelTest Coverage Results" MODIFIED="1608024428848" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/team_aigame$ClientNewModel_OppO.coverage" NAME="ClientNewModel_OppO Coverage Results" MODIFIED="1608032488229" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/team_aigame$ClientNewModel.coverage" NAME="ClientNewModel Coverage Results" MODIFIED="1608032482754" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>
