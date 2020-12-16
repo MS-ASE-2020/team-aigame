@@ -23,20 +23,6 @@
                         <ColumnDefinition Width="3*"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
-                    <!--
-                    <Viewbox Name="opponentViewbox" StretchDirection="Both" Stretch="Uniform" Grid.Row="0" Grid.Column="1">
-                        <StackPanel Orientation="Horizontal" Name="Opponent" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                    </Viewbox>
-                    <Viewbox Name="meViewbox" StretchDirection="Both" Stretch="Uniform" Grid.Row="2" Grid.Column="1">
-                        <StackPanel Orientation="Horizontal" Name="Me" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                    </Viewbox>
-                    <Viewbox Name="leftViewbox" StretchDirection="Both" Stretch="Uniform" Grid.Row="1" Grid.Column="0">
-                        <StackPanel Orientation="Vertical" Name="Left" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                    </Viewbox>
-                    <Viewbox Name="rightViewbox" StretchDirection="Both" Stretch="Uniform" Grid.Row="1" Grid.Column="2">
-                        <StackPanel Orientation="Vertical" Name="Right" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                    </Viewbox>
-                    -->
                     <StackPanel Orientation="Horizontal" Name="Opponent" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Row="0" Grid.Column="1"/>
                     <StackPanel Orientation="Horizontal" Name="Me" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Row="2" Grid.Column="1"/>
                     <StackPanel Orientation="Vertical" Name="Left" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Row="1" Grid.Column="0"/>

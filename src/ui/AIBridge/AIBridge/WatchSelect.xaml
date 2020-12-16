@@ -33,15 +33,15 @@
                     </WrapPanel>
                     <StackPanel Grid.Row="2" Grid.Column="0" Grid.RowSpan="2" Grid.ColumnSpan="2" Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center" MinWidth="250">
                         <Label Content="declarer" FontSize="50"/>
-                        <Label Name="rule1" Content="Rule-based" FontSize="40" MouseDoubleClick="Select_click"/>
-                        <Label Name="sl1" FontSize="40" Content="SL model" MouseDoubleClick="Select_click"/>
-                        <Label Name="rl1" FontSize="40" Content="RL model" MouseDoubleClick="Select_click"/>
+                        <Label Name="rule1" Content="Rule-based" FontSize="40" MouseUp="Select_click"/>
+                        <Label Name="sl1" FontSize="40" Content="SL model" MouseUp="Select_click"/>
+                        <Label Name="rl1" FontSize="40" Content="RL model" MouseUp="Select_click"/>
                     </StackPanel>
                     <StackPanel Grid.Row="2" Grid.Column="2" Grid.RowSpan="2" Grid.ColumnSpan="2" Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center" MinWidth="250">
                         <Label Content="defender" FontSize="50"/>
-                        <Label Name="rule2" Content="Rule-based" FontSize="40" MouseDoubleClick="Select_click"/>
-                        <Label Name="sl2" FontSize="40" Content="SL model" MouseDoubleClick="Select_click"/>
-                        <Label Name="rl2" FontSize="40" Content="RL model" MouseDoubleClick="Select_click"/>
+                        <Label Name="rule2" Content="Rule-based" FontSize="40" MouseUp="Select_click"/>
+                        <Label Name="sl2" FontSize="40" Content="SL model" MouseUp="Select_click"/>
+                        <Label Name="rl2" FontSize="40" Content="RL model" MouseUp="Select_click"/>
                     </StackPanel>
                     <WrapPanel Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Center">
                         <Button Content="START" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="50" Click="START_click"/>
