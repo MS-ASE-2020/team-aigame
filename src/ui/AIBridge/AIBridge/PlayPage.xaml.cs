@@ -227,16 +227,6 @@ namespace AIBridge
                 }
                 for(int i = 0; i < 13; i++)
                 {
-                    //if (direction == 1)
-                    //{
-                    //    RotateTransform rotateTransform = new RotateTransform(90);
-                    //    this.CardUI[direction, i].RenderTransform = rotateTransform;
-                    //}
-                    //else if (direction == 3)
-                    //{
-                    //    RotateTransform rotateTransform = new RotateTransform(270);
-                    //    this.CardUI[direction, i].RenderTransform = rotateTransform;
-                    //}
                     if (this.inhand[direction, i])
                     {
                         //tmp.Add(this.CardUI[direction, i]);
@@ -256,15 +246,32 @@ namespace AIBridge
                         {
                             newPanel = true;
                             panel = new StackPanel();
-                            panel.Orientation = Orientation.Horizontal;
-                            panel.Width = 110;
-                            panel.Height = 150;
-                            panel.MaxHeight = 150;
-                            panel.HorizontalAlignment = HorizontalAlignment.Left;
+                            if (!this.watching && (direction == 1 || direction == 3))
+                            {
+                                panel.Orientation = Orientation.Vertical;
+                                panel.Width = 120;
+                                panel.Height = 150;
+                                panel.HorizontalAlignment = HorizontalAlignment.Center;
+                            }
+                            else
+                            {
+                                panel.Orientation = Orientation.Horizontal;
+                                panel.Width = 110;
+                                panel.Height = 150;
+                                panel.MaxHeight = 150;
+                                panel.HorizontalAlignment = HorizontalAlignment.Left;
+                            }
                         }
                         else
                         {
-                            panel.Width += 20;
+                            if(!this.watching && (direction == 1 || direction == 3))
+                            {
+                                panel.Height += 43;
+                            }
+                            else
+                            {
+                                panel.Width += 20;
+                            }
                         }
                         if (tmp.Count > 0 && newPanel && direction % 2 == 1)
                         {
@@ -276,7 +283,12 @@ namespace AIBridge
                         double verticalOffset = 0;
                         if (panel.Children.Count > 0)
                         {
-                            horizontalOffset = -80;
+                            if (!this.watching && (direction == 1 || direction == 3))
+                            {
+                                verticalOffset = -107;
+                            }
+                            else
+                                horizontalOffset = -80;
                             Thickness thickness = new Thickness();
                             thickness.Left = horizontalOffset;
                             thickness.Top = verticalOffset;
@@ -333,12 +345,13 @@ namespace AIBridge
             {
                 UIElementCollection tmp = null;
                 UIElementCollection tmp1 = null;
+                int direction = 0;
                 switch (Convert.ToInt32(card.Owner))
                 {
-                    case 0: tmp = this.Me.Children; tmp1 = this.MeCard.Children; break;
-                    case 1: tmp = this.Left.Children; tmp1 = this.LeftCard.Children; break;
-                    case 2: tmp = this.Opponent.Children; tmp1 = this.OpponentCard.Children; break;
-                    case 3: tmp = this.Right.Children; tmp1 = this.RightCard.Children; break;
+                    case 0: tmp = this.Me.Children; tmp1 = this.MeCard.Children; direction = 0; break;
+                    case 1: tmp = this.Left.Children; tmp1 = this.LeftCard.Children; direction = 1; break;
+                    case 2: tmp = this.Opponent.Children; tmp1 = this.OpponentCard.Children; direction = 2; break;
+                    case 3: tmp = this.Right.Children; tmp1 = this.RightCard.Children; direction = 3; break;
                 }
                 for(int i = 0; i < tmp.Count; i++)
                 {
@@ -351,7 +364,14 @@ namespace AIBridge
                             t.Children.Remove(card);
                             card.Margin = new Thickness();
                             tmp1.Add(card);
-                            t.Width -= 20;
+                            if(!this.watching && (direction==1 || direction == 3))
+                            {
+                                t.Height -= 43;
+                            }
+                            else
+                            {
+                                t.Width -= 20;
+                            }
                             if (t.Children.Count == 0)
                             {
                                 tmp.Remove(t);
