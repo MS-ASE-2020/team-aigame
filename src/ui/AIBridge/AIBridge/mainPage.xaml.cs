@@ -20,47 +20,34 @@ namespace AIBridge
     /// </summary>
     public partial class mainPage : Page
     {
-        private AIselect aIselect = null;
-        private HumanPage humanPage = null;
-        private settingPage SettingPage = null;
+        private WatchSelect WatchSelectPage = null;
+        private PlaySelect PlaySelectPage = null;
         public mainPage()
         {
             InitializeComponent();
         }
-        private void AI_click(object sender, RoutedEventArgs e)
+        private void WATCH_click(object sender, RoutedEventArgs e)
         {
-            if (this.aIselect != null)
+            if (this.WatchSelectPage != null)
             {
-                NavigationService.GetNavigationService(this).Navigate(this.aIselect);
+                NavigationService.GetNavigationService(this).Navigate(this.WatchSelectPage);
             }
             else
             {
-                this.aIselect = new AIselect(this);
-                NavigationService.GetNavigationService(this).Navigate(this.aIselect);
+                this.WatchSelectPage = new WatchSelect(this);
+                NavigationService.GetNavigationService(this).Navigate(this.WatchSelectPage);
             }
         }
-        private void Human_click(object sender, RoutedEventArgs e)
+        private void PLAY_click(object sender, RoutedEventArgs e)
         {
-            if (this.humanPage != null)
+            if (this.PlaySelectPage != null)
             {
-                NavigationService.GetNavigationService(this).Navigate(this.humanPage);
+                NavigationService.GetNavigationService(this).Navigate(this.PlaySelectPage);
             }
             else
             {
-                this.humanPage = new HumanPage(this);
-                NavigationService.GetNavigationService(this).Navigate(this.humanPage);
-            }
-        }
-        private void Setting_click(object sender, RoutedEventArgs e)
-        {
-            if (this.SettingPage != null)
-            {
-                NavigationService.GetNavigationService(this).Navigate(this.SettingPage);
-            }
-            else
-            {
-                this.SettingPage = new settingPage();
-                NavigationService.GetNavigationService(this).Navigate(this.SettingPage);
+                this.PlaySelectPage = new PlaySelect(this);
+                NavigationService.GetNavigationService(this).Navigate(this.PlaySelectPage);
             }
         }
     }

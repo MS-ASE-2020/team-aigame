@@ -28,15 +28,12 @@
                     <Label Content="AIBridge" FontSize="90"/>
                 </WrapPanel>
                 <WrapPanel Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Center">
-                    <Button Content="AI" HorizontalAlignment="Center" FontSize="50" Click="AI_click"/>
+                    <Button Content="WATCH" HorizontalAlignment="Center" FontSize="50" Width="200" Click="WATCH_click"/>
                 </WrapPanel>
-                <WrapPanel Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Center">
-                    <Button Content="Setting" HorizontalAlignment="Center" FontSize="50" Click="Setting_click"/>
-                </WrapPanel>
-                <WrapPanel Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Center">
-                    <Button Content="Settings" HorizontalAlignment="Center" FontSize="50" Click="Setting_click" Visibility="Hidden"/>
-                </WrapPanel>
-            </Grid>
+                    <WrapPanel Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <Button Content="PLAY" HorizontalAlignment="Center" FontSize="50" Width="200" Click="PLAY_click"/>
+                    </WrapPanel>
+                </Grid>
             </Frame.Content>
         </Frame>
     </Grid>

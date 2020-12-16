@@ -87,27 +87,19 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="AIselect.xaml.cs">
-      <DependentUpon>AIselect.xaml</DependentUpon>
-    </Compile>
     <Compile Include="CardControl.xaml.cs">
       <DependentUpon>CardControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="PlayPage.xaml.cs">
       <DependentUpon>PlayPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="protobuf\Message.cs" />
-    <Compile Include="settingPage.xaml.cs">
-      <DependentUpon>settingPage.xaml</DependentUpon>
+    <Compile Include="PlaySelect.xaml.cs">
+      <DependentUpon>PlaySelect.xaml</DependentUpon>
     </Compile>
-    <Page Include="AIselect.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="HumanPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
+    <Compile Include="protobuf\Message.cs" />
+    <Compile Include="WatchSelect.xaml.cs">
+      <DependentUpon>WatchSelect.xaml</DependentUpon>
+    </Compile>
     <Page Include="mainPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -119,9 +111,6 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="HumanPage.xaml.cs">
-      <DependentUpon>HumanPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="mainPage.xaml.cs">
       <DependentUpon>mainPage.xaml</DependentUpon>
@@ -138,7 +127,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="settingPage.xaml">
+    <Page Include="PlaySelect.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WatchSelect.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -58,16 +58,18 @@ namespace AIBridge
         private int score = 0;
         private int round = 0;
         private bool needClear = false; // tell whether one round is over and need to clear
+        private int playerType = 1;
         // record the cards played in one round
         // when count reaches 4, timer is started to keep the cards on the desk and after that, clear
 
 
-        public PlayPage(bool watcher)
+        public PlayPage(bool watcher, int t)
         {
             if (watcher)
                 this.watching = true;
             else
                 this.watching = false;
+            this.playerType = t;
             InitializeComponent();
         }
 
@@ -466,7 +468,10 @@ namespace AIBridge
             {
                 this.socket.EndConnect(asyncResult);
                 Console.WriteLine("connect to {0}", this.socket.RemoteEndPoint.ToString());
-                sayHello(this.socket);
+                byte[] buffer = new byte[1024];
+                int length = this.socket.Receive(buffer);
+                sayHello(this.socket, 4);
+                sayHello(this.socket, this.playerType);
                 startReceive(this.socket, 1);
             }, null);
         }
@@ -474,13 +479,10 @@ namespace AIBridge
         /// <summary>
         /// say hello to the server
         /// </summary>
-        private void sayHello(Socket socket)
+        private void sayHello(Socket socket, int code)
         {
             Hello h = new Hello();
-            if (this.watching)
-                h.Code = 1;
-            else
-                h.Code = 2;
+            h.Code = (uint)code;
             try
             {
                 socket.Send(h.ToByteArray());

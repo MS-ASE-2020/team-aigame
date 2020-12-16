@@ -16,27 +16,29 @@ using System.Windows.Shapes;
 namespace AIBridge
 {
     /// <summary>
-    /// HumanPage.xaml 的交互逻辑
+    /// PlaySelect.xaml 的交互逻辑
     /// </summary>
-    public partial class HumanPage : Page
+    public partial class PlaySelect : Page
     {
         private mainPage upperPage;
-        public HumanPage(mainPage page)
+        public PlaySelect(mainPage page)
         {
             InitializeComponent();
             this.upperPage = page;
         }
 
-        private void join_click(object sender, RoutedEventArgs e)
+        private void RuleBase_click(object sender, RoutedEventArgs e)
         {
-            
+            currentPage.Content = new PlayPage(false, 10);
         }
-
-        private void invite_click(object sender, RoutedEventArgs e)
+        private void SL_click(object sender, RoutedEventArgs e)
         {
-            
+            currentPage.Content = new PlayPage(false, 11);
         }
-
+        private void RL_click(object sender, RoutedEventArgs e)
+        {
+            currentPage.Content = new PlayPage(false, 12);
+        }
         private void BACK_click(object sender, RoutedEventArgs e)
         {
             NavigationService.GetNavigationService(this).Navigate(this.upperPage);

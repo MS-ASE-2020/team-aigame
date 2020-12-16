@@ -19,9 +19,9 @@ namespace testSocket
     {
         static void Main(string[] args)
         {
-            Socket declarer = null;
-            Socket lopp = null;
-            Socket ropp = null;
+            Socket ruleBasedModel = null;
+            Socket SLModel = null;
+            Socket RLModel = null;
             Socket watcher = null;
             Socket listener = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             IPAddress ip = IPAddress.Parse("127.0.0.1");
@@ -30,48 +30,75 @@ namespace testSocket
             listener.Bind(ipe);
             listener.Listen(4);
             Console.WriteLine("listen to {0}", listener.LocalEndPoint.ToString());
-            for(int i = 0; i < 3; i++)
+            while ( ruleBasedModel == null || SLModel == null || RLModel == null)
             {
                 Socket tmp = listener.Accept();
-                Hello m = new Hello();
-                if (i != 2)
-                    m.Score = 0;
-                else
-                    m.Score = 0;
-                m.Code = 1;
+                Hello m = new Hello(); // say hello
+                m.Code = 1; // avoid the messgae to be empty, which will raise bugs
                 tmp.Send(m.ToByteArray());
-                switch (i)
+                int length = tmp.Receive(buffer); // receive message from client to determine the role
+                m.MergeFrom(buffer.Take(length).ToArray());
+                int t = (int)m.Code; // 1 -> rule based model, 2 -> SL model, 3 -> RL model, 4 -> watcher(ui)
+                switch (t)
                 {
-                    case 0: declarer = tmp; Console.WriteLine("declarer connected"); break;
-                    case 1: lopp = tmp; Console.WriteLine("lopp connected"); break;
-                    case 2: ropp = tmp; Console.WriteLine("ropp connected"); break;
+                    case 1: ruleBasedModel = tmp; Console.WriteLine("rule based model connected"); break;
+                    case 2: SLModel = tmp; Console.WriteLine("SL model connected"); break;
+                    case 3: RLModel = tmp; Console.WriteLine("RL model connected"); break;
+                    case 4: watcher = tmp; Console.WriteLine("watcher connected"); break;
                 }
             }
             while (true)
             {
                 try
                 {
-                    Console.WriteLine("waiting for new watcher");
-                    watcher = listener.Accept();
-                    Console.WriteLine("watcher connected!");
                     Hello h = new Hello();
-                    int length = watcher.Receive(buffer);
-                    h.MergeFrom(buffer.Take(length).ToArray());
-                    Socket tmp = declarer;
-                    if (h.Code == 2)
+                    int length;
+                    if (watcher == null)
                     {
-                        Console.WriteLine("watcher in the game");
-                        tmp = watcher;
+                        Console.WriteLine("waiting for new watcher");
+                        watcher = listener.Accept();
+                        Console.WriteLine("watcher connected!");
+                        h.Code = 1;
+                        watcher.Send(h.ToByteArray());
+                        length = watcher.Receive(buffer);
+                    }
+                    length = watcher.Receive(buffer);
+                    h.MergeFrom(buffer.Take(length).ToArray());
+                    // use different models according to the need of ui
+                    // 1  -> all rule based
+                    // 2  -> all SL model
+                    // 3  -> all RL model
+                    // 4  -> rule based declarer, SL model defender
+                    // 5  -> SL model declarer, rule based defender
+                    // 6  -> rule based declarer, RL model defender
+                    // 7  -> RL based declarer, rule based defender
+                    // 8  -> SL model declarer, RL model defender
+                    // 9  -> RL model declarer, SL model defender
+                    // 10 -> watcher declarer, rule based defender
+                    // 11 -> watcher declarer, SL model defender
+                    // 12 -> watcher declarer, RL model defender
+                    Socket declarer = null;
+                    Socket defender = null;
+                    switch (h.Code)
+                    {
+                        case 1: declarer = ruleBasedModel; defender = ruleBasedModel; break;
+                        case 2: declarer = SLModel; defender = SLModel; break;
+                        case 3: declarer = RLModel; defender = RLModel; break;
+                        case 4: declarer = ruleBasedModel; defender = SLModel; break;
+                        case 5: declarer = SLModel; defender = ruleBasedModel; break;
+                        case 6: declarer = ruleBasedModel; defender = RLModel; break;
+                        case 7: declarer = RLModel; defender = ruleBasedModel; break;
+                        case 8: declarer = SLModel; defender = RLModel; break;
+                        case 9: declarer = RLModel; defender = SLModel; break;
+                        case 10: declarer = watcher; defender = ruleBasedModel; break;
+                        case 11: declarer = watcher; defender = SLModel; break;
+                        case 12: declarer = watcher; defender = RLModel; break;
                     }
                     try
                     {
                         while (true)
                         {
-                            run(tmp, lopp, ropp, watcher);
-                            h.Code = 5;
-                            watcher.Send(h.ToByteArray());
-                            watcher.Receive(buffer);
-                            watcher.Send(h.ToByteArray());
+                            run(declarer, defender, defender, watcher);
                             watcher.Receive(buffer);
                         }
                     }
@@ -83,35 +110,9 @@ namespace testSocket
                 catch (Exception ex)
                 {
                     Console.WriteLine(ex);
-                    
+                    watcher = null;
                 }
             }
-            
-            
-            
-            //listener.BeginAccept(new AsyncCallback(assignPort), listener);
-            //Console.WriteLine("ready to accept links");
-            //Console.WriteLine("accept {0}", client.RemoteEndPoint.ToString());
-            ////try
-            ////{
-            //while (true)
-            //{
-            //    Hello m = new Hello();
-            //    m.Seat = Player.Declarer;
-            //    m.Code = 2;
-            //    //MemoryStream ms = new MemoryStream();
-            //    //Serializer.Serialize<Hello>(ms, m);
-            //    Console.WriteLine("send message:{0}", m.ToString());
-            //    byte[] data = m.ToByteArray();//ms.ToArray();
-            //    Console.WriteLine(data);
-            //    client.Send(data.ToString());
-            //    Thread.Sleep(1000);
-            //}
-            //}
-            //catch(Exception ex)
-            //{
-            //    Console.WriteLine(ex.ToString());
-            //}
         }
 
         private static void run(Socket declarer, Socket lopp, Socket ropp, Socket watcher)
@@ -190,6 +191,10 @@ namespace testSocket
                     Console.WriteLine("receive message from {0}", (starter + p) % 4);
                     Play rm = new Play();
                     rm.MergeFrom(buffer.Take(length).ToArray());
+                    if (rm.Card == null)
+                    {
+                        return ;
+                    }
 
                     Card selected = rm.Card;
                     if ((starter + p) % 4 == 2)
