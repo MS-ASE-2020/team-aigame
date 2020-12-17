@@ -149,4 +149,4 @@ def GameState2feature_cnn(game_state: GameState):
     Player = np.zeros([9])
     Player[who] = 1
     Player[suit_map[contract.suit]] = 1
-    return card_matrix, Player
+    return np.concatenate((card_matrix.flatten(),Player))

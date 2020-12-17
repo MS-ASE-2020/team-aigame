@@ -30,9 +30,11 @@ class clientThread(threading.Thread):  # 继承父类threading.Thread
         hello_message = message.Hello()
         hello_message.ParseFromString(protobufhello)
         print(hello_message)
-        seat = hello_message.seat
-        print('seat',seat)
+        # seat = hello_message.seat
+        # print('seat', seat)
         print("Hello")
+        hello_message.code = 1
+        self.tcpCliSock.send(hello_message.SerializeToString())
         while True:
             # Head_data = tcpCliSock.recv(4)  # 接收数据头 4个字节,
             # data_len = int.from_bytes(Head_data, byteorder='big')
@@ -65,7 +67,7 @@ class clientThread(threading.Thread):  # 继承父类threading.Thread
             print("play")
 
 # tcpCliSock.close()
-thread_num = 3
+thread_num = 1
 thread_list = []
 tcpCliSock = []
 for i in range(thread_num):

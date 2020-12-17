@@ -103,7 +103,7 @@ def GameState2feature(game_state: GameState):
 
     for card in game_state.dummy:
         open_hand_feature[card.suit * 13 + card.rank] = 1
-    print(teammate_current_trick,teammate_history_cards)
+    # print(teammate_current_trick,teammate_history_cards)
     sum_card_feature = np.asarray(hand_card_feature) + np.asarray(open_hand_feature) + np.asarray(desktop_cards_feature)
     remaining_cards_feature = list(np.asarray([1]*52) - sum_card_feature)
     cat_feature = round_index_feature + bidding_feature + dun_count_feature + identity + hand_card_feature + open_hand_feature + self_history_cards + teammate_history_cards + left_history_cards + right_history_cards + teammate_current_trick + left_current_trick + right_current_trick
@@ -120,16 +120,19 @@ class clientThread(threading.Thread):  # 继承父类threading.Thread
 
     def run(self):  # 把要执行的代码写到run函数里面 线程在创建后会直接运行run函数
         device = torch.device('cpu')
-        net = DQN().to(device)
-        net.eval()
-        net.load_state_dict(torch.load('D:\Project\\bridge\\bridge_agent_14-16_v5.pth', map_location=torch.device('cpu')))
+        net = [DQN().to(device) for i in range(4)]
+        for i in range(4):
+            net[i].eval()
+            net[i].load_state_dict(torch.load('models\\dqn\\p_'+'{:02b}'.format(i)+'\\policy-network-30000.pth', map_location=torch.device('cpu')))
         protobufhello = self.tcpCliSock.recv(BUFSIZ)
         hello_message = message.Hello()
         hello_message.ParseFromString(protobufhello)
         print(hello_message)
-        seat = hello_message.seat
-        print('seat', seat)
+        # seat = hello_message.seat
+        # print('seat', seat)
         print("Hello")
+        hello_message.code = 3
+        self.tcpCliSock.send(hello_message.SerializeToString())
         while True:
             # Head_data = tcpCliSock.recv(4)  # 接收数据头 4个字节,
             # data_len = int.from_bytes(Head_data, byteorder='big')
@@ -145,10 +148,10 @@ class clientThread(threading.Thread):  # 继承父类threading.Thread
             player = game_state_message.who
             feature = GameState2feature(game_state_message)
             # print(len(feature))
-            card_logits = net(torch.tensor(feature).float())
+            card_logits = net[player](torch.tensor(feature).float())
             # 加一层mask
             validPlays = game_state_message.validPlays
-            print(seat,validPlays)
+            # print(seat,validPlays)
             output_mask = [0] * 52
             for card in validPlays:
                 # print(card)
@@ -168,7 +171,7 @@ class clientThread(threading.Thread):  # 继承父类threading.Thread
             print("play")
 
 
-thread_num = 3
+thread_num = 1
 thread_list = []
 tcpCliSock = []
 for i in range(thread_num):

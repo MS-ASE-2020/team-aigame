@@ -101,9 +101,11 @@ class clientThread(threading.Thread):  # 继承父类threading.Thread
         hello_message = message.Hello()
         hello_message.ParseFromString(protobufhello)
         print(hello_message)
-        seat = hello_message.seat
-        print('seat', seat)
+        # seat = hello_message.seat
+        # print('seat', seat)
         print("Hello")
+        hello_message.code = 2
+        self.tcpCliSock.send(hello_message.SerializeToString())
         while True:
             # Head_data = tcpCliSock.recv(4)  # 接收数据头 4个字节,
             # data_len = int.from_bytes(Head_data, byteorder='big')
@@ -122,7 +124,7 @@ class clientThread(threading.Thread):  # 继承父类threading.Thread
             card_logits = net(torch.tensor(feature).float())
             # 加一层mask
             validPlays = game_state_message.validPlays
-            print(seat,validPlays)
+            # print(seat,validPlays)
             output_mask = [0] * 52
             for card in validPlays:
                 # print(card)
@@ -142,7 +144,7 @@ class clientThread(threading.Thread):  # 继承父类threading.Thread
             print("play")
 
 
-thread_num = 3
+thread_num = 1
 thread_list = []
 tcpCliSock = []
 for i in range(thread_num):
