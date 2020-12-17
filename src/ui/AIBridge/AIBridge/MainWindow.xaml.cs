@@ -33,7 +33,8 @@ namespace AIBridge
         }
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            //this.s.stop();
+            this.s.stop();
+            Console.WriteLine("socket stopped");
             e.Cancel = false;
         }
     }

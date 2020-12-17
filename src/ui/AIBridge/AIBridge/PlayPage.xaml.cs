@@ -228,8 +228,8 @@ namespace AIBridge
                     }
                     this.CardUI[direction, i].Owner = direction.ToString();
 
-                    this.CardUI[direction, i].SetValue(Canvas.LeftProperty, this.canvas.ActualWidth / 2 - this.CardUI[direction, i].ActualWidth);
-                    this.CardUI[direction, i].SetValue(Canvas.TopProperty, this.canvas.ActualHeight / 2 - this.CardUI[direction, i].ActualHeight);
+                    this.CardUI[direction, i].SetValue(Canvas.LeftProperty, this.canvas.ActualWidth / 2 - 50);
+                    this.CardUI[direction, i].SetValue(Canvas.TopProperty, this.canvas.ActualHeight / 2 - 75);
                     this.canvas.Children.Add(this.CardUI[direction, i]);
                 }));
                 

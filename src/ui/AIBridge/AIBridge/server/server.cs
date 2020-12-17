@@ -120,9 +120,11 @@ namespace AIBridge
 
         public void stop()
         {
+            Console.WriteLine("closing");
             try
             {
-                ruleBasedModel.Close();
+                if(ruleBasedModel!=null)
+                    ruleBasedModel.Close();
             }
             catch(Exception ex)
             {
@@ -130,7 +132,8 @@ namespace AIBridge
             }
             try
             {
-                SLModel.Close();
+                if(SLModel!=null)
+                    SLModel.Close();
             }
             catch(Exception ex)
             {
@@ -138,7 +141,8 @@ namespace AIBridge
             }
             try
             {
-                RLModel.Close();
+                if(RLModel!=null)
+                    RLModel.Close();
             }
             catch(Exception ex)
             {
@@ -146,7 +150,8 @@ namespace AIBridge
             }
             try
             {
-                watcher.Close();
+                if(watcher!=null)
+                    watcher.Close();
             }
             catch(Exception ex) {
                 
@@ -154,10 +159,7 @@ namespace AIBridge
             try
             {
                 listener.Close();
-                Socket tmp = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-                IPAddress ip = IPAddress.Parse("127.0.0.1");
-                IPEndPoint ipe = new IPEndPoint(ip, 6006);
-                tmp.Connect(ipe);
+                Console.WriteLine("listener closed");
             }
             catch(Exception ex)
             {
