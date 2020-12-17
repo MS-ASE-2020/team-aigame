@@ -12,13 +12,16 @@
     <Grid>
         <Frame Name="currentPage" NavigationUIVisibility="Hidden">
             <Frame.Content>
-                <Canvas Name="canvas" Background="DarkGreen">
-                    <Button Content="BACK" FontSize="40" Click="Button_Click"/>
-                    <Button Name="ContinueButton" Content="Continue" FontSize="30" Click="Button_Click_1"/>
-                    <Label Name="scoreLabel" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White"/>
-                    <Label Name="tipsLabel" FontSize="30" Foreground="White"/>
-                    <Label Name="contractLabel" Content="no trump\n3" FontSize="20" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                </Canvas>
+                <Viewbox Stretch="Uniform">
+                    <Canvas Name="canvas" Background="DarkGreen" Width="1000" Height="1000">
+                        <Button Name="backButton" Content="BACK" FontSize="40" Click="Button_Click"/>
+                        <Button Name="ContinueButton" Content="Continue" FontSize="30" Click="Button_Click_1"/>
+                        <Label Name="declarerScoreLabel" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White"/>
+                        <Label Name="defenderScoreLabel" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White"/>
+                        <Label Name="tipsLabel" FontSize="30" Foreground="White"/>
+                        <Label Name="contractLabel" Content="no trump 3" FontSize="20" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Canvas>
+                </Viewbox>
                 <!--<Grid Background="DarkGreen">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*"/>

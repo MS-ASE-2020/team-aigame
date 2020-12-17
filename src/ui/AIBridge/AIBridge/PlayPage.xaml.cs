@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -52,25 +53,22 @@ namespace AIBridge
         // timer for the delay after one round is completed
         private System.Timers.Timer clearTimer = new System.Timers.Timer(3000);
         private System.Timers.Timer watcherTimer = new System.Timers.Timer(2000);
-        private Array outCards;
+        //private Button ContinueButton;
+        //private Button backButton;
+        //private Label scoreLabel;
+        //private Label tipsLabel;
+        //private Label contractLabel;
+        private ArrayList outCards = new ArrayList();
         private Socket socket;
         private bool watching = false;
         private bool WaitAnimation = false;
+        private bool cardAnimation = false;
         private int count = 0;
         private int seat = -1;
         private int score = 0;
         private int round = 0;
         private bool needClear = false; // tell whether one round is over and need to clear
         private int playerType = 1;
-        // some fixed points
-        private double[] tipsCenter = { 80, 80 };
-        private double[] continueButtonCenter = { 720, 80 };
-        private double[] scoreCenter = { 80, 720 };
-        private double[] backCenter = { 720, 720 };
-        private double centerLeft;
-        private double centerRight;
-        private double centerTop;
-        private double centerBottom;
         // record the cards played in one round
         // when count reaches 4, timer is started to keep the cards on the desk and after that, clear
 
@@ -83,6 +81,30 @@ namespace AIBridge
                 this.watching = false;
             this.playerType = t;
             InitializeComponent();
+            System.Timers.Timer tmp = new System.Timers.Timer(50);
+            tmp.Elapsed += Tmp_Elapsed;
+            tmp.AutoReset = false;
+            tmp.Start();
+        }
+
+        private void Tmp_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+        {
+            this.Dispatcher.Invoke(new Action(delegate
+            {
+                this.ContinueButton.SetValue(Canvas.LeftProperty, this.canvas.ActualWidth - 10 - this.ContinueButton.ActualWidth);
+                this.ContinueButton.SetValue(Canvas.TopProperty, (double)10);
+
+                this.backButton.SetValue(Canvas.LeftProperty, this.canvas.ActualWidth - 10 - this.backButton.ActualWidth);
+                this.backButton.SetValue(Canvas.TopProperty, this.canvas.ActualHeight - 10 - this.backButton.ActualHeight);
+
+                this.contractLabel.SetValue(Canvas.LeftProperty, this.canvas.ActualWidth / 2 - this.contractLabel.ActualWidth / 2);
+                this.contractLabel.SetValue(Canvas.TopProperty, this.canvas.ActualHeight / 2 - this.contractLabel.ActualHeight / 2);
+
+                this.tipsLabel.SetValue(Canvas.LeftProperty, (double)10);
+                this.tipsLabel.SetValue(Canvas.TopProperty, (double)10);
+
+                updateScoreLabel();
+            }));
         }
 
 
@@ -205,6 +227,10 @@ namespace AIBridge
                         this.CardUI[direction, i].Number = Encode2Number(-1);
                     }
                     this.CardUI[direction, i].Owner = direction.ToString();
+
+                    this.CardUI[direction, i].SetValue(Canvas.LeftProperty, this.canvas.ActualWidth / 2 - this.CardUI[direction, i].ActualWidth);
+                    this.CardUI[direction, i].SetValue(Canvas.TopProperty, this.canvas.ActualHeight / 2 - this.CardUI[direction, i].ActualHeight);
+                    this.canvas.Children.Add(this.CardUI[direction, i]);
                 }));
                 
             }
@@ -228,13 +254,18 @@ namespace AIBridge
             this.Dispatcher.Invoke(new Action(delegate
             {
                 int[] card_count = { 0, 0, 0, 0 };
+                double[,] dest = new double[13, 2]; // 13 x (left, top)
                 for(int i = 0; i < 13; i++)
                 {
-                    card_count[this.Card[direction, i, 0]] += 1;
+                    if(this.inhand[direction, i])
+                    {
+                        card_count[this.Card[direction, i, 0]] += 1;
+                    }
                 }
                 double height = 0;
                 double width = 0;
                 int suit_count = 0;
+                int card_num = 0;
                 double left = 0;
                 double top = 0;
                 int maxNumberOfCard = -1;
@@ -248,27 +279,34 @@ namespace AIBridge
                     {
                         maxNumberOfCard = card_count[i];
                     }
+                    card_num += card_count[i];
                 }
                 if(direction == 0 || direction == 2)
                 {
                     height = 150;
-                    width = 20 * 13 + (suit_count - 1) * 90 + 80;
-                    left = 400 - width / 2;
+                    width = 20 * card_num + (suit_count - 1) * 90 + 80;
+                    left = this.canvas.ActualWidth / 2 - width / 2;
                     if (direction == 0)
-                        top = this.Height - 160;
+                        top = this.canvas.ActualHeight - 160;
                     else
                         top = 10;
                     int lastSuit = -1;
                     for (int i = 0; i < 13; i++)
                     {
-                        if(this.Card[direction, i, 0]!=lastSuit && lastSuit != -1)
+                        if(this.inhand[direction, i])
                         {
-                            left += 90;
+                            if (this.Card[direction, i, 0] != lastSuit && lastSuit != -1)
+                            {
+                                left += 90;
+                            }
+                            dest[i, 0] = left;
+                            dest[i, 1] = top;
+                            lastSuit = this.Card[direction, i, 0];
+                            //this.CardUI[direction, i].SetValue(Canvas.LeftProperty, left);
+                            //this.CardUI[direction, i].SetValue(Canvas.TopProperty, top);
+                            //this.canvas.Children.Add(this.CardUI[direction, i]);
+                            left += 20;
                         }
-                        this.CardUI[direction, i].SetValue(Canvas.LeftProperty, left);
-                        this.CardUI[direction, i].SetValue(Canvas.TopProperty, top);
-                        this.canvas.Children.Add(this.CardUI[direction, i]);
-                        left += 20;
                     }
                 }
                 else
@@ -278,43 +316,71 @@ namespace AIBridge
                         height = 43 * suit_count + 107;
                         width = 20 * maxNumberOfCard + 90;
                         int lastSuit = -1;
-                        top = 400 - height / 2;
+                        top = this.canvas.ActualHeight / 2 - height / 2;
                         if (direction == 1)
                             left = 10;
                         else
-                            left = this.Width - 10 - width;
+                            left = this.canvas.ActualWidth - width;
                         double raw_left = left;
                         for(int i = 0; i < 13; i++)
                         {
-                            if(this.Card[direction, i, 0]!=lastSuit && lastSuit != -1)
+                            if(this.inhand[direction, i])
                             {
-                                left = raw_left;
-                                top -= 43;
+                                if (this.Card[direction, i, 0] != lastSuit && lastSuit != -1)
+                                {
+                                    left = raw_left;
+                                    top += 43;
+                                }
+                                dest[i, 0] = left;
+                                dest[i, 1] = top;
+                                lastSuit = this.Card[direction, i, 0];
+                                //this.CardUI[direction, i].SetValue(Canvas.LeftProperty, left);
+                                //this.CardUI[direction, i].SetValue(Canvas.TopProperty, top);
+                                //this.canvas.Children.Add(this.CardUI[direction, i]);
+                                left += 20;
                             }
-                            this.CardUI[direction, i].SetValue(Canvas.LeftProperty, left);
-                            this.CardUI[direction, i].SetValue(Canvas.TopProperty, top);
-                            this.canvas.Children.Add(this.CardUI[direction, i]);
-                            left += 20;
                         }
                     }
                     else
                     {
-                        height = 43 * 13 + 107;
+                        height = 43 * card_num + 107;
                         width = 100;
                         if (direction == 1)
                             left = 10;
                         else
-                            left = this.Width - 10 - width;
-                        top = 400 - height / 2;
+                            left = this.canvas.ActualWidth - 10 - width;
+                        top = this.canvas.ActualHeight / 2 - height / 2;
                         for (int i = 0; i < 13; i++)
                         {
-                            this.CardUI[direction, i].SetValue(Canvas.LeftProperty, left);
-                            this.CardUI[direction, i].SetValue(Canvas.TopProperty, top);
-                            this.canvas.Children.Add(this.CardUI[direction, i]);
-                            top += 43;
+                            if(this.inhand[direction, i])
+                            {
+                                dest[i, 0] = left;
+                                dest[i, 1] = top;
+                                //this.CardUI[direction, i].SetValue(Canvas.LeftProperty, left);
+                                //this.CardUI[direction, i].SetValue(Canvas.TopProperty, top);
+                                //this.canvas.Children.Add(this.CardUI[direction, i]);
+                                top += 43;
+                            }
                         }
                     }
                 }
+                Storyboard s = new Storyboard();
+                for(int i = 0; i < 13; i++)
+                {
+                    if(this.inhand[direction, i])
+                    {
+                        DoubleAnimation da1 = new DoubleAnimation(Canvas.GetLeft(this.CardUI[direction, i]), dest[i, 0], new Duration(TimeSpan.FromMilliseconds(500)));
+                        Storyboard.SetTarget(da1, this.CardUI[direction, i]);
+                        Storyboard.SetTargetProperty(da1, new PropertyPath("(Canvas.Left)"));
+                        s.Children.Add(da1);
+
+                        DoubleAnimation da2 = new DoubleAnimation(Canvas.GetTop(this.CardUI[direction, i]), dest[i, 1], new Duration(TimeSpan.FromMilliseconds(500)));
+                        Storyboard.SetTarget(da2, this.CardUI[direction, i]);
+                        Storyboard.SetTargetProperty(da2, new PropertyPath("(Canvas.Top)"));
+                        s.Children.Add(da2);
+                    }
+                }
+                s.Begin();
             }));
             
         }
@@ -362,10 +428,10 @@ namespace AIBridge
                 double top = 0;
                 switch (direction)
                 {
-                    case 0: left = Canvas.GetLeft(this.contractLabel) + this.contractLabel.Width/2 - 50; top = Canvas.GetTop(this.contractLabel) + this.contractLabel.Height + 10; break;
-                    case 1: left = Canvas.GetLeft(this.contractLabel) - 110; top = Canvas.GetTop(this.contractLabel) - this.contractLabel.Height / 2 + 75; break;
-                    case 2: left = Canvas.GetLeft(this.contractLabel) + this.contractLabel.Width / 2 - 50; top = Canvas.GetTop(this.contractLabel) - 160; break;
-                    case 3: left = Canvas.GetLeft(this.contractLabel) + this.contractLabel.Width + 10; top = Canvas.GetTop(this.contractLabel) - this.contractLabel.Height / 2 + 75; break;
+                    case 0: left = Canvas.GetLeft(this.contractLabel) + this.contractLabel.ActualWidth/2 - 50; top = Canvas.GetTop(this.contractLabel) + this.contractLabel.ActualHeight + 10; break;
+                    case 1: left = Canvas.GetLeft(this.contractLabel) - 110; top = Canvas.GetTop(this.contractLabel) + this.contractLabel.ActualHeight / 2 - 75; break;
+                    case 2: left = Canvas.GetLeft(this.contractLabel) + this.contractLabel.ActualWidth / 2 - 50; top = Canvas.GetTop(this.contractLabel) - 160; break;
+                    case 3: left = Canvas.GetLeft(this.contractLabel) + this.contractLabel.ActualWidth + 10; top = Canvas.GetTop(this.contractLabel) + this.contractLabel.ActualHeight / 2 - 75; break;
                 }
                 Storyboard s = new Storyboard();
                 DoubleAnimation da1 = new DoubleAnimation(Canvas.GetLeft(card), left, new Duration(TimeSpan.FromMilliseconds(500)));
@@ -377,9 +443,11 @@ namespace AIBridge
                 Storyboard.SetTarget(da2, card);
                 Storyboard.SetTargetProperty(da2, new PropertyPath("(Canvas.Top)"));
                 s.Children.Add(da2);
+
+                this.outCards.Add(card);
+
                 s.Begin();
-                // !!!!!!!!!!!!!!!!!!!!!!!!!!!!
-                // TODO: change the position of other cards and add animation
+                showCardInHand(direction);
             }));
         }
 
@@ -389,21 +457,14 @@ namespace AIBridge
         /// </summary>
         private void clearCardInThisTurn()
         {
-            this.MeCard.Dispatcher.Invoke(new Action(delegate
+            this.Dispatcher.Invoke(new Action(delegate
             {
-                this.MeCard.Children.Clear();
-            }));
-            this.LeftCard.Dispatcher.Invoke(new Action(delegate
-            {
-                this.LeftCard.Children.Clear();
-            }));
-            this.OpponentCard.Dispatcher.Invoke(new Action(delegate
-            {
-                this.OpponentCard.Children.Clear();
-            }));
-            this.RightCard.Dispatcher.Invoke(new Action(delegate
-            {
-                this.RightCard.Children.Clear();
+                for(int i = 0; i < this.outCards.Count; i++)
+                {
+                    CardControl c = this.outCards[i] as CardControl;
+                    this.canvas.Children.Remove(c);
+                }
+                this.outCards.Clear();
             }));
         }
 
@@ -477,6 +538,7 @@ namespace AIBridge
             this.socket.BeginConnect(ipe, asyncResult =>
             {
                 this.socket.EndConnect(asyncResult);
+
                 Console.WriteLine("connect to {0}", this.socket.RemoteEndPoint.ToString());
                 byte[] buffer = new byte[1024];
                 int length = this.socket.Receive(buffer);
@@ -485,6 +547,7 @@ namespace AIBridge
                 startReceive(this.socket, 1);
             }, null);
         }
+
 
         /// <summary>
         /// say hello to the server
@@ -501,6 +564,16 @@ namespace AIBridge
             {
 
             }
+        }
+
+        private void updateScoreLabel()
+        {
+            this.declarerScoreLabel.Content = "declarer:" + this.score.ToString();
+            this.defenderScoreLabel.Content = "defender:" + (this.round - this.score).ToString();
+            this.defenderScoreLabel.SetValue(Canvas.LeftProperty, (double)10);
+            this.defenderScoreLabel.SetValue(Canvas.TopProperty, this.canvas.ActualHeight - 10 - this.defenderScoreLabel.ActualHeight);
+            this.declarerScoreLabel.SetValue(Canvas.LeftProperty, (double)10);
+            this.declarerScoreLabel.SetValue(Canvas.TopProperty, this.canvas.ActualHeight - 10 - this.defenderScoreLabel.ActualHeight - this.declarerScoreLabel.ActualHeight);
         }
 
 
@@ -547,15 +620,15 @@ namespace AIBridge
                                     {
                                         this.watcherTimer.Start();  // when playing with models, start watcherTimer, to send continue message automatically
                                     }
-                                    this.scoreLabel.Content = "declarer:0\ndefender:0";
                                     this.score = 0; // reset score
                                     this.round = 0; // reset round
+                                    updateScoreLabel();
                                 }));
                             }
                             sendContinue();
                         }
                         // receive gamestate
-                        // ui will receive this only when the watcher is not playing, i.e. is watching
+                        // ui will receive this only when the watcher is not playing, i.e. is watching, or at the beginning of a game when watching
                         else if (code == 2)
                         {
                             GameState m = new GameState();
@@ -605,6 +678,8 @@ namespace AIBridge
                                     if (who == 0)
                                     {
                                         this.tipsLabel.Content = "Your Turn!\nDeclarer";
+                                        this.tipsLabel.SetValue(Canvas.LeftProperty, (double)10);
+                                        this.tipsLabel.SetValue(Canvas.TopProperty, (double)10);
                                     }
                                     else
                                     {
@@ -678,7 +753,7 @@ namespace AIBridge
                             {
                                 Console.WriteLine("score:{0}", score);
                                 this.score = score;
-                                this.scoreLabel.Content = "declarer:" + this.score.ToString() + "\ndefender:" + (this.round - this.score).ToString();
+                                updateScoreLabel();
                             }));
                         }
                         else if (code == 5)
@@ -745,7 +820,44 @@ namespace AIBridge
         protected override void OnInitialized(EventArgs e)
         {
             base.OnInitialized(e);
-            for(int i = 0; i < 4; i++)
+
+            //this.ContinueButton = new Button();
+            //this.ContinueButton.Content = "continue";
+            //this.ContinueButton.Click += Button_Click_1;
+            //this.ContinueButton.FontSize = 30;
+            //this.canvas.Children.Add(this.ContinueButton);
+
+            //this.backButton = new Button();
+            //this.backButton.Content = "BACK";
+            //this.backButton.Click += Button_Click;
+            //this.backButton.FontSize = 40;
+            //this.canvas.Children.Add(this.backButton);
+
+            //this.contractLabel = new Label();
+            //this.contractLabel.Content = "no trump\n   3   ";
+            //this.contractLabel.VerticalAlignment = VerticalAlignment.Center;
+            //this.contractLabel.HorizontalContentAlignment = HorizontalAlignment.Center;
+            //this.contractLabel.FontSize = 20;
+            //this.contractLabel.Foreground = new SolidColorBrush(Colors.White);
+            //this.canvas.Children.Add(this.contractLabel);
+
+            //this.tipsLabel = new Label();
+            //this.tipsLabel.FontSize = 30;
+            //this.tipsLabel.Foreground = new SolidColorBrush(Colors.White);
+            //this.canvas.Children.Add(this.tipsLabel);
+
+            //this.scoreLabel = new Label();
+            //this.scoreLabel.FontSize = 20;
+            //this.scoreLabel.HorizontalContentAlignment = HorizontalAlignment.Center;
+            //this.scoreLabel.VerticalAlignment = VerticalAlignment.Center;
+            //this.scoreLabel.Foreground = new SolidColorBrush(Colors.White);
+            //this.canvas.Children.Add(this.scoreLabel);
+            //UpdateLayout();
+
+
+            UpdateLayout();
+
+            for (int i = 0; i < 4; i++)
             {
                 for(int j = 0; j < 13; j++)
                 {
