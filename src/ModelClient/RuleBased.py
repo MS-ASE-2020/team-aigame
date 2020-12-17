@@ -4,7 +4,7 @@ add opp 首攻，第二家，第三家出牌原则 2020.11.22
 """
 from functools import cmp_to_key
 import numpy as np
-from protobuf.message_pb2 import Hello, HelloResponse, Card, TrickHistory, Contract, GameState, Play, GameResult
+from protobuf.protobuf_modify.message1_pb2 import Hello, HelloResponse, Card, TrickHistory, Contract, GameState, Play, GameResult
 
 
 def cmp_two_cards(card1: Card, card2: Card, contract: Contract, tmp_contract = None) -> int:
@@ -185,8 +185,8 @@ def declarer(game_state: GameState, rule: str) -> Card:
             tmp_contract.suit = trickHistory_new.cards[0].suit
             sorted_hand_cards = get_sorted_cards(tmp_contract, validPlays, True)
             if cmp_two_cards(trickHistory_new.cards[1],trickHistory_new.cards[0],tmp_contract) == 1:
-                if cmp_two_cards(sorted_hand_cards[1], trickHistory_new.cards[1],tmp_contract) == 1:
-                    return sorted_hand_cards[1] if len(sorted_hand_cards)>=2 else sorted_hand_cards[0]
+                if len(sorted_hand_cards)>=2 and cmp_two_cards(sorted_hand_cards[1], trickHistory_new.cards[1],tmp_contract) == 1:
+                    return sorted_hand_cards[1]
                 elif cmp_two_cards(sorted_hand_cards[0], trickHistory_new.cards[1],tmp_contract) == 1:
                     return sorted_hand_cards[0]
                 else:
@@ -283,7 +283,13 @@ def lopp(game_state: GameState, rule: str) -> Card:
             tmp_contract = Contract()
             tmp_contract.suit = trickHistory_new.cards[0].suit
             if get_sorted_card(contract,validPlays,True).suit == tmp_contract.suit:
-                return get_sorted_card(contract,validPlays,True)
+                sorted_cards = get_sorted_cards(tmp_contract, validPlays, True)
+                if cmp_two_cards(trickHistory_new.cards[0], trickHistory_new.cards[1], tmp_contract) == 1:
+                    return get_sorted_card(contract, validPlays, False)
+                if cmp_two_cards(sorted_cards[0], trickHistory_new.cards[1], tmp_contract) == 1:
+                    return sorted_cards[0]
+                else:
+                    return sorted_cards[1] if len(sorted_cards) > 1 else sorted_cards[0]
             else:
                 return get_sorted_card(contract, validPlays, False)
         else:
@@ -367,8 +373,9 @@ def dummy(game_state: GameState, rule: str) -> Card:
             tmp_contract.suit = trickHistory_new.cards[0].suit
             sorted_hand_cards = get_sorted_cards(tmp_contract, validPlays, True)
             if cmp_two_cards(trickHistory_new.cards[1], trickHistory_new.cards[0], tmp_contract) == 1:
-                if cmp_two_cards(sorted_hand_cards[1], trickHistory_new.cards[1], tmp_contract) == 1:
-                    return sorted_hand_cards[1] if len(sorted_hand_cards)>=2 else sorted_hand_cards[0]
+                if len(sorted_hand_cards) >= 2 and cmp_two_cards(sorted_hand_cards[1], trickHistory_new.cards[1],
+                                                                 tmp_contract) == 1:
+                    return sorted_hand_cards[1]
                 elif cmp_two_cards(sorted_hand_cards[0], trickHistory_new.cards[1], tmp_contract) == 1:
                     return sorted_hand_cards[0]
                 else:
@@ -509,7 +516,13 @@ def ropp(game_state: GameState, rule: str) -> Card:
             tmp_contract = Contract()
             tmp_contract.suit = trickHistory_new.cards[0].suit
             if get_sorted_card(contract, validPlays, True).suit == tmp_contract.suit:
-                return get_sorted_card(contract, validPlays, True)
+                sorted_cards = get_sorted_cards(tmp_contract, validPlays, True)
+                if cmp_two_cards(trickHistory_new.cards[0], trickHistory_new.cards[1], tmp_contract) == 1:
+                    return get_sorted_card(contract, validPlays, False)
+                if cmp_two_cards(sorted_cards[0], trickHistory_new.cards[1], tmp_contract) == 1:
+                    return sorted_cards[0]
+                else:
+                    return sorted_cards[1] if len(sorted_cards) > 1 else sorted_cards[0]
             else:
                 return get_sorted_card(contract, validPlays, False)
         else:

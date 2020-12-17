@@ -1,7 +1,7 @@
 from socket import *
 import google.protobuf
 
-import protobuf.message_pb2 as message
+import protobuf.protobuf_modify.message1_pb2 as message
 import traceback
 import google.protobuf.any_pb2
 # from google.protobuf import any_pb2 as google_dot_protobuf_dot_any__pb2
@@ -30,9 +30,11 @@ class clientThread(threading.Thread):  # 继承父类threading.Thread
         hello_message = message.Hello()
         hello_message.ParseFromString(protobufhello)
         print(hello_message)
-        seat = hello_message.seat
-        print('seat',seat)
+        # seat = hello_message.seat
+        # print('seat', seat)
         print("Hello")
+        hello_message.code = 1
+        self.tcpCliSock.send(hello_message.SerializeToString())
         while True:
             # Head_data = tcpCliSock.recv(4)  # 接收数据头 4个字节,
             # data_len = int.from_bytes(Head_data, byteorder='big')
@@ -42,8 +44,6 @@ class clientThread(threading.Thread):  # 继承父类threading.Thread
             print("recv")
             game_state_message = message.GameState()  # 读取GameState
             game_state_message.ParseFromString(protobufdata)
-            tableid = game_state_message.tableID
-            print('id:', tableid)
             # print('message:',game_state_message)
             player = game_state_message.who
             # assert player == seat
@@ -58,14 +58,13 @@ class clientThread(threading.Thread):  # 继承父类threading.Thread
             else:
                 card = ropp(game_state_message, "hard")
             play = message.Play()
-            play.tableID = tableid
             play.who = player
             play.card.CopyFrom(card)
             self.tcpCliSock.send(play.SerializeToString())
             print("play")
 
 # tcpCliSock.close()
-thread_num = 3
+thread_num = 1
 thread_list = []
 tcpCliSock = []
 for i in range(thread_num):
