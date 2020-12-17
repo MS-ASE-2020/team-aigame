@@ -20,7 +20,7 @@ Rule-based Model and Model Client Interfaces by Jiawei Wang
 Reinforcement Learning Scripts by Wenwen Xu
 
 ### ui
-UI for this project by Yue Zhang
+UI and Env(C#) for this project by Yue Zhang
 
 
 ## Usage
