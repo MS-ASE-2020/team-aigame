@@ -12,7 +12,14 @@
     <Grid>
         <Frame Name="currentPage" NavigationUIVisibility="Hidden">
             <Frame.Content>
-                <Grid Background="DarkGreen">
+                <Canvas Name="canvas" Background="DarkGreen">
+                    <Button Content="BACK" FontSize="40" Click="Button_Click"/>
+                    <Button Name="ContinueButton" Content="Continue" FontSize="30" Click="Button_Click_1"/>
+                    <Label Name="scoreLabel" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White"/>
+                    <Label Name="tipsLabel" FontSize="30" Foreground="White"/>
+                    <Label Name="contractLabel" Content="no trump\n3" FontSize="20" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                </Canvas>
+                <!--<Grid Background="DarkGreen">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*"/>
                         <RowDefinition Height="3*"/>
@@ -23,20 +30,6 @@
                         <ColumnDefinition Width="3*"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
-                    <!--
-                    <Viewbox Name="opponentViewbox" StretchDirection="Both" Stretch="Uniform" Grid.Row="0" Grid.Column="1">
-                        <StackPanel Orientation="Horizontal" Name="Opponent" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                    </Viewbox>
-                    <Viewbox Name="meViewbox" StretchDirection="Both" Stretch="Uniform" Grid.Row="2" Grid.Column="1">
-                        <StackPanel Orientation="Horizontal" Name="Me" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                    </Viewbox>
-                    <Viewbox Name="leftViewbox" StretchDirection="Both" Stretch="Uniform" Grid.Row="1" Grid.Column="0">
-                        <StackPanel Orientation="Vertical" Name="Left" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                    </Viewbox>
-                    <Viewbox Name="rightViewbox" StretchDirection="Both" Stretch="Uniform" Grid.Row="1" Grid.Column="2">
-                        <StackPanel Orientation="Vertical" Name="Right" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                    </Viewbox>
-                    -->
                     <StackPanel Orientation="Horizontal" Name="Opponent" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Row="0" Grid.Column="1"/>
                     <StackPanel Orientation="Horizontal" Name="Me" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Row="2" Grid.Column="1"/>
                     <StackPanel Orientation="Vertical" Name="Left" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Row="1" Grid.Column="0"/>
@@ -60,7 +53,7 @@
                     <WrapPanel Name="scorePanel" Grid.Row="2" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center">
                         <Label Name="scoreLabel" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White"/>
                     </WrapPanel>
-                </Grid>
+                </Grid>-->
             </Frame.Content>
         </Frame>
     </Grid>

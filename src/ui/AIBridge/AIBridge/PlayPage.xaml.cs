@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Runtime.CompilerServices;
+using System.ServiceModel.Channels;
 using System.ServiceModel.Security;
 using System.Text;
 using System.Threading;
@@ -15,6 +16,7 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Media.TextFormatting;
 using System.Windows.Navigation;
@@ -50,6 +52,7 @@ namespace AIBridge
         // timer for the delay after one round is completed
         private System.Timers.Timer clearTimer = new System.Timers.Timer(3000);
         private System.Timers.Timer watcherTimer = new System.Timers.Timer(2000);
+        private Array outCards;
         private Socket socket;
         private bool watching = false;
         private bool WaitAnimation = false;
@@ -59,6 +62,15 @@ namespace AIBridge
         private int round = 0;
         private bool needClear = false; // tell whether one round is over and need to clear
         private int playerType = 1;
+        // some fixed points
+        private double[] tipsCenter = { 80, 80 };
+        private double[] continueButtonCenter = { 720, 80 };
+        private double[] scoreCenter = { 80, 720 };
+        private double[] backCenter = { 720, 720 };
+        private double centerLeft;
+        private double centerRight;
+        private double centerTop;
+        private double centerBottom;
         // record the cards played in one round
         // when count reaches 4, timer is started to keep the cards on the desk and after that, clear
 
@@ -199,7 +211,7 @@ namespace AIBridge
         }
 
         /// <summary>
-        /// put one card to the desk (user's card set)
+        /// put one card to the desk (user's card set), call this function only at the beginning of the game
         /// </summary>
         /// <param name="direction">
         /// which user the card belongs to:
@@ -213,93 +225,95 @@ namespace AIBridge
         /// </param>
         private void showCardInHand(int direction)
         {
-            if (direction > 3 || direction < 0)
-                return;
             this.Dispatcher.Invoke(new Action(delegate
             {
-                UIElementCollection tmp = null;
-                switch (direction)
-                {
-                    case 0: tmp = this.Me.Children; break;
-                    case 1: tmp = this.Left.Children; break;
-                    case 2: tmp = this.Opponent.Children; break;
-                    case 3: tmp = this.Right.Children; break;
-                }
+                int[] card_count = { 0, 0, 0, 0 };
                 for(int i = 0; i < 13; i++)
                 {
-                    if (this.inhand[direction, i])
+                    card_count[this.Card[direction, i, 0]] += 1;
+                }
+                double height = 0;
+                double width = 0;
+                int suit_count = 0;
+                double left = 0;
+                double top = 0;
+                int maxNumberOfCard = -1;
+                for(int i = 0; i < 4; i++)
+                {
+                    if (card_count[i] > 0)
                     {
-                        //tmp.Add(this.CardUI[direction, i]);
-                        StackPanel panel = null;
-                        for (int j = 0; j < tmp.Count; j++)
-                        {
-                            StackPanel t = tmp[j] as StackPanel;
-                            CardControl c = t.Children[0] as CardControl;
-                            if (string.Compare(c.Suit, this.CardUI[direction, i].Suit) == 0)
-                            {
-                                panel = t;
-                                break;
-                            }
-                        }
-                        bool newPanel = false;
-                        if (panel == null)
-                        {
-                            newPanel = true;
-                            panel = new StackPanel();
-                            if (!this.watching && (direction == 1 || direction == 3))
-                            {
-                                panel.Orientation = Orientation.Vertical;
-                                panel.Width = 120;
-                                panel.Height = 150;
-                                panel.HorizontalAlignment = HorizontalAlignment.Center;
-                            }
-                            else
-                            {
-                                panel.Orientation = Orientation.Horizontal;
-                                panel.Width = 110;
-                                panel.Height = 150;
-                                panel.MaxHeight = 150;
-                                panel.HorizontalAlignment = HorizontalAlignment.Left;
-                            }
-                        }
-                        else
-                        {
-                            if(!this.watching && (direction == 1 || direction == 3))
-                            {
-                                panel.Height += 43;
-                            }
-                            else
-                            {
-                                panel.Width += 20;
-                            }
-                        }
-                        if (tmp.Count > 0 && newPanel && direction % 2 == 1)
-                        {
-                            Thickness panelThickness = new Thickness();
-                            panelThickness.Top = -107;
-                            panel.Margin = panelThickness;
-                        }
-                        double horizontalOffset = 0;
-                        double verticalOffset = 0;
-                        if (panel.Children.Count > 0)
-                        {
-                            if (!this.watching && (direction == 1 || direction == 3))
-                            {
-                                verticalOffset = -107;
-                            }
-                            else
-                                horizontalOffset = -80;
-                            Thickness thickness = new Thickness();
-                            thickness.Left = horizontalOffset;
-                            thickness.Top = verticalOffset;
-                            this.CardUI[direction, i].Margin = thickness;
-                        }
-                        this.CardUI[direction, i].MaxHeight = 150;
-                        panel.Children.Add(this.CardUI[direction, i]);
-                        if(newPanel)
-                            tmp.Add(panel);
+                        suit_count += 1;
                     }
-                        
+                    if (card_count[i] > maxNumberOfCard)
+                    {
+                        maxNumberOfCard = card_count[i];
+                    }
+                }
+                if(direction == 0 || direction == 2)
+                {
+                    height = 150;
+                    width = 20 * 13 + (suit_count - 1) * 90 + 80;
+                    left = 400 - width / 2;
+                    if (direction == 0)
+                        top = this.Height - 160;
+                    else
+                        top = 10;
+                    int lastSuit = -1;
+                    for (int i = 0; i < 13; i++)
+                    {
+                        if(this.Card[direction, i, 0]!=lastSuit && lastSuit != -1)
+                        {
+                            left += 90;
+                        }
+                        this.CardUI[direction, i].SetValue(Canvas.LeftProperty, left);
+                        this.CardUI[direction, i].SetValue(Canvas.TopProperty, top);
+                        this.canvas.Children.Add(this.CardUI[direction, i]);
+                        left += 20;
+                    }
+                }
+                else
+                {
+                    if (this.watching)
+                    {
+                        height = 43 * suit_count + 107;
+                        width = 20 * maxNumberOfCard + 90;
+                        int lastSuit = -1;
+                        top = 400 - height / 2;
+                        if (direction == 1)
+                            left = 10;
+                        else
+                            left = this.Width - 10 - width;
+                        double raw_left = left;
+                        for(int i = 0; i < 13; i++)
+                        {
+                            if(this.Card[direction, i, 0]!=lastSuit && lastSuit != -1)
+                            {
+                                left = raw_left;
+                                top -= 43;
+                            }
+                            this.CardUI[direction, i].SetValue(Canvas.LeftProperty, left);
+                            this.CardUI[direction, i].SetValue(Canvas.TopProperty, top);
+                            this.canvas.Children.Add(this.CardUI[direction, i]);
+                            left += 20;
+                        }
+                    }
+                    else
+                    {
+                        height = 43 * 13 + 107;
+                        width = 100;
+                        if (direction == 1)
+                            left = 10;
+                        else
+                            left = this.Width - 10 - width;
+                        top = 400 - height / 2;
+                        for (int i = 0; i < 13; i++)
+                        {
+                            this.CardUI[direction, i].SetValue(Canvas.LeftProperty, left);
+                            this.CardUI[direction, i].SetValue(Canvas.TopProperty, top);
+                            this.canvas.Children.Add(this.CardUI[direction, i]);
+                            top += 43;
+                        }
+                    }
                 }
             }));
             
@@ -343,53 +357,29 @@ namespace AIBridge
         {
             this.Dispatcher.Invoke(new Action(delegate
             {
-                UIElementCollection tmp = null;
-                UIElementCollection tmp1 = null;
-                int direction = 0;
-                switch (Convert.ToInt32(card.Owner))
+                int direction = Convert.ToInt32(card.Owner);
+                double left = 0;
+                double top = 0;
+                switch (direction)
                 {
-                    case 0: tmp = this.Me.Children; tmp1 = this.MeCard.Children; direction = 0; break;
-                    case 1: tmp = this.Left.Children; tmp1 = this.LeftCard.Children; direction = 1; break;
-                    case 2: tmp = this.Opponent.Children; tmp1 = this.OpponentCard.Children; direction = 2; break;
-                    case 3: tmp = this.Right.Children; tmp1 = this.RightCard.Children; direction = 3; break;
+                    case 0: left = Canvas.GetLeft(this.contractLabel) + this.contractLabel.Width/2 - 50; top = Canvas.GetTop(this.contractLabel) + this.contractLabel.Height + 10; break;
+                    case 1: left = Canvas.GetLeft(this.contractLabel) - 110; top = Canvas.GetTop(this.contractLabel) - this.contractLabel.Height / 2 + 75; break;
+                    case 2: left = Canvas.GetLeft(this.contractLabel) + this.contractLabel.Width / 2 - 50; top = Canvas.GetTop(this.contractLabel) - 160; break;
+                    case 3: left = Canvas.GetLeft(this.contractLabel) + this.contractLabel.Width + 10; top = Canvas.GetTop(this.contractLabel) - this.contractLabel.Height / 2 + 75; break;
                 }
-                for(int i = 0; i < tmp.Count; i++)
-                {
-                    StackPanel t = tmp[i] as StackPanel;
-                    for(int j = 0; j < t.Children.Count; j++)
-                    {
-                        CardControl c = t.Children[j] as CardControl;
-                        if (c == card)
-                        {
-                            t.Children.Remove(card);
-                            card.Margin = new Thickness();
-                            tmp1.Add(card);
-                            if(!this.watching && (direction==1 || direction == 3))
-                            {
-                                t.Height -= 43;
-                            }
-                            else
-                            {
-                                t.Width -= 20;
-                            }
-                            if (t.Children.Count == 0)
-                            {
-                                tmp.Remove(t);
-                                if (tmp.Count > 0)
-                                {
-                                    StackPanel t_ = tmp[0] as StackPanel;
-                                    t_.Margin = new Thickness();
-                                }
-                            }
-                            else if(j == 0 && t.Children.Count > 0)
-                            {
-                                CardControl c_ = t.Children[0] as CardControl;
-                                c_.Margin = new Thickness();
-                            }
-                            break;
-                        }
-                    }
-                }
+                Storyboard s = new Storyboard();
+                DoubleAnimation da1 = new DoubleAnimation(Canvas.GetLeft(card), left, new Duration(TimeSpan.FromMilliseconds(500)));
+                Storyboard.SetTarget(da1, card);
+                Storyboard.SetTargetProperty(da1, new PropertyPath("(Canvas.Left)"));
+                s.Children.Add(da1);
+
+                DoubleAnimation da2 = new DoubleAnimation(Canvas.GetTop(card), top, new Duration(TimeSpan.FromMilliseconds(500)));
+                Storyboard.SetTarget(da2, card);
+                Storyboard.SetTargetProperty(da2, new PropertyPath("(Canvas.Top)"));
+                s.Children.Add(da2);
+                s.Begin();
+                // !!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                // TODO: change the position of other cards and add animation
             }));
         }
 
