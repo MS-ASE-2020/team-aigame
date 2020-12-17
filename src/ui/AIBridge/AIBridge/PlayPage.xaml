@@ -14,12 +14,12 @@
             <Frame.Content>
                 <Viewbox Stretch="Uniform">
                     <Canvas Name="canvas" Background="DarkGreen" Width="1000" Height="1000">
-                        <Button Name="backButton" Content="BACK" FontSize="40" Click="Button_Click"/>
-                        <Button Name="ContinueButton" Content="Continue" FontSize="30" Click="Button_Click_1"/>
-                        <Label Name="declarerScoreLabel" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White"/>
-                        <Label Name="defenderScoreLabel" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White"/>
-                        <Label Name="tipsLabel" FontSize="30" Foreground="White"/>
-                        <Label Name="contractLabel" Content="no trump 3" FontSize="20" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        <Button Name="backButton" Content="BACK" FontSize="40" Click="Button_Click" Canvas.Left="881" Canvas.Top="935"/>
+                        <Button Name="ContinueButton" Content="Continue" FontSize="30" Click="Button_Click_1" Canvas.Left="855" Canvas.Top="10"/>
+                        <Label Name="declarerScoreLabel" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White" Canvas.Left="10" Canvas.Bottom="45"/>
+                        <Label Name="defenderScoreLabel" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White" Canvas.Left="10" Canvas.Bottom="10"/>
+                        <Label Name="tipsLabel" FontSize="30" Foreground="White" Canvas.Left="10" Canvas.Top="10"/>
+                        <Label Name="contractLabel" Content="no trump 3" FontSize="20" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" Canvas.Left="441" Canvas.Top="482.5"/>
                     </Canvas>
                 </Viewbox>
                 <!--<Grid Background="DarkGreen">

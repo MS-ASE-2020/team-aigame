@@ -246,18 +246,18 @@ namespace testSocket
         private static int[] getRandomCard(int length)
         {
             int[] nums = new int[length];
-            //Random random = new Random(1);
+            Random random = new Random(1);
             for(int i = 0; i < length; i++)
             {
                 nums[i] = i;
             }
-            //for(int i = 0; i < length; i++)
-            //{
-            //    int tmp = nums[i];
-            //    int r = random.Next(i, nums.Length);
-            //    nums[i] = nums[r];
-            //    nums[r] = tmp;
-            //}
+            for (int i = 0; i < length; i++)
+            {
+                int tmp = nums[i];
+                int r = random.Next(i, nums.Length);
+                nums[i] = nums[r];
+                nums[r] = tmp;
+            }
             return nums;
         }
 

@@ -81,31 +81,8 @@ namespace AIBridge
                 this.watching = false;
             this.playerType = t;
             InitializeComponent();
-            System.Timers.Timer tmp = new System.Timers.Timer(50);
-            tmp.Elapsed += Tmp_Elapsed;
-            tmp.AutoReset = false;
-            tmp.Start();
         }
 
-        private void Tmp_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
-        {
-            this.Dispatcher.Invoke(new Action(delegate
-            {
-                this.ContinueButton.SetValue(Canvas.LeftProperty, this.canvas.ActualWidth - 10 - this.ContinueButton.ActualWidth);
-                this.ContinueButton.SetValue(Canvas.TopProperty, (double)10);
-
-                this.backButton.SetValue(Canvas.LeftProperty, this.canvas.ActualWidth - 10 - this.backButton.ActualWidth);
-                this.backButton.SetValue(Canvas.TopProperty, this.canvas.ActualHeight - 10 - this.backButton.ActualHeight);
-
-                this.contractLabel.SetValue(Canvas.LeftProperty, this.canvas.ActualWidth / 2 - this.contractLabel.ActualWidth / 2);
-                this.contractLabel.SetValue(Canvas.TopProperty, this.canvas.ActualHeight / 2 - this.contractLabel.ActualHeight / 2);
-
-                this.tipsLabel.SetValue(Canvas.LeftProperty, (double)10);
-                this.tipsLabel.SetValue(Canvas.TopProperty, (double)10);
-
-                updateScoreLabel();
-            }));
-        }
 
 
         /// <summary>
@@ -369,12 +346,12 @@ namespace AIBridge
                 {
                     if(this.inhand[direction, i])
                     {
-                        DoubleAnimation da1 = new DoubleAnimation(Canvas.GetLeft(this.CardUI[direction, i]), dest[i, 0], new Duration(TimeSpan.FromMilliseconds(500)));
+                        DoubleAnimation da1 = new DoubleAnimation(Canvas.GetLeft(this.CardUI[direction, i]), dest[i, 0], new Duration(TimeSpan.FromMilliseconds(1000)));
                         Storyboard.SetTarget(da1, this.CardUI[direction, i]);
                         Storyboard.SetTargetProperty(da1, new PropertyPath("(Canvas.Left)"));
                         s.Children.Add(da1);
 
-                        DoubleAnimation da2 = new DoubleAnimation(Canvas.GetTop(this.CardUI[direction, i]), dest[i, 1], new Duration(TimeSpan.FromMilliseconds(500)));
+                        DoubleAnimation da2 = new DoubleAnimation(Canvas.GetTop(this.CardUI[direction, i]), dest[i, 1], new Duration(TimeSpan.FromMilliseconds(1000)));
                         Storyboard.SetTarget(da2, this.CardUI[direction, i]);
                         Storyboard.SetTargetProperty(da2, new PropertyPath("(Canvas.Top)"));
                         s.Children.Add(da2);
@@ -570,10 +547,10 @@ namespace AIBridge
         {
             this.declarerScoreLabel.Content = "declarer:" + this.score.ToString();
             this.defenderScoreLabel.Content = "defender:" + (this.round - this.score).ToString();
-            this.defenderScoreLabel.SetValue(Canvas.LeftProperty, (double)10);
-            this.defenderScoreLabel.SetValue(Canvas.TopProperty, this.canvas.ActualHeight - 10 - this.defenderScoreLabel.ActualHeight);
-            this.declarerScoreLabel.SetValue(Canvas.LeftProperty, (double)10);
-            this.declarerScoreLabel.SetValue(Canvas.TopProperty, this.canvas.ActualHeight - 10 - this.defenderScoreLabel.ActualHeight - this.declarerScoreLabel.ActualHeight);
+            //this.defenderScoreLabel.SetValue(Canvas.LeftProperty, (double)10);
+            //this.defenderScoreLabel.SetValue(Canvas.TopProperty, this.canvas.ActualHeight - 10 - this.defenderScoreLabel.ActualHeight);
+            //this.declarerScoreLabel.SetValue(Canvas.LeftProperty, (double)10);
+            //this.declarerScoreLabel.SetValue(Canvas.TopProperty, this.canvas.ActualHeight - 10 - this.defenderScoreLabel.ActualHeight - this.declarerScoreLabel.ActualHeight);
         }
 
 
@@ -678,8 +655,6 @@ namespace AIBridge
                                     if (who == 0)
                                     {
                                         this.tipsLabel.Content = "Your Turn!\nDeclarer";
-                                        this.tipsLabel.SetValue(Canvas.LeftProperty, (double)10);
-                                        this.tipsLabel.SetValue(Canvas.TopProperty, (double)10);
                                     }
                                     else
                                     {
