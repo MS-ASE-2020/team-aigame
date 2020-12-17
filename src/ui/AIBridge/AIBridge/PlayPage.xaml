@@ -1,0 +1,63 @@
+﻿<Page x:Class="AIBridge.PlayPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:AIBridge"
+      mc:Ignorable="d" 
+      d:DesignHeight="800" d:DesignWidth="800"
+      Title="PlayPage"
+      KeyDown="Page_KeyDown">
+
+    <Grid>
+        <Frame Name="currentPage" NavigationUIVisibility="Hidden">
+            <Frame.Content>
+                <Viewbox Stretch="Uniform">
+                    <Canvas Name="canvas" Background="DarkGreen" Width="1000" Height="1000">
+                        <Button Name="backButton" Content="BACK" FontSize="40" Click="Button_Click" Canvas.Left="881" Canvas.Top="935"/>
+                        <Button Name="ContinueButton" Content="Continue" FontSize="30" Click="Button_Click_1" Canvas.Left="855" Canvas.Top="10"/>
+                        <Label Name="declarerScoreLabel" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White" Canvas.Left="10" Canvas.Bottom="45"/>
+                        <Label Name="defenderScoreLabel" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White" Canvas.Left="10" Canvas.Bottom="10"/>
+                        <Label Name="tipsLabel" FontSize="30" Foreground="White" Canvas.Left="10" Canvas.Top="10"/>
+                        <Label Name="contractLabel" Content="no trump 3" FontSize="20" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" Canvas.Left="441" Canvas.Top="482.5"/>
+                    </Canvas>
+                </Viewbox>
+                <!--<Grid Background="DarkGreen">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="3*"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="3*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Orientation="Horizontal" Name="Opponent" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Row="0" Grid.Column="1"/>
+                    <StackPanel Orientation="Horizontal" Name="Me" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Row="2" Grid.Column="1"/>
+                    <StackPanel Orientation="Vertical" Name="Left" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Row="1" Grid.Column="0"/>
+                    <StackPanel Orientation="Vertical" Name="Right" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Row="1" Grid.Column="2"/>
+                    <WrapPanel Name="LeftCard" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                    <WrapPanel Name="RightCard" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                    <WrapPanel Name="MeCard" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Bottom"/>
+                    <WrapPanel Name="OpponentCard" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                    <WrapPanel Name="contractPanel" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <Label Name="contractLabel" Content="no trump 3" FontSize="20" Foreground="White"/>
+                    </WrapPanel>
+                    <WrapPanel Name="back" Grid.Row="2" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <Button Content="BACK" FontSize="40" Click="Button_Click"/>
+                    </WrapPanel>
+                    <WrapPanel Name="continue" Grid.Row="0" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <Button Name="ContinueButton" Content="Continue" FontSize="30" Click="Button_Click_1"/>
+                    </WrapPanel>
+                    <WrapPanel Name="tipsPanel" Grid.Row="0" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <Label Name="tipsLabel" FontSize="30" Foreground="White"/>
+                    </WrapPanel>
+                    <WrapPanel Name="scorePanel" Grid.Row="2" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <Label Name="scoreLabel" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White"/>
+                    </WrapPanel>
+                </Grid>-->
+            </Frame.Content>
+        </Frame>
+    </Grid>
+</Page>
