@@ -36,16 +36,7 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5e645f81-9b61-469b-b85a-70d59f41f57b" name="Default Changelist" comment="'GameState2feature_cnn'">
-      <change afterPath="$PROJECT_DIR$/ClientModel_CNN.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cnn_model.pkl" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ClientModelTest.py" beforeDir="false" afterPath="$PROJECT_DIR$/ClientModelTest.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ClientNewModel.py" beforeDir="false" afterPath="$PROJECT_DIR$/ClientNewModel.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ClientProtoTest.py" beforeDir="false" afterPath="$PROJECT_DIR$/ClientProtoTest.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/demo.py" beforeDir="false" afterPath="$PROJECT_DIR$/demo.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/util.py" beforeDir="false" afterPath="$PROJECT_DIR$/util.py" afterDir="false" />
-    </list>
+    <list default="true" id="5e645f81-9b61-469b-b85a-70d59f41f57b" name="Default Changelist" comment="'Update For new UI and Server'" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -214,7 +205,7 @@
       <option name="presentableId" value="Default" />
       <updated>1603262401516</updated>
       <workItem from="1603262403139" duration="7774000" />
-      <workItem from="1608116178820" duration="10967000" />
+      <workItem from="1608116178820" duration="11620000" />
     </task>
     <task id="LOCAL-00001" summary="'preprocess dataset: makerDef and firstPlayers'">
       <created>1603269311025</created>
@@ -230,7 +221,14 @@
       <option name="project" value="LOCAL" />
       <updated>1608037443206</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="'Update For new UI and Server'">
+      <created>1608194356961</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1608194356961</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -251,7 +249,8 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="'preprocess dataset: makerDef and firstPlayers'" />
     <MESSAGE value="'GameState2feature_cnn'" />
-    <option name="LAST_COMMIT_MESSAGE" value="'GameState2feature_cnn'" />
+    <MESSAGE value="'Update For new UI and Server'" />
+    <option name="LAST_COMMIT_MESSAGE" value="'Update For new UI and Server'" />
   </component>
   <component name="WindowStateProjectService">
     <state width="1877" height="323" key="GridCell.Tab.0.bottom" timestamp="1608193159106">
@@ -298,9 +297,10 @@
       <screen x="0" y="0" width="1920" height="1200" />
     </state>
     <state width="498" height="446" key="SwitcherDM/0.0.1920.1200/1920.0.1920.1200@0.0.1920.1200" timestamp="1608123877269" />
-    <state x="552" y="332" key="Vcs.Push.Dialog.v2" timestamp="1608037446440">
-      <screen x="0" y="0" width="1920" height="1200" />
+    <state x="552" y="321" key="Vcs.Push.Dialog.v2" timestamp="1608194360763">
+      <screen x="0" y="0" width="1920" height="1160" />
     </state>
+    <state x="552" y="321" key="Vcs.Push.Dialog.v2/0.0.1920.1160/1920.0.1920.1160@0.0.1920.1160" timestamp="1608194360763" />
     <state x="552" y="332" key="Vcs.Push.Dialog.v2/0.0.1920.1200/1920.0.1920.1200@0.0.1920.1200" timestamp="1608037446440" />
     <state x="623" y="265" width="672" height="678" key="search.everywhere.popup" timestamp="1608036930396">
       <screen x="0" y="0" width="1920" height="1200" />
