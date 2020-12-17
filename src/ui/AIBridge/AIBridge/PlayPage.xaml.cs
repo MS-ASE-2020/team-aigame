@@ -205,8 +205,8 @@ namespace AIBridge
                     }
                     this.CardUI[direction, i].Owner = direction.ToString();
 
-                    this.CardUI[direction, i].SetValue(Canvas.LeftProperty, this.canvas.ActualWidth / 2 - 50);
-                    this.CardUI[direction, i].SetValue(Canvas.TopProperty, this.canvas.ActualHeight / 2 - 75);
+                    this.CardUI[direction, i].SetValue(Canvas.LeftProperty, this.canvas.Width / 2 - 50);
+                    this.CardUI[direction, i].SetValue(Canvas.TopProperty, this.canvas.Height / 2 - 75);
                     this.canvas.Children.Add(this.CardUI[direction, i]);
                 }));
                 
@@ -262,9 +262,9 @@ namespace AIBridge
                 {
                     height = 150;
                     width = 20 * card_num + (suit_count - 1) * 90 + 80;
-                    left = this.canvas.ActualWidth / 2 - width / 2;
+                    left = this.canvas.Width / 2 - width / 2;
                     if (direction == 0)
-                        top = this.canvas.ActualHeight - 160;
+                        top = this.canvas.Height - 160;
                     else
                         top = 10;
                     int lastSuit = -1;
@@ -293,11 +293,11 @@ namespace AIBridge
                         height = 43 * suit_count + 107;
                         width = 20 * maxNumberOfCard + 90;
                         int lastSuit = -1;
-                        top = this.canvas.ActualHeight / 2 - height / 2;
+                        top = this.canvas.Height / 2 - height / 2;
                         if (direction == 1)
                             left = 10;
                         else
-                            left = this.canvas.ActualWidth - width;
+                            left = this.canvas.Width - width;
                         double raw_left = left;
                         for(int i = 0; i < 13; i++)
                         {
@@ -325,8 +325,8 @@ namespace AIBridge
                         if (direction == 1)
                             left = 10;
                         else
-                            left = this.canvas.ActualWidth - 10 - width;
-                        top = this.canvas.ActualHeight / 2 - height / 2;
+                            left = this.canvas.Width - 10 - width;
+                        top = this.canvas.Height / 2 - height / 2;
                         for (int i = 0; i < 13; i++)
                         {
                             if(this.inhand[direction, i])
@@ -547,10 +547,6 @@ namespace AIBridge
         {
             this.declarerScoreLabel.Content = "declarer:" + this.score.ToString();
             this.defenderScoreLabel.Content = "defender:" + (this.round - this.score).ToString();
-            //this.defenderScoreLabel.SetValue(Canvas.LeftProperty, (double)10);
-            //this.defenderScoreLabel.SetValue(Canvas.TopProperty, this.canvas.ActualHeight - 10 - this.defenderScoreLabel.ActualHeight);
-            //this.declarerScoreLabel.SetValue(Canvas.LeftProperty, (double)10);
-            //this.declarerScoreLabel.SetValue(Canvas.TopProperty, this.canvas.ActualHeight - 10 - this.defenderScoreLabel.ActualHeight - this.declarerScoreLabel.ActualHeight);
         }
 
 
