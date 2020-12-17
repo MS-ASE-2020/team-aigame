@@ -97,6 +97,7 @@
       <DependentUpon>PlaySelect.xaml</DependentUpon>
     </Compile>
     <Compile Include="protobuf\Message.cs" />
+    <Compile Include="server\server.cs" />
     <Compile Include="WatchSelect.xaml.cs">
       <DependentUpon>WatchSelect.xaml</DependentUpon>
     </Compile>

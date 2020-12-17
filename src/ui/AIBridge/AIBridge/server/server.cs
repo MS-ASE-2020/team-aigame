@@ -1,36 +1,32 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Net;
 using System.Net.Sockets;
-using System.Runtime.CompilerServices;
-using System.Runtime.Serialization.Json;
-using System.Text;
-using System.Threading;
-using System.Runtime.Serialization.Formatters.Binary;
-using System.Drawing.Printing;
 using Google.Protobuf;
 using System.Linq;
 using System.Collections;
+using System.Threading;
 
-namespace testSocket
+namespace AIBridge
 {
-    class Program
+    class server
     {
-        static void Main(string[] args)
+        private static Socket listener = null;
+        private static Socket ruleBasedModel = null;
+        private static Socket SLModel = null;
+        private static Socket RLModel = null;
+        private static Socket watcher = null;
+        private static Thread s = null;
+
+        static void main()
         {
-            Socket ruleBasedModel = null;
-            Socket SLModel = null;
-            Socket RLModel = null;
-            Socket watcher = null;
-            Socket listener = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+            listener = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             IPAddress ip = IPAddress.Parse("127.0.0.1");
             IPEndPoint ipe = new IPEndPoint(ip, 6006);
             byte[] buffer = new byte[1024];
             listener.Bind(ipe);
             listener.Listen(4);
             Console.WriteLine("listen to {0}", listener.LocalEndPoint.ToString());
-            while ( ruleBasedModel == null || SLModel == null || RLModel == null)
+            while (ruleBasedModel == null || SLModel == null || RLModel == null)
             {
                 Socket tmp = listener.Accept();
                 Hello m = new Hello(); // say hello
@@ -115,6 +111,62 @@ namespace testSocket
             }
         }
 
+        public void start()
+        {
+            ThreadStart r = new ThreadStart(main);
+            s = new Thread(r);
+            s.Start();
+        }
+
+        public void stop()
+        {
+            try
+            {
+                ruleBasedModel.Close();
+            }
+            catch(Exception ex)
+            {
+
+            }
+            try
+            {
+                SLModel.Close();
+            }
+            catch(Exception ex)
+            {
+                
+            }
+            try
+            {
+                RLModel.Close();
+            }
+            catch(Exception ex)
+            {
+
+            }
+            try
+            {
+                watcher.Close();
+            }
+            catch(Exception ex) {
+                
+            }
+            try
+            {
+                listener.Close();
+                Socket tmp = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+                IPAddress ip = IPAddress.Parse("127.0.0.1");
+                IPEndPoint ipe = new IPEndPoint(ip, 6006);
+                tmp.Connect(ipe);
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
+            Console.WriteLine("wait to abort");
+            s.Abort();
+        }
+
         private static void run(Socket declarer, Socket lopp, Socket ropp, Socket watcher)
         {
             byte[] buffer = new byte[1024];
@@ -179,7 +231,7 @@ namespace testSocket
                     }
                     GameState m = GetGameState((starter + p) % 4, tmpCard, dummyCard, history);
                     m.TableID = 1;
-                    if(tmpSocket==declarer && declarer == watcher)
+                    if (tmpSocket == declarer && declarer == watcher)
                     {
                         h.Code = 2;
                         tmpSocket.Send(h.ToByteArray());
@@ -193,7 +245,7 @@ namespace testSocket
                     rm.MergeFrom(buffer.Take(length).ToArray());
                     if (rm.Card == null)
                     {
-                        return ;
+                        return;
                     }
 
                     Card selected = rm.Card;
@@ -237,7 +289,7 @@ namespace testSocket
                     watcher.Send(rm.ToByteArray());
                     Console.WriteLine("send play message");
                 }
-                
+
                 printCard(cardInThisTurn);
                 Console.WriteLine("round {0} finished!", round);
             }
@@ -246,24 +298,24 @@ namespace testSocket
         private static int[] getRandomCard(int length)
         {
             int[] nums = new int[length];
-            //Random random = new Random(1);
-            for(int i = 0; i < length; i++)
+            Random random = new Random(1);
+            for (int i = 0; i < length; i++)
             {
                 nums[i] = i;
             }
-            //for(int i = 0; i < length; i++)
-            //{
-            //    int tmp = nums[i];
-            //    int r = random.Next(i, nums.Length);
-            //    nums[i] = nums[r];
-            //    nums[r] = tmp;
-            //}
+            for (int i = 0; i < length; i++)
+            {
+                int tmp = nums[i];
+                int r = random.Next(i, nums.Length);
+                nums[i] = nums[r];
+                nums[r] = tmp;
+            }
             return nums;
         }
 
         private static void printCard(int[] card)
         {
-            for(int i = 0; i < card.Length; i++)
+            for (int i = 0; i < card.Length; i++)
             {
                 if (card[i] != -1)
                 {
@@ -293,8 +345,8 @@ namespace testSocket
             }
             else
             {
-                TrickHistory[] playHistory = new TrickHistory[(int)Math.Ceiling((double)history.Count/5)];
-                for(int i = 0; i < history.Count; i++)
+                TrickHistory[] playHistory = new TrickHistory[(int)Math.Ceiling((double)history.Count / 5)];
+                for (int i = 0; i < history.Count; i++)
                 {
                     if (i % 5 == 0)
                     {
@@ -317,9 +369,9 @@ namespace testSocket
             int presentSuit = -1;
             if (history.Count % 5 > 0)
             {
-                presentSuit = (int)history[history.Count - history.Count%5 + 1] / 13;
+                presentSuit = (int)history[history.Count - history.Count % 5 + 1] / 13;
             }
-            for(int i = 0; i < hand.Length; i++)
+            for (int i = 0; i < hand.Length; i++)
             {
                 if (hand[i] != -1 && (hand[i] / 13 == presentSuit || presentSuit == -1))
                 {

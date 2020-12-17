@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -20,13 +22,19 @@ namespace AIBridge
     /// </summary>
     public partial class MainWindow : Window
     {
+        private server s = new server();
         public MainWindow()
         {
             InitializeComponent();
             // todo: deal with the memory problem
             this.MainPage.Content = new mainPage();
+            this.Closing += Window_Closing;
+            this.s.start();
         }
-        
-
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            //this.s.stop();
+            e.Cancel = false;
+        }
     }
 }
