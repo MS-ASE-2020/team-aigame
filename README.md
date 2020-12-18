@@ -28,3 +28,4 @@ UI and Env(C#) for this project by Yue Zhang
 - Run the UI
 - Run scr/ModelClient/Client.py using python
 - Then you can use UI to play
+- Also you can modify the model path in Client.py, add models in Model.py and add GameState2Feature Function in FeatureGeneration.py to Add your model to play. 
