@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="be0c656b-dbcb-4e89-9d63-94bf69197971" name="laboratory">
+        <fileTransfer accessType="SFTP" host="192.168.2.80" port="22" sshConfigId="b5b91562-4270-49ab-b3a1-2e5f2547532f" sshConfig="rjl@192.168.2.80:22 password">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" passiveMode="true" shareSSLContext="true" />
+          </advancedOptions>
+        </fileTransfer>
+      </webServer>
+      <webServer id="6534044f-b95a-4451-b4f4-aa1da19a9670" name="ipv6_rjl">
+        <fileTransfer rootFolder="/data/xww/workspaces/" accessType="SFTP" host="2400:dd01:100f:4f32:245d:ae54:f5dc:26db" port="22" sshConfigId="3647f4cc-5cdf-42f0-ac3e-5d1cc661a80f" sshConfig="rjl@2400:dd01:100f:4f32:245d:ae54:f5dc:26db:22 password">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" passiveMode="true" shareSSLContext="true" />
+          </advancedOptions>
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>
