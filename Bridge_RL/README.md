@@ -10,7 +10,5 @@ Before running **any other code**, our Gym environment must be installed locally
 
 
 
-## Next Step
 
-Write test module to evaluate the performance of agent.
 
