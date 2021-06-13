@@ -1,0 +1,106 @@
+syntax = "proto3";
+
+enum Player {
+    DECLARER = 0;
+    LOPP = 1;
+    DUMMY = 2;
+    ROPP = 3;
+    NUM_PLAYERS = 4;
+}
+
+enum Suit {
+    option allow_alias = true;
+    CLUB = 0;
+    C = 0;
+    DIAMOND = 1;
+    D = 1;
+    HEART = 2;
+    H = 2;
+    SPADE = 3;
+    S = 3;
+    NUM_SUITS = 4;
+    NOTRUMP = 4;
+    NT = 4;
+    NUM_BIDDING_SUITS = 5;
+}
+
+enum Vul {
+    NONE = 0;
+    CONTRACT = 1;
+    DEFENDER = 2;
+    BOTH = 3;
+}
+
+message Card {
+    Suit suit = 1;
+    uint32 rank = 2;
+}
+
+message TrickHistory {
+    Player lead = 1;
+    repeated Card cards = 2;
+}
+
+message Contract {
+    Suit suit = 1;
+    uint32 level = 2;
+    enum Doubled {
+        NO = 0;
+        X = 1;
+        XX = 2;
+    }
+    Doubled doubled = 3;
+}
+
+message Hello {
+    Player seat = 1;
+    uint32 code = 2;
+    bool isObserver = 3;
+}
+
+message HelloResponse {
+    bool seated = 1;
+    uint32 tableID = 2;
+}
+
+message GameState {
+    uint32 tableID = 1;
+    Vul vulnerability = 2;
+    Player who = 3;
+    repeated Card hand = 4;
+    repeated Card dummy = 5;
+    repeated TrickHistory playHistory = 6;
+    Contract contract = 7;
+    repeated Card validPlays = 8;
+}
+
+message playerHand {
+    Player who = 1;
+    repeated Card hand = 2;
+}
+
+message broadcastState{
+    uint32 tableID = 1;
+    Vul vulnerability = 2;
+    Player whoseTurn = 3;
+    repeated playerHand allHands = 4;
+    repeated TrickHistory playHistory = 5;
+    Contract contract = 6;
+    uint32 tricksWonByDeclarer = 7;
+    uint32 tricksWonByDefender = 8;
+};
+
+message Play {
+    uint32 tableID = 1;
+    Player who = 2;
+    Card card = 3;
+}
+
+message GameResult {
+    uint32 tableID = 1;
+    Contract contract = 2;
+    int32 result = 3;
+    int32 declarerScore = 4;
+    int32 declarerPar = 5;
+    int32 declarerIMP = 6;
+}
